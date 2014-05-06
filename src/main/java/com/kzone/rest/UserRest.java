@@ -23,7 +23,6 @@ import java.util.*;
 /**
  * Created by Jeffy on 14-4-24.
  */
-
 @Component
 @Path("/user")
 public class UserRest {
