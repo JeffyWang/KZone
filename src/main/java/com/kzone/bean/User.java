@@ -15,6 +15,8 @@ public class User {
     private String uuid;
     @Column(name = "name", nullable = false, columnDefinition = "varchar(16) default ''", unique = true)
     private String name;
+    @Column(name = "user_name", nullable = false, columnDefinition = "varchar(16) default ''", unique = true)
+    private String userName;
     @Column(name = "password", nullable = false, columnDefinition = "varchar(32) default ''")
     private String password;
 
@@ -44,5 +46,13 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 }

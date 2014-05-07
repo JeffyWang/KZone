@@ -25,6 +25,7 @@
 
     <jaxrs:server id="services" address="/">
         <jaxrs:serviceBeans>
+            <bean class="com.kzone.rest.AccountRest" />
             <bean class="com.kzone.rest.UserRest" />
             <bean class="com.kzone.rest.ClientRest" />
         </jaxrs:serviceBeans>

@@ -43,8 +43,9 @@ public class UserRest {
             } else {
                 user = userService.getUser(Integer.valueOf(id));
             }
-            response = validateUser(user, response);
+//            response = validateUser(user, response);
         } catch (Exception e) {
+            log.warn(e);
             return response.setResponse(ErrorCode.GET_USER_ERR_CODE, ErrorCode.GET_USER_ERR_MSG + e.getMessage());
         }
 
@@ -62,6 +63,7 @@ public class UserRest {
         try {
             users = userService.getUsers(null, null);
         } catch (Exception e) {
+            log.warn(e);
             return response.setResponse(ErrorCode.GET_USER_LIST_ERR_CODE, ErrorCode.GET_USER_LIST_ERR_MSG + e.getMessage());
         }
 
@@ -97,6 +99,7 @@ public class UserRest {
         try {
             usersPage = userService.getUsersPage(offset, length, equalCondition, likeCondition);
         } catch (Exception e) {
+            log.warn(e);
             return response.setResponse(ErrorCode.GET_USER_LIST_ERR_CODE, ErrorCode.GET_USER_LIST_ERR_MSG + e.getMessage());
         }
 
@@ -119,6 +122,7 @@ public class UserRest {
             user.setPassword(userService.encryption(user.getPassword()));
             user = userService.addUser(user);
         } catch (Exception e) {
+            log.warn(e);
             return response.setResponse(ErrorCode.ADD_USER_ERR_CODE, ErrorCode.ADD_USER_ERR_MSG + e.getMessage());
         }
 

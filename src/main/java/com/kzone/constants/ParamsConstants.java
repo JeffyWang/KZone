@@ -13,4 +13,6 @@ public interface ParamsConstants {
     final static String PARAM_UUID = "uuid";
 
     final static String PARAM_USER_NAME = "name";
+    final static String PARAM_USER_USERNAME = "userName";
+    final static String PARAM_USER_PASSWORD = "password";
 }

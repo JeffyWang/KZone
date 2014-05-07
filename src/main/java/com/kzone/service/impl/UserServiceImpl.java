@@ -82,7 +82,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String decryption(String pssword) {
-        String s = MD5Util.convertMD5(MD5Util.convertMD5(pssword));
+        String s = MD5Util.convertMD5(pssword);
         return s;
     }
 }

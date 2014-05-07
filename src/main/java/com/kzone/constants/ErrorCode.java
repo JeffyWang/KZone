@@ -7,6 +7,9 @@ public class ErrorCode {
     public static String SUCCESS_CODE = "0";
     public static String SUCCESS_MSG = "Success";
 
+    public static String LOGIN_ERR_MSG = "login failed";
+    public static String PERMISSION_ERR_MSG = "Permission denied";
+
     public static String ADD_USER_ERR_CODE = "KU001";
     public static String ADD_USER_ERR_MSG = "Add user error : ";
     public static String GET_USER_ERR_CODE = "KU002";
