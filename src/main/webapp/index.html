@@ -1,0 +1,53 @@
+
+<html>
+<head>
+    <title>login</title>
+</head>
+<script type="text/javascript">
+    var xmlHttp;
+
+    function login() {
+        var username = document.getElementById("username").value;
+        var password = document.getElementById("password").value;
+        console.log(username + "  " + password);
+        S_xmlhttprequest();
+        xmlHttp.open("get","../../../rest/account/login?userName=" + username + "&password=" + password + "",true);
+        xmlHttp.onreadystatechange = Response("login");
+        xmlHttp.send(null);
+    }
+
+    function logout() {
+        S_xmlhttprequest();
+        xmlHttp.open("get","../../../rest/account/logout",true);
+        xmlHttp.onreadystatechange = Response("logout");
+        xmlHttp.send(null);
+    }
+
+
+    function S_xmlhttprequest()
+    {
+        if(window.ActiveXObject)
+        {
+            xmlHttp = new ActiveXObject('Microsoft.XMLHTTP');//alert("IE浏览器！");
+        }
+        else if(window.XMLHttpRequest)
+        {
+            xmlHttp = new XMLHttpRequest();//alert("非IE浏览器！");
+        }
+    }
+
+    function Response(message)
+    {
+        alert(message);
+//        alert(xmlHttp.readyState);
+//        alert(xmlHttp.toString);
+//        window.location.href="/pages/hello.html";
+
+    }
+</script>
+<body>
+    <div>username : <input id="username" type="text" value="admin"/></div>
+    <div>password : <input id="password" type="text" value="admin"/></div>
+    <div><button type="button" id="login" onclick="login()">login</button>    <button type="button" id="logout" onclick="logout()">logout</button></div>
+</body>
+</html>

@@ -40,9 +40,6 @@ public class CommonDaoImpl<T> extends HibernateDaoSupport implements CommonDao<T
 			log.error("insert exception, insert object["+t+"]", e);
 			throw e;
 		}
-		
-		
-		
 	}
 	
 	public T update(T t) throws Exception {

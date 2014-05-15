@@ -33,24 +33,24 @@ public class AccountRest {
     @GET
     @Path("/login")
     @Produces("application/json;charset=utf-8")
-    public HttpServletRequest loginGetMethod(@QueryParam(ParamsConstants.PARAM_USER_USERNAME)String userName, @QueryParam(ParamsConstants.PARAM_USER_PASSWORD)String password, @Context HttpServletRequest request, @Context HttpServletResponse response) throws IOException {
+    public HttpServletRequest loginGetMethod(@QueryParam(ParamsConstants.PARAM_USER_USERNAME) String userName, @QueryParam(ParamsConstants.PARAM_USER_PASSWORD) String password, @Context HttpServletRequest request, @Context HttpServletResponse response) throws IOException {
         password = MD5Util.string2MD5(password);
         log.debug("login user name : [" + userName + "]" + ", password with md5 : [" + password + "]");
 
         Map<String, Object> equalCondition = new HashMap<String, Object>();
-        equalCondition.put(ParamsConstants.PARAM_USER_USERNAME,userName);
+        equalCondition.put(ParamsConstants.PARAM_USER_USERNAME, userName);
         User user = new User();
         try {
             user = userService.getUser(equalCondition);
-            log.debug("get user [" + user.getName() + "], and password is : [" + userService.decryption(user.getPassword()) +"]");
+            log.debug("get user [" + user.getName() + "], and password is : [" + userService.decryption(user.getPassword()) + "]");
         } catch (Exception e) {
             log.warn(e);
         }
 
-        if(password.equals(userService.decryption(user.getPassword()))) {
+        if (password.equals(userService.decryption(user.getPassword()))) {
             request.getSession().setAttribute(ParamsConstants.PARAM_USER_USERNAME, userName);
         } else {
-            response.sendError(HttpStatus.SC_BAD_REQUEST,ErrorCode.LOGIN_ERR_MSG);
+            response.sendError(HttpStatus.SC_BAD_REQUEST, ErrorCode.LOGIN_ERR_MSG);
         }
 
         return request;
@@ -64,7 +64,7 @@ public class AccountRest {
         log.debug("logout user name : [" + userName + "]");
         String loginName = (String) request.getSession().getAttribute(ParamsConstants.PARAM_USER_USERNAME);
 
-        if(userName.equals(loginName)) {
+        if (userName.equals(loginName)) {
             request.getSession().removeAttribute(ParamsConstants.PARAM_USER_USERNAME);
         }
 
@@ -74,7 +74,7 @@ public class AccountRest {
     @POST
     @Path("/login")
     @Produces("application/json;charset=utf-8")
-    public void loginPostMethod(@QueryParam(ParamsConstants.PARAM_USER_USERNAME)String userName, @QueryParam(ParamsConstants.PARAM_USER_PASSWORD)String password, @Context HttpServletRequest request, @Context HttpServletResponse response) throws IOException {
+    public void loginPostMethod(@QueryParam(ParamsConstants.PARAM_USER_USERNAME) String userName, @QueryParam(ParamsConstants.PARAM_USER_PASSWORD) String password, @Context HttpServletRequest request, @Context HttpServletResponse response) throws IOException {
         loginGetMethod(userName, password, request, response);
     }
 

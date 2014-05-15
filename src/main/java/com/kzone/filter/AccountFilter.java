@@ -32,17 +32,18 @@ public class AccountFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest)servletRequest;
         HttpServletResponse response = (HttpServletResponse)servletResponse;
         String uri = request.getRequestURI();
+//        String path = request.getContextPath();
         log.debug("request uri is : [" + uri + "]");
 //        String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
         HttpSession session = request.getSession();
         String loginName = (String) session.getAttribute(ParamsConstants.PARAM_USER_USERNAME);
 
-        if(uri.contains("account") || loginName != null) {
+        if(uri.contains("account") || loginName != null || uri.contains("index") || uri.equals("/")) {
             filterChain.doFilter(servletRequest, servletResponse);
         } else {
             log.debug(ErrorCode.PERMISSION_ERR_MSG);
             response.sendError(HttpStatus.SC_UNAUTHORIZED, ErrorCode.PERMISSION_ERR_MSG);
-            //        response.sendRedirect(basePath + "pages/hello.html");
+//            response.sendRedirect(basePath + "index.html");
             return;
         }
     }

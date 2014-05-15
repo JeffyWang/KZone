@@ -30,4 +30,5 @@ public interface UserService {
     public String encryption(String password);
 
     public String decryption(String pssword);
+
 }

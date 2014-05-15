@@ -6,8 +6,14 @@ import java.util.List;
 import org.springframework.data.mongodb.core.query.Query;
 
 import com.mongodb.gridfs.GridFSDBFile;
+import org.springframework.data.mongodb.core.query.Update;
 
 public interface MongoDao {
+    public void save(Object objectToSave, String collectionName);
+
+    public void delete(Object obj, String collectionName);
+
+    public void update(Query query, Update update, Class entityClass);
 	
 	public void store(InputStream inputStream, String fileName, String contentType, Object obj);
 	
