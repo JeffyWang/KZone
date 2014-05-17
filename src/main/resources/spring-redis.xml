@@ -23,5 +23,10 @@
         <property name="connectionFactory"   ref="connectionFactory" />
     </bean>
 
-    <bean id="userDao" class="com.kzone.dao.impl.UserDaoImplImpl"/>
+    <bean id="userDao" class="com.kzone.dao.impl.UserDaoImpl"/>
+    <bean id="commentDao" class="com.kzone.dao.impl.CommentDaoImpl"/>
+    <bean id="districtDao" class="com.kzone.dao.impl.DistrictDaoImpl"/>
+    <bean id="informationDao" class="com.kzone.dao.impl.InformationDaoImpl"/>
+    <bean id="ktvDao" class="com.kzone.dao.impl.KTVDaoImpl"/>
+    <bean id="statisticsDao" class="com.kzone.dao.impl.StatisticsDaoImpl"/>
 </beans>

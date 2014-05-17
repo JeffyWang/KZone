@@ -30,6 +30,11 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
         <constructor-arg>
             <map>
                 <entry key="User" value-ref="userDao"/>
+                <entry key="Comment" value-ref="commentDao"/>
+                <entry key="District" value-ref="districtDao"/>
+                <entry key="Information" value-ref="informationDao"/>
+                <entry key="KTV" value-ref="ktvDao"/>
+                <entry key="Statistics" value-ref="statisticsDao"/>
             </map>
         </constructor-arg>
     </bean>
@@ -57,7 +62,32 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 		</property>
 	</bean>
 
-    <bean id="userDao" class="com.kzone.dao.impl.UserDaoImplImpl">
+    <bean id="userDao" class="com.kzone.dao.impl.UserDaoImpl">
+        <property name="sessionFactory">
+            <ref bean="sessionFactory" />
+        </property>
+    </bean>
+    <bean id="commentDao" class="com.kzone.dao.impl.CommentDaoImpl">
+        <property name="sessionFactory">
+            <ref bean="sessionFactory" />
+        </property>
+    </bean>
+    <bean id="districtDao" class="com.kzone.dao.impl.DistrictDaoImpl">
+        <property name="sessionFactory">
+            <ref bean="sessionFactory" />
+        </property>
+    </bean>
+    <bean id="informationDao" class="com.kzone.dao.impl.InformationDaoImpl">
+        <property name="sessionFactory">
+            <ref bean="sessionFactory" />
+        </property>
+    </bean>
+    <bean id="ktvDao" class="com.kzone.dao.impl.KTVDaoImpl">
+        <property name="sessionFactory">
+            <ref bean="sessionFactory" />
+        </property>
+    </bean>
+    <bean id="statisticsDao" class="com.kzone.dao.impl.StatisticsDaoImpl">
         <property name="sessionFactory">
             <ref bean="sessionFactory" />
         </property>

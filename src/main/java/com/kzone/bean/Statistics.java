@@ -8,8 +8,8 @@ import java.util.Date;
  * Created by Jeffy on 14-5-17
  */
 @Entity
-@Table(name = "k_statistical")
-public class Statistical implements Serializable {
+@Table(name = "k_statistics")
+public class Statistics implements Serializable {
     private static final long serialVersionUID = 6489902284170546873L;
 
     @Id
@@ -25,11 +25,11 @@ public class Statistical implements Serializable {
     @Column(name = "update_time")
     private Date updateTime;
 
-    public Statistical() {
+    public Statistics() {
 
     }
 
-    public Statistical(int userId) {
+    public Statistics(int userId) {
         this.userId = userId;
         this.createTime = new Date();
         this.updateTime = new Date();
