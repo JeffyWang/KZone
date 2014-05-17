@@ -117,10 +117,10 @@ public class UserRest {
 
         try {
             user = StringUtil.jsonStringToObject(body, User.class);
-            user.setUuid(uuid.toString());
-            response = validateUser(user, response);
-            user.setPassword(userService.encryption(user.getPassword()));
-            user = userService.addUser(user);
+//            user.setUuid(uuid.toString());
+//            response = validateUser(user, response);
+//            user.setPassword(userService.encryption(user.getPassword()));
+//            user = userService.addUser(user);
         } catch (Exception e) {
             log.warn(e);
             return response.setResponse(ErrorCode.ADD_USER_ERR_CODE, ErrorCode.ADD_USER_ERR_MSG + e.getMessage());
@@ -132,10 +132,10 @@ public class UserRest {
 
     public Response validateUser(User user, Response response) throws Exception {
         Validate.notNull(user, "The user is not exist");
-        Validate.notNull(user.getName(), "The username can't be null");
+//        Validate.notNull(user.getName(), "The username can't be null");
         Validate.notNull(user.getPassword(), "The password can't be null");
-        Validate.isTrue(StringUtils.isNotBlank(user.getName()), "The username can't be ''");
-        Validate.isTrue(!userService.isExist(user.getName()), "The username [" + user.getName() + "] is exist");
+//        Validate.isTrue(StringUtils.isNotBlank(user.getName()), "The username can't be ''");
+//        Validate.isTrue(!userService.isExist(user.getName()), "The username [" + user.getName() + "] is exist");
         return response;
     }
 }

@@ -42,7 +42,7 @@ public class AccountRest {
         User user = new User();
         try {
             user = userService.getUser(equalCondition);
-            log.debug("get user [" + user.getName() + "], and password is : [" + userService.decryption(user.getPassword()) + "]");
+            log.debug("get user [" + user.getUserName() + "], and password is : [" + userService.decryption(user.getPassword()) + "]");
         } catch (Exception e) {
             log.warn(e);
         }
