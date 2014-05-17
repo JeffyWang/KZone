@@ -19,7 +19,7 @@ import java.util.Map;
  * Created by Jeffy on 14-4-24.
  */
 @Service
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl extends CommonServiceImpl<User> implements UserService {
     Logger log = Logger.getLogger(UserServiceImpl.class);
     @Autowired
     private UserDao userDao;

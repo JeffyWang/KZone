@@ -20,7 +20,7 @@ import java.lang.reflect.Type;
 import java.sql.SQLException;
 import java.util.*;
 
-@Repository("baseDao")
+@Repository("commonDao")
 @Transactional
 public class CommonDaoImpl<T> extends HibernateDaoSupport implements CommonDao<T> {
 	

@@ -12,7 +12,7 @@ import java.util.Map;
 /**
  * Created by Jeffy on 14-4-24.
  */
-public interface UserService {
+public interface UserService extends CommonService<User> {
     public User getUser(int id) throws Exception;
 
     public User getUser(Map<String, Object> equalCondition) throws Exception;
