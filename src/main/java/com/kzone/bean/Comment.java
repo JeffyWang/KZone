@@ -27,12 +27,12 @@ public class Comment implements Serializable {
     private float environmentScore;
     @Column(name = "sound_effects_score", nullable = true, columnDefinition = "float default 0.0")
     private float soundEffectsScore;
-    @Temporal(TemporalType.TIME)
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "create_time")
     private Date createTime;
 
     public Comment() {
-
+        this.createTime = new Date();
     }
 
     public Comment(int KTVId, int userId, String comment, float serviceScore, float environmentScore, float soundEffectsScore) {
@@ -49,31 +49,63 @@ public class Comment implements Serializable {
         return id;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public int getKTVId() {
         return KTVId;
+    }
+
+    public void setKTVId(int KTVId) {
+        this.KTVId = KTVId;
     }
 
     public int getUserId() {
         return userId;
     }
 
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
     public String getComment() {
         return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 
     public float getServiceScore() {
         return serviceScore;
     }
 
+    public void setServiceScore(float serviceScore) {
+        this.serviceScore = serviceScore;
+    }
+
     public float getEnvironmentScore() {
         return environmentScore;
+    }
+
+    public void setEnvironmentScore(float environmentScore) {
+        this.environmentScore = environmentScore;
     }
 
     public float getSoundEffectsScore() {
         return soundEffectsScore;
     }
 
+    public void setSoundEffectsScore(float soundEffectsScore) {
+        this.soundEffectsScore = soundEffectsScore;
+    }
+
     public Date getCreateTime() {
         return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 }

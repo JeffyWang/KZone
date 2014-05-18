@@ -1,6 +1,8 @@
 package com.kzone.rest;
 
+import com.kzone.bean.KTV;
 import com.kzone.bo.Response;
+import com.kzone.constants.ErrorCode;
 import com.kzone.service.KTVService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
+import java.util.List;
 
 /**
  * Created by Jeffy on 14-5-17
@@ -26,6 +29,16 @@ public class KTVRest {
     @Produces("application/json;charset=utf-8")
     public Response getKTV(@PathParam("id") int id) {
         Response response = new Response();
+        KTV ktv = null;
+
+        try {
+            ktv = ktvService.get(id);
+        } catch (Exception e) {
+            log.warn(e);
+            return response.setResponse(ErrorCode.GET_KTV_ERR_CODE, ErrorCode.GET_KTV_ERR_MSG + e.getMessage());
+        }
+
+        response.setData(ktv);
         return response;
     }
 
@@ -34,6 +47,16 @@ public class KTVRest {
     @Produces("application/json;charset=utf-8")
     public Response getKTVs() {
         Response response = new Response();
+        List<KTV> ktvList = null;
+
+        try {
+            ktvList = ktvService.getList();
+        } catch (Exception e) {
+            log.warn(e);
+            return response.setResponse(ErrorCode.GET_KTV_LIST_ERR_CODE, ErrorCode.GET_KTV_LIST_ERR_MSG + e.getMessage());
+        }
+
+        response.setData(ktvList);
         return response;
     }
 

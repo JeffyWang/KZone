@@ -3,6 +3,7 @@ package com.kzone.rest;
 import com.kzone.bean.Comment;
 import com.kzone.bean.User;
 import com.kzone.bo.Response;
+import com.kzone.constants.ErrorCode;
 import com.kzone.service.CommentService;
 import com.kzone.service.CommonService;
 import org.apache.log4j.Logger;
@@ -30,12 +31,16 @@ public class CommentRest {
     @Produces("application/json;charset=utf-8")
     public Response getComment(@PathParam("id") int id) {
         Response response = new Response();
+        Comment comment = null;
+
         try {
-            Comment comment = commentService.get(id);
-            response.setData(comment);
+            comment = commentService.get(id);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.warn(e);
+            return response.setResponse(ErrorCode.GET_COMMENT_ERR_CODE, ErrorCode.GET_COMMENT_ERR_MSG + e.getMessage());
         }
+
+        response.setData(comment);
         return response;
     }
 
@@ -44,12 +49,16 @@ public class CommentRest {
     @Produces("application/json;charset=utf-8")
     public Response getComments() {
         Response response = new Response();
+        List<Comment> commentList = null;
+
         try {
-            List<Comment> commentList = commentService.getList();
-            response.setData(commentList);
+            commentList = commentService.getList();
         } catch (Exception e) {
-            e.printStackTrace();
+            log.warn(e);
+            return response.setResponse(ErrorCode.GET_COMMENT_LIST_ERR_CODE, ErrorCode.GET_COMMENT_LIST_ERR_MSG + e.getMessage());
         }
+
+        response.setData(commentList);
         return response;
     }
 

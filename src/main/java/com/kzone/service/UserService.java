@@ -31,4 +31,5 @@ public interface UserService extends CommonService<User> {
 
     public String decryption(String pssword);
 
+    public void validateUser(User user);
 }

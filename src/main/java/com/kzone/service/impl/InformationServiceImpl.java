@@ -9,4 +9,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class InformationServiceImpl extends CommonServiceImpl<Information> implements InformationService {
+    @Override
+    public void validateInformation(Information information) {
+    }
 }

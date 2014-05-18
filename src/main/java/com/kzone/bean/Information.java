@@ -23,15 +23,16 @@ public class Information implements Serializable {
     private String pictures;
     @Column(name = "link", nullable = true, columnDefinition = "varchar(256) default ''")
     private String link;
-    @Temporal(TemporalType.TIME)
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "create_time")
     private Date createTime;
-    @Temporal(TemporalType.TIME)
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "update_time")
     private Date updateTime;
 
     public Information() {
-
+        this.createTime = new Date();
+        this.updateTime = new Date();
     }
 
     public Information(String title, String article, String pictures, String link) {
@@ -45,6 +46,10 @@ public class Information implements Serializable {
 
     public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getTitle() {
@@ -81,6 +86,10 @@ public class Information implements Serializable {
 
     public Date getCreateTime() {
         return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 
     public Date getUpdateTime() {

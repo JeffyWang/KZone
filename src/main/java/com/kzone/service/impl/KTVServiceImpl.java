@@ -9,4 +9,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class KTVServiceImpl extends CommonServiceImpl<KTV> implements KTVService {
+    @Override
+    public void validateKTV(KTV ktv) {
+    }
 }

@@ -9,4 +9,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class StatisticsServiceImpl extends CommonServiceImpl<Statistics> implements StatisticsService {
+    @Override
+    public void validateStatistics(Statistics statistics) {
+    }
 }

@@ -44,27 +44,55 @@ public class District implements Serializable {
         return id;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public String getProvince() {
         return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
     }
 
     public String getProvinceCode() {
         return provinceCode;
     }
 
+    public void setProvinceCode(String provinceCode) {
+        this.provinceCode = provinceCode;
+    }
+
     public String getMunicipality() {
         return municipality;
+    }
+
+    public void setMunicipality(String municipality) {
+        this.municipality = municipality;
     }
 
     public String getMunicipalityCode() {
         return municipalityCode;
     }
 
+    public void setMunicipalityCode(String municipalityCode) {
+        this.municipalityCode = municipalityCode;
+    }
+
     public String getDistrict() {
         return district;
     }
 
+    public void setDistrict(String district) {
+        this.district = district;
+    }
+
     public String getDistrictCode() {
         return districtCode;
+    }
+
+    public void setDistrictCode(String districtCode) {
+        this.districtCode = districtCode;
     }
 }

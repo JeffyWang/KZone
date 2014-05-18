@@ -21,15 +21,18 @@ public class User implements Serializable {
     private String userName;
     @Column(name = "password", nullable = false, columnDefinition = "varchar(32) default ''")
     private String password;
-    @Temporal(TemporalType.TIME)
+    @Column(name = "favorite", nullable = true, columnDefinition = "varchar(128) default ''")
+    private String favorite;
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "create_time")
     private Date createTime;
-    @Temporal(TemporalType.TIME)
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "update_time")
     private Date updateTime;
 
     public User() {
-
+        this.createTime = new Date();
+        this.updateTime = new Date();
     }
 
     public User(String uuid, String userName, String password) {
@@ -44,20 +47,48 @@ public class User implements Serializable {
         return id;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public String getUuid() {
         return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 
     public String getUserName() {
         return userName;
     }
 
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
     public String getPassword() {
         return password;
     }
 
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getFavorite() {
+        return favorite;
+    }
+
+    public void setFavorite(String favorite) {
+        this.favorite = favorite;
+    }
+
     public Date getCreateTime() {
         return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 
     public Date getUpdateTime() {

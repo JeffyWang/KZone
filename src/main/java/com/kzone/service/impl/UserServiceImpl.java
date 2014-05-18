@@ -90,4 +90,9 @@ public class UserServiceImpl extends CommonServiceImpl<User> implements UserServ
         String s = MD5Util.convertMD5(pssword);
         return s;
     }
+
+    @Override
+    public void validateUser(User user) {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
 }

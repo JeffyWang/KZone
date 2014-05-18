@@ -43,7 +43,6 @@ public class UserRest {
             } else {
                 user = userService.getUser(Integer.valueOf(id));
             }
-//            response = validateUser(user, response);
         } catch (Exception e) {
             log.warn(e);
             return response.setResponse(ErrorCode.GET_USER_ERR_CODE, ErrorCode.GET_USER_ERR_MSG + e.getMessage());
@@ -58,16 +57,16 @@ public class UserRest {
     @Produces("application/json;charset=utf-8")
     public Response getUsers() {
         Response response = new Response();
-        List<User> users = new ArrayList<User>();
+        List<User> userList = null;
 
         try {
-            users = userService.getUsers(null, null);
+            userList = userService.getUsers(null, null);
         } catch (Exception e) {
             log.warn(e);
             return response.setResponse(ErrorCode.GET_USER_LIST_ERR_CODE, ErrorCode.GET_USER_LIST_ERR_MSG + e.getMessage());
         }
 
-        response.setData(users);
+        response.setData(userList);
         return response;
     }
 
@@ -117,10 +116,10 @@ public class UserRest {
 
         try {
             user = StringUtil.jsonStringToObject(body, User.class);
-//            user.setUuid(uuid.toString());
-//            response = validateUser(user, response);
-//            user.setPassword(userService.encryption(user.getPassword()));
-//            user = userService.addUser(user);
+            user.setUuid(uuid.toString());
+            response = validateUser(user, response);
+            user.setPassword(userService.encryption(user.getPassword()));
+            user = userService.addUser(user);
         } catch (Exception e) {
             log.warn(e);
             return response.setResponse(ErrorCode.ADD_USER_ERR_CODE, ErrorCode.ADD_USER_ERR_MSG + e.getMessage());

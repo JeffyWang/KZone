@@ -9,4 +9,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class DistrictServiceImpl extends CommonServiceImpl<District> implements DistrictService {
+    @Override
+    public void validateDistrict(District district) {
+    }
 }

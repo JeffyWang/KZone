@@ -3,6 +3,7 @@ package com.kzone.rest;
 import com.kzone.bean.Comment;
 import com.kzone.bean.District;
 import com.kzone.bo.Response;
+import com.kzone.constants.ErrorCode;
 import com.kzone.service.DistrictService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,16 @@ public class DistrictRest {
     @Produces("application/json;charset=utf-8")
     public Response getDistrict(@PathParam("id") int id) {
         Response response = new Response();
+        District district = null;
+
+        try {
+            district = districtService.get(id);
+        } catch (Exception e) {
+            log.warn(e);
+            return response.setResponse(ErrorCode.GET_DISTRICT_ERR_CODE, ErrorCode.GET_DISTRICT_ERR_MSG + e.getMessage());
+        }
+
+        response.setData(district);
         return response;
     }
 
@@ -37,6 +48,16 @@ public class DistrictRest {
     @Produces("application/json;charset=utf-8")
     public Response getDistricts() {
         Response response = new Response();
+        List<District> districtList = null;
+
+        try {
+            districtList = districtService.getList();
+        } catch (Exception e) {
+            log.warn(e);
+            return response.setResponse(ErrorCode.GET_DISTRICT_LIST_ERR_CODE, ErrorCode.GET_DISTRICT_LIST_ERR_MSG + e.getMessage());
+        }
+
+        response.setData(districtList);
         return response;
     }
 

@@ -11,4 +11,7 @@ import java.util.List;
  */
 @Service
 public class CommentServiceImpl extends CommonServiceImpl<Comment> implements CommentService {
+    @Override
+    public void validateComment(Comment comment) {
+    }
 }

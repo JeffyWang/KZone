@@ -18,15 +18,16 @@ public class Statistics implements Serializable {
     @Column(name = "user_id", nullable = true, columnDefinition = "int default 0")
     private int userId;
 
-    @Temporal(TemporalType.TIME)
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "create_time")
     private Date createTime;
-    @Temporal(TemporalType.TIME)
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "update_time")
     private Date updateTime;
 
     public Statistics() {
-
+        this.createTime = new Date();
+        this.updateTime = new Date();
     }
 
     public Statistics(int userId) {
@@ -39,12 +40,24 @@ public class Statistics implements Serializable {
         return id;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public int getUserId() {
         return userId;
     }
 
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
     public Date getCreateTime() {
         return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 
     public Date getUpdateTime() {

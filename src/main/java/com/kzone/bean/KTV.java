@@ -25,29 +25,33 @@ public class KTV implements Serializable {
     private String phoneNumber;
     @Column(name = "introduction", nullable = true, columnDefinition = "varchar(10240) default ''")
     private String introduction;
+    @Column(name = "average_price", nullable = true, columnDefinition = "int default 0")
+    private int averagePrice;
     @Column(name = "score", nullable = true, columnDefinition = "float default 0.0")
     private float score;
     @Column(name = "pictures", nullable = true, columnDefinition = "varchar(4096) default ''")
     private String pictures;
     @Column(name = "geographic_information", nullable = true, columnDefinition = "varchar(32) default ''")
     private String geographicInformation;
-    @Temporal(TemporalType.TIME)
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "create_time")
     private Date createTime;
-    @Temporal(TemporalType.TIME)
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "update_time")
     private Date updateTime;
 
     public KTV() {
-
+        this.createTime = new Date();
+        this.updateTime = new Date();
     }
 
-    public KTV(int districtId, String name, String address, String phoneNumber, String introduction, float score, String pictures, String geographicInformation) {
+    public KTV(int districtId, String name, String address, String phoneNumber, String introduction, int averagePrice, float score, String pictures, String geographicInformation) {
         this.districtId = districtId;
         this.name = name;
         this.address = address;
         this.phoneNumber = phoneNumber;
         this.introduction = introduction;
+        this.averagePrice = averagePrice;
         this.score = score;
         this.pictures = pictures;
         this.geographicInformation = geographicInformation;
@@ -57,6 +61,10 @@ public class KTV implements Serializable {
 
     public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getDistrictId() {
@@ -99,6 +107,14 @@ public class KTV implements Serializable {
         this.introduction = introduction;
     }
 
+    public int getAveragePrice() {
+        return averagePrice;
+    }
+
+    public void setAveragePrice(int averagePrice) {
+        this.averagePrice = averagePrice;
+    }
+
     public float getScore() {
         return score;
     }
@@ -107,7 +123,7 @@ public class KTV implements Serializable {
         this.score = score;
     }
 
-    public Object getPictures() {
+    public String getPictures() {
         return pictures;
     }
 
@@ -125,6 +141,10 @@ public class KTV implements Serializable {
 
     public Date getCreateTime() {
         return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 
     public Date getUpdateTime() {
