@@ -13,6 +13,7 @@ import com.sun.jersey.multipart.FormDataParam;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -40,6 +41,8 @@ public class KTVRest {
     Logger log = Logger.getLogger(KTVRest.class);
     @Autowired
     private KTVService ktvService;
+    @Autowired
+    private PictureService pictureService;
 
     @GET
     @Path("/info/{id}")
@@ -81,6 +84,14 @@ public class KTVRest {
     @Path("/info/{offset}/{length}/{equalParams}/{likePrams}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getKTVsPage(@Context UriInfo uriInfo) {
+        Response response = new Response();
+        return response;
+    }
+
+    @POST
+    @Path("/info")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response addKTV(@RequestBody String body){
         Response response = new Response();
         return response;
     }

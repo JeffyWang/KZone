@@ -2,6 +2,7 @@ package com.kzone.service;
 
 import com.mongodb.gridfs.GridFSDBFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.InputStream;
 
 /**
