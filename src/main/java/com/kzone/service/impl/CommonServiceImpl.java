@@ -20,7 +20,7 @@ public class CommonServiceImpl<T> implements CommonService<T> {
 
 
     @Override
-    public T insert(T t) throws Exception {
+    public T add(T t) throws Exception {
         return commonDao.insert(t);
     }
 

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriInfo;
 import java.util.List;
 
@@ -26,7 +27,7 @@ public class StatisticsRest {
 
     @GET
     @Path("/info/{id}")
-    @Produces("application/json;charset=utf-8")
+    @Produces(MediaType.APPLICATION_JSON)
     public Response getStatistics(@PathParam("id") int id) {
         Response response = new Response();
         Statistics statistics = null;
@@ -44,7 +45,7 @@ public class StatisticsRest {
 
     @GET
     @Path("/info")
-    @Produces("application/json;charset=utf-8")
+    @Produces(MediaType.APPLICATION_JSON)
     public Response getStatisticss() {
         Response response = new Response();
         List<Statistics> statisticsList = null;
@@ -62,14 +63,14 @@ public class StatisticsRest {
 
     @GET
     @Path("/info/{offset}/{length}/{equalParams}/{likePrams}")
-    @Produces("application/json;charset=utf-8")
+    @Produces(MediaType.APPLICATION_JSON)
     public Response getStatisticssPage(@Context UriInfo uriInfo) {
         return null;
     }
 
     @POST
     @Path("/info")
-    @Produces("application/json;charset=utf-8")
+    @Produces(MediaType.APPLICATION_JSON)
     public Response addStatistics(@RequestBody String body) {
         Response response = new Response();
         return response;
@@ -77,7 +78,7 @@ public class StatisticsRest {
 
     @DELETE
     @Path("/info/{id}")
-    @Produces("application/json;charset=utf-8")
+    @Produces(MediaType.APPLICATION_JSON)
     public Response deleteStatistics(@PathParam("id") int id) {
         Response response = new Response();
         return response;

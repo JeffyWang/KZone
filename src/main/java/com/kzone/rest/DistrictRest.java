@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriInfo;
 import java.util.List;
 
@@ -27,7 +28,7 @@ public class DistrictRest {
 
     @GET
     @Path("/info/{id}")
-    @Produces("application/json;charset=utf-8")
+    @Produces(MediaType.APPLICATION_JSON)
     public Response getDistrict(@PathParam("id") int id) {
         Response response = new Response();
         District district = null;
@@ -45,7 +46,7 @@ public class DistrictRest {
 
     @GET
     @Path("/info")
-    @Produces("application/json;charset=utf-8")
+    @Produces(MediaType.APPLICATION_JSON)
     public Response getDistricts() {
         Response response = new Response();
         List<District> districtList = null;
@@ -63,7 +64,7 @@ public class DistrictRest {
 
     @GET
     @Path("/info/{offset}/{length}/{equalParams}/{likePrams}")
-    @Produces("application/json;charset=utf-8")
+    @Produces(MediaType.APPLICATION_JSON)
     public Response getDistrictsPage(@Context UriInfo uriInfo) {
         return null;
     }
@@ -78,7 +79,7 @@ public class DistrictRest {
 
     @DELETE
     @Path("/info/{id}")
-    @Produces("application/json;charset=utf-8")
+    @Produces(MediaType.APPLICATION_JSON)
     public Response deleteDistrict(@PathParam("id") int id) {
         Response response = new Response();
         return response;

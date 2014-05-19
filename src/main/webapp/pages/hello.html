@@ -1,5 +1,37 @@
 <html>
+
+<script type="text/javascript">
+    var xmlHttp;
+
+    function getpic() {
+        S_xmlhttprequest();
+        xmlHttp.open("get","../../../rest/ktv/info/img/");
+        xmlHttp.onreadystatechange = Response("login");
+        xmlHttp.send(null);
+    }
+
+
+    function S_xmlhttprequest()
+    {
+        if(window.ActiveXObject)
+        {
+            xmlHttp = new ActiveXObject('Microsoft.XMLHTTP');//alert("IE浏览器！");
+        }
+        else if(window.XMLHttpRequest)
+        {
+            xmlHttp = new XMLHttpRequest();//alert("非IE浏览器！");
+        }
+    }
+
+    function Response(message)
+    {
+        document.getElementById("img").appendChild("<img />")
+    }
+</script>
+
 <body>
 	<h1>hello</h1>
+    <div><button type="button" id="login" onclick="getpic()">login</button>    <button type="button" id="logout" onclick="logout()">logout</button></div>
+    <div id="img"></div>
 </body>
 </html>

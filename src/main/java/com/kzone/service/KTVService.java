@@ -1,6 +1,10 @@
 package com.kzone.service;
 
 import com.kzone.bean.KTV;
+import com.mongodb.gridfs.GridFSDBFile;
+
+import java.io.InputStream;
+import java.util.List;
 
 /**
  * Created by Jeffy on 14-5-17

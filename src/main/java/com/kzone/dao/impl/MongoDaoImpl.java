@@ -10,6 +10,7 @@ import org.springframework.data.mongodb.gridfs.GridFsOperations;
 import org.springframework.data.mongodb.gridfs.GridFsTemplate;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
@@ -60,7 +61,7 @@ public class MongoDaoImpl implements MongoDao {
 	public void store(InputStream inputStream, String fileName, String contentType, Object obj) {
 		GridFsOperations gridOperations = (GridFsOperations) gridTemplate;
 		gridOperations.store(inputStream, fileName, contentType, obj);
-	}
+    }
 
 	public void deleteFile(Query query) {
 		GridFsOperations gridOperations = (GridFsOperations)gridTemplate;

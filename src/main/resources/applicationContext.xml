@@ -35,6 +35,7 @@
             <bean class="com.kzone.rest.InformationRest" />
             <bean class="com.kzone.rest.KTVRest" />
             <bean class="com.kzone.rest.StatisticsRest" />
+            <bean class="com.kzone.rest.PictureRest" />
         </jaxrs:serviceBeans>
         <jaxrs:providers>
             <bean class="org.codehaus.jackson.jaxrs.JacksonJsonProvider"/>

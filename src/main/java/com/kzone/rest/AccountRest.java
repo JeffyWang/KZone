@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -32,7 +33,7 @@ public class AccountRest {
 
     @GET
     @Path("/login")
-    @Produces("application/json;charset=utf-8")
+    @Produces(MediaType.APPLICATION_JSON)
     public HttpServletRequest loginGetMethod(@QueryParam(ParamsConstants.PARAM_USER_USERNAME) String userName, @QueryParam(ParamsConstants.PARAM_USER_PASSWORD) String password, @Context HttpServletRequest request, @Context HttpServletResponse response) throws IOException {
         password = MD5Util.string2MD5(password);
         log.debug("login user name : [" + userName + "]" + ", password with md5 : [" + password + "]");
@@ -58,7 +59,7 @@ public class AccountRest {
 
     @GET
     @Path("/logout")
-    @Produces("application/json;charset=utf-8")
+    @Produces(MediaType.APPLICATION_JSON)
     public HttpServletRequest logoutGetMethod(@Context HttpServletRequest request, @Context HttpServletResponse response) {
         String userName = (String) request.getSession().getAttribute(ParamsConstants.PARAM_USER_USERNAME);
         log.debug("logout user name : [" + userName + "]");
@@ -73,14 +74,14 @@ public class AccountRest {
 
     @POST
     @Path("/login")
-    @Produces("application/json;charset=utf-8")
+    @Produces(MediaType.APPLICATION_JSON)
     public void loginPostMethod(@QueryParam(ParamsConstants.PARAM_USER_USERNAME) String userName, @QueryParam(ParamsConstants.PARAM_USER_PASSWORD) String password, @Context HttpServletRequest request, @Context HttpServletResponse response) throws IOException {
         loginGetMethod(userName, password, request, response);
     }
 
     @POST
     @Path("/logout")
-    @Produces("application/json;charset=utf-8")
+    @Produces(MediaType.APPLICATION_JSON)
     public void logoutPostMethod(@Context HttpServletRequest request, @Context HttpServletResponse response) {
         logoutGetMethod(request, response);
     }

@@ -36,6 +36,8 @@ public interface CommonDao<T> {
                                   final int length, final Map<String, String> equalCondition,
                                   final Map<String, String> likeCondition);
 
+    //gtCondition 大于
+    //GE是大于等于号(>=),GT是大于号(>),LE是小于等于号(<=),LT是小于号(<)
     public List<T> getListForPage(final Class<T> clazz, final int offset,
                                   final int length, final Map<String, String> equalCondition,
                                   final Map<String, String> likeCondition,
@@ -47,6 +49,7 @@ public interface CommonDao<T> {
 
     long getListCount(final Map<String, String> equalCondition, final Map<String, String> likeCondition) throws Exception;
 
+    //neCondition 不等于
 	public long getListCount(final Map<String, String> equalCondition,
                              final Map<String, String> likeCondition,
                              final Map<String, String> neCondition)throws Exception;

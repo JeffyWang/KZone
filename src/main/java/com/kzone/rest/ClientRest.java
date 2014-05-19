@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 import java.io.IOException;
 
 /**
@@ -23,7 +24,7 @@ public class ClientRest {
 
     @GET
     @Path("/http/get")
-    @Produces("application/json;charset=utf-8")
+    @Produces(MediaType.APPLICATION_JSON)
     public Response get() {
         Response response = new Response();
 //        String url = "http://localhost:8081";

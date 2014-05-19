@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.UriInfo;
 import java.util.*;
@@ -32,7 +33,7 @@ public class UserRest {
 
     @GET
     @Path("/info/{id}")
-    @Produces("application/json;charset=utf-8")
+    @Produces(MediaType.APPLICATION_JSON)
     public Response getUser(@PathParam("id") String id) {
         Response response = new Response();
         User user = null;
@@ -54,7 +55,7 @@ public class UserRest {
 
     @GET
     @Path("/info")
-    @Produces("application/json;charset=utf-8")
+    @Produces(MediaType.APPLICATION_JSON)
     public Response getUsers() {
         Response response = new Response();
         List<User> userList = null;
@@ -72,7 +73,7 @@ public class UserRest {
 
     @GET
     @Path("/info/{offset}/{length}/{equalParams}/{likePrams}")
-    @Produces("application/json;charset=utf-8")
+    @Produces(MediaType.APPLICATION_JSON)
     public Response getUsersPage(@Context UriInfo uriInfo) {
         Response response = new Response();
         List<User> usersPage = null;
@@ -83,7 +84,6 @@ public class UserRest {
         int offset = Integer.parseInt(params.getFirst(ParamsConstants.PAGE_PARAMS_OFFSET));
         int length = Integer.parseInt(params.getFirst(ParamsConstants.PAGE_PARAMS_LENGTH));
 
-        System.out.println(offset + "   " + length);
         // 精确查询条件健值对
         if (params.getFirst(ParamsConstants.PAGE_PARAMS_EQUALPARAMS) != null
                 && !CommonConstants.NULL_STRING.equals(params.getFirst(ParamsConstants.PAGE_PARAMS_EQUALPARAMS))
@@ -108,7 +108,7 @@ public class UserRest {
 
     @POST
     @Path("/info")
-    @Produces("application/json;charset=utf-8")
+    @Produces(MediaType.APPLICATION_JSON)
     public Response addUser(@RequestBody String body) {
         Response response = new Response();
         User user = null;

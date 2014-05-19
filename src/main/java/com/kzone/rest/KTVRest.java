@@ -4,14 +4,31 @@ import com.kzone.bean.KTV;
 import com.kzone.bo.Response;
 import com.kzone.constants.ErrorCode;
 import com.kzone.service.KTVService;
+import com.kzone.service.PictureService;
+import com.mongodb.gridfs.GridFSDBFile;
+import com.sun.image.codec.jpeg.JPEGCodec;
+import com.sun.image.codec.jpeg.JPEGImageEncoder;
+import com.sun.jersey.core.header.FormDataContentDisposition;
+import com.sun.jersey.multipart.FormDataParam;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.multipart.MultipartResolver;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
+import javax.imageio.ImageIO;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriInfo;
+import java.awt.image.BufferedImage;
+import java.io.*;
 import java.util.List;
 
 /**
@@ -26,7 +43,7 @@ public class KTVRest {
 
     @GET
     @Path("/info/{id}")
-    @Produces("application/json;charset=utf-8")
+    @Produces(MediaType.APPLICATION_JSON)
     public Response getKTV(@PathParam("id") int id) {
         Response response = new Response();
         KTV ktv = null;
@@ -44,7 +61,7 @@ public class KTVRest {
 
     @GET
     @Path("/info")
-    @Produces("application/json;charset=utf-8")
+    @Produces(MediaType.APPLICATION_JSON)
     public Response getKTVs() {
         Response response = new Response();
         List<KTV> ktvList = null;
@@ -62,24 +79,18 @@ public class KTVRest {
 
     @GET
     @Path("/info/{offset}/{length}/{equalParams}/{likePrams}")
-    @Produces("application/json;charset=utf-8")
+    @Produces(MediaType.APPLICATION_JSON)
     public Response getKTVsPage(@Context UriInfo uriInfo) {
-        return null;
-    }
-
-    @POST
-    @Path("/info")
-    @Produces("application/json;charset=utf-8")
-    public Response addKTV(@RequestBody String body) {
         Response response = new Response();
         return response;
     }
 
     @DELETE
     @Path("/info/{id}")
-    @Produces("application/json;charset=utf-8")
+    @Produces(MediaType.APPLICATION_JSON)
     public Response deleteKTV(@PathParam("id") int id) {
         Response response = new Response();
         return response;
     }
+
 }

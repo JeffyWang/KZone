@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriInfo;
 import java.util.List;
 
@@ -28,7 +29,7 @@ public class CommentRest {
 
     @GET
     @Path("/info/{id}")
-    @Produces("application/json;charset=utf-8")
+    @Produces(MediaType.APPLICATION_JSON)
     public Response getComment(@PathParam("id") int id) {
         Response response = new Response();
         Comment comment = null;
@@ -46,7 +47,7 @@ public class CommentRest {
 
     @GET
     @Path("/info")
-    @Produces("application/json;charset=utf-8")
+    @Produces(MediaType.APPLICATION_JSON)
     public Response getComments() {
         Response response = new Response();
         List<Comment> commentList = null;
@@ -64,7 +65,7 @@ public class CommentRest {
 
     @GET
     @Path("/info/{offset}/{length}/{equalParams}/{likePrams}")
-    @Produces("application/json;charset=utf-8")
+    @Produces(MediaType.APPLICATION_JSON)
     public Response getCommentsPage(@Context UriInfo uriInfo) {
         Response response = new Response();
         return response;
@@ -72,7 +73,7 @@ public class CommentRest {
 
     @POST
     @Path("/info")
-    @Produces("application/json;charset=utf-8")
+    @Produces(MediaType.APPLICATION_JSON)
     public Response addComment(@RequestBody String body) {
         Response response = new Response();
         return response;
@@ -80,7 +81,7 @@ public class CommentRest {
 
     @DELETE
     @Path("/info/{id}")
-    @Produces("application/json;charset=utf-8")
+    @Produces(MediaType.APPLICATION_JSON)
     public Response deleteComment(@PathParam("id") int id) {
         Response response = new Response();
         return response;

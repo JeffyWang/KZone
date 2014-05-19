@@ -9,7 +9,7 @@ import java.util.Map;
  * Created by Jeffy on 14-5-17
  */
 public interface CommonService<T> {
-    public T insert(T t)throws Exception;
+    public T add(T t)throws Exception;
 
     public T update(T t)throws Exception;
 
