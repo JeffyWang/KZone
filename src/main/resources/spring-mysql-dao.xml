@@ -31,10 +31,13 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
             <map>
                 <entry key="User" value-ref="userDao"/>
                 <entry key="Comment" value-ref="commentDao"/>
-                <entry key="District" value-ref="districtDao"/>
                 <entry key="Information" value-ref="informationDao"/>
                 <entry key="KTV" value-ref="ktvDao"/>
                 <entry key="Statistics" value-ref="statisticsDao"/>
+                <entry key="Province" value-ref="provinceDao"/>
+                <entry key="City" value-ref="cityDao"/>
+                <entry key="Area" value-ref="areaDao"/>
+                <entry key="Common" value-ref="commonDao"/>
             </map>
         </constructor-arg>
     </bean>
@@ -62,17 +65,32 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 		</property>
 	</bean>
 
+    <bean id="commonDao" class="com.kzone.dao.impl.CommonDaoImpl">
+        <property name="sessionFactory">
+            <ref bean="sessionFactory" />
+        </property>
+    </bean>
     <bean id="userDao" class="com.kzone.dao.impl.UserDaoImpl">
         <property name="sessionFactory">
             <ref bean="sessionFactory" />
         </property>
     </bean>
-    <bean id="commentDao" class="com.kzone.dao.impl.CommentDaoImpl">
+    <bean id="provinceDao" class="com.kzone.dao.impl.ProvinceDaoImpl">
         <property name="sessionFactory">
             <ref bean="sessionFactory" />
         </property>
     </bean>
-    <bean id="districtDao" class="com.kzone.dao.impl.DistrictDaoImpl">
+    <bean id="cityDao" class="com.kzone.dao.impl.CityDaoImpl">
+        <property name="sessionFactory">
+            <ref bean="sessionFactory" />
+        </property>
+    </bean>
+    <bean id="areaDao" class="com.kzone.dao.impl.AreaDaoImpl">
+        <property name="sessionFactory">
+            <ref bean="sessionFactory" />
+        </property>
+    </bean>
+    <bean id="commentDao" class="com.kzone.dao.impl.CommentDaoImpl">
         <property name="sessionFactory">
             <ref bean="sessionFactory" />
         </property>

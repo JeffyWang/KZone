@@ -283,5 +283,8 @@ public class Pinyin4jUtil {
         System.out.println("首字母大写输出：" + getPinyinFirstToUpperCase(str));
         System.out.println("简拼输出：" + getPinyinJianPin(str));
 
+        String s = getPinyinJianPin(str);
+        String ws[] = s.split(",");
+        System.out.println(ws[0]);
     }
 }

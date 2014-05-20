@@ -15,4 +15,9 @@ public interface ParamsConstants {
     final static String PARAM_USER_NAME = "name";
     final static String PARAM_USER_USERNAME = "userName";
     final static String PARAM_USER_PASSWORD = "password";
+
+    final static String DISTRICT_ID_REFERENCE = "reference";
+    final static String DISTRICT_PROVINCE_ID = "provinceId";
+    final static String DISTRICT_CITY_ID = "cityId";
+    final static String DISTRICT_AREA_ID = "areaId";
 }

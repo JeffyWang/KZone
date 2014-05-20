@@ -61,6 +61,6 @@ public interface CommonDao<T> {
 	public List<T> execute(String hql)throws Exception;
 	
 	public Class<T> getDAOClass();
-	
+
 	public void setDAOClass(Class<T> clz);
 }

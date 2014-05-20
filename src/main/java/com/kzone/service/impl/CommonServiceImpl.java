@@ -18,7 +18,6 @@ public class CommonServiceImpl<T> implements CommonService<T> {
     @Autowired
     private CommonDao<T> commonDao;
 
-
     @Override
     public T add(T t) throws Exception {
         return commonDao.insert(t);
