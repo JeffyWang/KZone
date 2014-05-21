@@ -2,6 +2,8 @@ package com.kzone.rest;
 
 import com.kzone.bean.KTV;
 import com.kzone.bo.Response;
+import com.kzone.constants.ParamsConstants;
+import com.kzone.service.KTVService;
 import com.kzone.service.PictureService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -26,24 +28,25 @@ import java.util.Map;
 public class PictureRest {
     @Autowired
     private PictureService pictureService;
+    @Autowired
+    private KTVService ktvService;
 
     @POST
-    @Path("/{pictureType}/{name}")
+    @Path("/ktv/{ktvId}")
     @Consumes({ MediaType.MULTIPART_FORM_DATA, MediaType.APPLICATION_JSON })
     @Produces(MediaType.APPLICATION_JSON)
-    public Response addKTV(@Context HttpServletRequest request, @PathParam("name") String name,  @PathParam("pictureType") String type) {
+    public Response addKTV(@Context HttpServletRequest request, @PathParam(ParamsConstants.PARAM_KTV_ID) int ktvId) {
         Response response = new Response();
 
         MultipartResolver resolver = new CommonsMultipartResolver(request.getSession().getServletContext());
         MultipartHttpServletRequest multipartRequest = resolver.resolveMultipart(request);
-        MultipartFile file = multipartRequest.getFile("file");
-
-        Map<String, String> pictureType = new HashMap<String, String>();
-        pictureType.put("pictureType", type);
+        MultipartFile file = multipartRequest.getFile(ParamsConstants.PARAM_PICTURE);
 
         try {
+            KTV ktv = ktvService.get(ktvId);
+            String pictureName = ktv.getName() + ktv.getDistrictId();
             InputStream input = file.getInputStream();
-            pictureService.addPicture(input, name, "jpg", pictureType);
+            pictureService.addPicture(input, pictureName, "jpg", ktv);
             input.close();
         } catch (Exception e) {
             e.printStackTrace();

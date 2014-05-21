@@ -2,35 +2,25 @@ package com.kzone.rest;
 
 import com.kzone.bean.KTV;
 import com.kzone.bo.Response;
+import com.kzone.constants.CommonConstants;
 import com.kzone.constants.ErrorCode;
+import com.kzone.constants.ParamsConstants;
 import com.kzone.service.KTVService;
 import com.kzone.service.PictureService;
-import com.mongodb.gridfs.GridFSDBFile;
-import com.sun.image.codec.jpeg.JPEGCodec;
-import com.sun.image.codec.jpeg.JPEGImageEncoder;
-import com.sun.jersey.core.header.FormDataContentDisposition;
-import com.sun.jersey.multipart.FormDataParam;
+import com.kzone.util.StringUtil;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
-import org.springframework.web.multipart.MultipartResolver;
-import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
-import javax.imageio.ImageIO;
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.UriInfo;
-import java.awt.image.BufferedImage;
-import java.io.*;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Jeffy on 14-5-17
@@ -47,7 +37,7 @@ public class KTVRest {
     @GET
     @Path("/info/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getKTV(@PathParam("id") int id) {
+    public Response getKTV(@PathParam(ParamsConstants.PARAM_ID) int id) {
         Response response = new Response();
         KTV ktv = null;
 
@@ -81,10 +71,36 @@ public class KTVRest {
     }
 
     @GET
-    @Path("/info/{offset}/{length}/{equalParams}/{likePrams}")
+    @Path("/info/{offset}/{length}/{name}/{address}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getKTVsPage(@Context UriInfo uriInfo) {
         Response response = new Response();
+        List<KTV> ktvPageList = null;
+
+        MultivaluedMap<String, String> params = uriInfo.getPathParameters();
+        Map<String, String> likeCondition = new HashMap<String, String>();
+        Map<String, String> equalCondition = new HashMap<String, String>();
+        int offset = Integer.parseInt(params.getFirst(ParamsConstants.PAGE_PARAMS_OFFSET));
+        int length = Integer.parseInt(params.getFirst(ParamsConstants.PAGE_PARAMS_LENGTH));
+
+        if (params.getFirst(ParamsConstants.PARAM_KTV_NAME) != null
+                && !CommonConstants.NULL_STRING.equals(params.getFirst(ParamsConstants.PARAM_KTV_NAME))
+                && !CommonConstants.NULL.equals(params.getFirst(ParamsConstants.PARAM_KTV_NAME)))
+            likeCondition.put(ParamsConstants.PARAM_KTV_NAME, params.getFirst(ParamsConstants.PARAM_KTV_NAME));
+        // 模糊查询条件健值对
+        if (params.getFirst(ParamsConstants.PARAM_KTV_ADDRESS) != null
+                && !CommonConstants.NULL_STRING.equals(params.getFirst(ParamsConstants.PARAM_KTV_ADDRESS))
+                && !CommonConstants.NULL.equals(params.getFirst(ParamsConstants.PARAM_KTV_ADDRESS)))
+            likeCondition.put(ParamsConstants.PARAM_KTV_ADDRESS, params.getFirst(ParamsConstants.PARAM_KTV_ADDRESS));
+
+        try {
+            ktvPageList = ktvService.getListForPage(KTV.class, offset, length, equalCondition, likeCondition);
+        } catch (Exception e) {
+            log.warn(e);
+            return response.setResponse(ErrorCode.GET_KTV_LIST_ERR_CODE, ErrorCode.GET_KTV_LIST_ERR_MSG + e.getMessage());
+        }
+
+        response.setData(ktvPageList);
         return response;
     }
 
@@ -93,15 +109,55 @@ public class KTVRest {
     @Produces(MediaType.APPLICATION_JSON)
     public Response addKTV(@RequestBody String body){
         Response response = new Response();
+        KTV ktv = null;
+
+        try {
+            ktv = StringUtil.jsonStringToObject(body, KTV.class);
+            ktv = ktvService.add(ktv);
+        } catch (Exception e) {
+            log.warn(e);
+            return response.setResponse(ErrorCode.ADD_KTV_ERR_CODE, ErrorCode.ADD_KTV_ERR_MSG + e.getMessage());
+        }
+
+        response.setData(ktv);
         return response;
     }
 
     @DELETE
     @Path("/info/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response deleteKTV(@PathParam("id") int id) {
+    public Response deleteKTV(@PathParam(ParamsConstants.PARAM_ID) int id) {
         Response response = new Response();
+        KTV ktv = null;
+
+        try {
+            ktv = ktvService.get(id);
+            ktvService.delete(ktv);
+        } catch (Exception e) {
+            log.warn(e);
+            return response.setResponse(ErrorCode.DELETE_KTV_ERR_CODE, ErrorCode.DELETE_KTV_ERR_MSG + e.getMessage());
+        }
+
+        response.setData(ktv);
         return response;
     }
 
+    @PUT
+    @Path("/info/")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateKTV(@RequestBody String body) {
+        Response response = new Response();
+        KTV ktv = null;
+
+        try {
+            ktv = StringUtil.jsonStringToObject(body, KTV.class);
+            ktv = ktvService.update(ktv);
+        } catch (Exception e) {
+            log.warn(e);
+            return response.setResponse(ErrorCode.UPDATE_KTV_ERR_CODE, ErrorCode.UPDATE_KTV_ERR_MSG + e.getMessage());
+        }
+
+        response.setData(ktv);
+        return  response;
+    }
 }

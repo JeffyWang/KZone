@@ -6,6 +6,7 @@ import com.kzone.bean.Comment;
 import com.kzone.bean.Province;
 import com.kzone.bo.Response;
 import com.kzone.constants.ErrorCode;
+import com.kzone.constants.ParamsConstants;
 import com.kzone.service.DistrictService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +40,7 @@ public class DistrictRest {
             provinceList = districtService.getProvinceList();
         } catch (Exception e) {
             log.warn(e);
+            return response.setResponse(ErrorCode.GET_DISTRICT_ERR_CODE, ErrorCode.GET_DISTRICT_ERR_MSG + e.getMessage());
         }
 
         response.setData(provinceList);
@@ -48,7 +50,7 @@ public class DistrictRest {
     @GET
     @Path("/province/info/{provinceId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getProvince(@PathParam("provinceId") String provinceId) {
+    public Response getProvince(@PathParam(ParamsConstants.DISTRICT_PROVINCE_ID) String provinceId) {
         Response response = new Response();
         Province province = null;
 
@@ -56,6 +58,7 @@ public class DistrictRest {
             province = districtService.getProvince(provinceId);
         } catch (Exception e) {
             log.warn(e);
+            return response.setResponse(ErrorCode.GET_DISTRICT_ERR_CODE, ErrorCode.GET_DISTRICT_ERR_MSG + e.getMessage());
         }
 
         response.setData(province);
@@ -73,6 +76,7 @@ public class DistrictRest {
             cityList = districtService.getCityList();
         } catch (Exception e) {
             log.warn(e);
+            return response.setResponse(ErrorCode.GET_DISTRICT_ERR_CODE, ErrorCode.GET_DISTRICT_ERR_MSG + e.getMessage());
         }
 
         response.setData(cityList);
@@ -82,7 +86,7 @@ public class DistrictRest {
     @GET
     @Path("/city/info/{cityId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getCity(@PathParam("cityId")String cityId) {
+    public Response getCity(@PathParam(ParamsConstants.DISTRICT_CITY_ID)String cityId) {
         Response response = new Response();
         City city = null;
 
@@ -90,6 +94,7 @@ public class DistrictRest {
             city = districtService.getCity(cityId);
         } catch (Exception e) {
             log.warn(e);
+            return response.setResponse(ErrorCode.GET_DISTRICT_ERR_CODE, ErrorCode.GET_DISTRICT_ERR_MSG + e.getMessage());
         }
 
         response.setData(city);
@@ -99,7 +104,7 @@ public class DistrictRest {
     @GET
     @Path("/province/city/info/{provinceId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getCityForProvince(@PathParam("provinceId")String provinceId) {
+    public Response getCityForProvince(@PathParam(ParamsConstants.DISTRICT_PROVINCE_ID) String provinceId) {
         Response response = new Response();
         List<City> cityList = null;
 
@@ -107,6 +112,7 @@ public class DistrictRest {
             cityList = districtService.getCityList(provinceId);
         } catch (Exception e) {
             log.warn(e);
+            return response.setResponse(ErrorCode.GET_DISTRICT_ERR_CODE, ErrorCode.GET_DISTRICT_ERR_MSG + e.getMessage());
         }
 
         response.setData(cityList);
@@ -124,6 +130,7 @@ public class DistrictRest {
             areaList = districtService.getAreaList();
         } catch (Exception e) {
             log.warn(e);
+            return response.setResponse(ErrorCode.GET_DISTRICT_ERR_CODE, ErrorCode.GET_DISTRICT_ERR_MSG + e.getMessage());
         }
 
         response.setData(areaList);
@@ -133,7 +140,7 @@ public class DistrictRest {
     @GET
     @Path("/area/info/{areaId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getArea(@PathParam("areaId")String areaId) {
+    public Response getArea(@PathParam(ParamsConstants.DISTRICT_AREA_ID) String areaId) {
         Response response = new Response();
         Area area = null;
 
@@ -141,6 +148,7 @@ public class DistrictRest {
             area = districtService.getArea(areaId);
         } catch (Exception e) {
             log.warn(e);
+            return response.setResponse(ErrorCode.GET_DISTRICT_ERR_CODE, ErrorCode.GET_DISTRICT_ERR_MSG + e.getMessage());
         }
 
         response.setData(area);
@@ -150,7 +158,7 @@ public class DistrictRest {
     @GET
     @Path("/city/area/info/{cityId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAreaForCity(@PathParam("cityId")String cityId) {
+    public Response getAreaForCity(@PathParam(ParamsConstants.DISTRICT_CITY_ID) String cityId) {
         Response response = new Response();
         List<Area> areaList = null;
 
@@ -158,6 +166,7 @@ public class DistrictRest {
             areaList = districtService.getAreaList(cityId);
         } catch (Exception e) {
             log.warn(e);
+            return response.setResponse(ErrorCode.GET_DISTRICT_ERR_CODE, ErrorCode.GET_DISTRICT_ERR_MSG + e.getMessage());
         }
 
         response.setData(areaList);

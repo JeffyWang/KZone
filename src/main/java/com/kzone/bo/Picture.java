@@ -7,40 +7,31 @@ import java.util.Map;
  * Created by Jeffy on 14-5-17
  */
 public class Picture {
-    private List<String> mobileSmallPictures;
-    private List<String> mobileBigPictures;
-    private List<String> commonSmallPictures;
-    private List<String> commonBigPictures;
+    private List<String> smallPictures;
+    private List<String> middlePictures;
+    private List<String> bigPictures;
 
-    public List<String> getMobileSmallPictures() {
-        return mobileSmallPictures;
+    public List<String> getSmallPictures() {
+        return smallPictures;
     }
 
-    public void setMobileSmallPictures(List<String> mobileSmallPictures) {
-        this.mobileSmallPictures = mobileSmallPictures;
+    public void setSmallPictures(List<String> smallPictures) {
+        this.smallPictures = smallPictures;
     }
 
-    public List<String> getMobileBigPictures() {
-        return mobileBigPictures;
+    public List<String> getMiddlePictures() {
+        return middlePictures;
     }
 
-    public void setMobileBigPictures(List<String> mobileBigPictures) {
-        this.mobileBigPictures = mobileBigPictures;
+    public void setMiddlePictures(List<String> middlePictures) {
+        this.middlePictures = middlePictures;
     }
 
-    public List<String> getCommonSmallPictures() {
-        return commonSmallPictures;
+    public List<String> getBigPictures() {
+        return bigPictures;
     }
 
-    public void setCommonSmallPictures(List<String> commonSmallPictures) {
-        this.commonSmallPictures = commonSmallPictures;
-    }
-
-    public List<String> getCommonBigPictures() {
-        return commonBigPictures;
-    }
-
-    public void setCommonBigPictures(List<String> commonBigPictures) {
-        this.commonBigPictures = commonBigPictures;
+    public void setBigPictures(List<String> bigPictures) {
+        this.bigPictures = bigPictures;
     }
 }

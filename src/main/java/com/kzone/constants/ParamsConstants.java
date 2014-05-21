@@ -11,10 +11,15 @@ public interface ParamsConstants {
 
     final static String PARAM_ID = "id";
     final static String PARAM_UUID = "uuid";
+    final static String PARAM_PICTURE = "picture";
 
     final static String PARAM_USER_NAME = "name";
     final static String PARAM_USER_USERNAME = "userName";
     final static String PARAM_USER_PASSWORD = "password";
+
+    final static String PARAM_KTV_NAME = "name";
+    final static String PARAM_KTV_ADDRESS = "address";
+    final static String PARAM_KTV_ID = "ktvId";
 
     final static String DISTRICT_ID_REFERENCE = "reference";
     final static String DISTRICT_PROVINCE_ID = "provinceId";

@@ -1,11 +1,15 @@
 package com.kzone.util;
 
 import javax.imageio.ImageIO;
+import javax.mail.FetchProfile;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 
 /**
  * Created by Jeffy on 14-5-17
@@ -41,7 +45,12 @@ public class PictureUtil {
         if (!F.isFile())
             throw new Exception(F + " is not image file error in CreateThumbnail!");
         File ThF = new File(saveToFileStr, sysimgfile +"."+suffix);
-        BufferedImage Bi = ImageIO.read(F);
+
+
+        InputStream is = null;
+        is = new FileInputStream(F);
+
+        BufferedImage Bi = ImageIO.read(is);
         Image Itemp = Bi.getScaledInstance(width, height, Bi.SCALE_SMOOTH);
         if ((Bi.getHeight() > width) || (Bi.getWidth() > height)) {
             if (Bi.getHeight() > Bi.getWidth())
@@ -51,6 +60,7 @@ public class PictureUtil {
         }
         AffineTransformOp op = new AffineTransformOp(AffineTransform.getScaleInstance(Ratio, Ratio), null);
         Itemp = op.filter(Bi, null);
+
         try {
             ImageIO.write((BufferedImage) Itemp, suffix, ThF);
         } catch (Exception ex) {
@@ -60,10 +70,10 @@ public class PictureUtil {
         return (true);
     }
     public static void main(String[] args) {
-        PictureUtil UI;
+       PictureUtil UI;
         boolean ss = false;
         try {
-            UI = new PictureUtil("d://1.jpg", "d://2", "ps_low1","png",500,500);
+            UI = new PictureUtil("f://1.jpg", "f://2", "ps_low1","png",20,20);
             ss = UI.createThumbnail();
             if (ss) {
                 System.out.println("Success");
@@ -73,5 +83,20 @@ public class PictureUtil {
         } catch (Exception e) {
             System.out.print(e.toString());
         }
+
+
+
+
+        File f = new File("F:\\1.jpg");
+        InputStream is = null;
+        try {
+            is = new FileInputStream(f);
+            BufferedImage Bi = ImageIO.read(is);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+
     }
 }
