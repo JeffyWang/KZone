@@ -11,9 +11,11 @@ import java.io.InputStream;
  * Created by Jeffy on 2014/5/19 0019.
  */
 public interface PictureService {
-    public Picture addPicture(InputStream inputStream, String fileName, String contentType, Object obj);
+    public void addPicture(InputStream inputStream, String pictureName, String contentType, String type, String id) throws Exception;
 
     public GridFSDBFile getPicture(String name);
 
-    public KTV addPictureName(KTV ktv, Picture picture);
+    public void deletePicture(String name);
+
+    public String addPictureName(String picture, String pictureName);
 }

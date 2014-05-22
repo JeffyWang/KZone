@@ -7,31 +7,31 @@ import java.util.Map;
  * Created by Jeffy on 14-5-17
  */
 public class Picture {
-    private List<String> smallPictures;
-    private List<String> middlePictures;
-    private List<String> bigPictures;
+    private String smallPictures;
+    private String middlePictures;
+    private String bigPictures;
 
-    public List<String> getSmallPictures() {
+    public String getSmallPictures() {
         return smallPictures;
     }
 
-    public void setSmallPictures(List<String> smallPictures) {
+    public void setSmallPictures(String smallPictures) {
         this.smallPictures = smallPictures;
     }
 
-    public List<String> getMiddlePictures() {
+    public String getMiddlePictures() {
         return middlePictures;
     }
 
-    public void setMiddlePictures(List<String> middlePictures) {
+    public void setMiddlePictures(String middlePictures) {
         this.middlePictures = middlePictures;
     }
 
-    public List<String> getBigPictures() {
+    public String getBigPictures() {
         return bigPictures;
     }
 
-    public void setBigPictures(List<String> bigPictures) {
+    public void setBigPictures(String bigPictures) {
         this.bigPictures = bigPictures;
     }
 }

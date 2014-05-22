@@ -27,8 +27,8 @@ public class KTV implements Serializable {
     private String introduction;
     @Column(name = "average_price", nullable = true, columnDefinition = "int default 0")
     private int averagePrice;
-    @Column(name = "score", nullable = true, columnDefinition = "float default 0.0")
-    private float score;
+    @Column(name = "score", nullable = true, columnDefinition = "varchar(32) default 0.0")
+    private String  score;
     @Column(name = "pictures", nullable = true, columnDefinition = "varchar(4096) default ''")
     private String pictures;
     @Column(name = "geographic_information", nullable = true, columnDefinition = "varchar(32) default ''")
@@ -43,9 +43,11 @@ public class KTV implements Serializable {
     public KTV() {
         this.createTime = new Date();
         this.updateTime = new Date();
+        this.pictures = "{\"bigPictures\":\"\",\"middlePictures\":\"\",\"smallPictures\":\"\"}";
+        this.score = "0";
     }
 
-    public KTV(int districtId, String name, String address, String phoneNumber, String introduction, int averagePrice, float score, String pictures, String geographicInformation) {
+    public KTV(int districtId, String name, String address, String phoneNumber, String introduction, int averagePrice, String score, String pictures, String geographicInformation) {
         this.districtId = districtId;
         this.name = name;
         this.address = address;
@@ -115,11 +117,11 @@ public class KTV implements Serializable {
         this.averagePrice = averagePrice;
     }
 
-    public float getScore() {
+    public String getScore() {
         return score;
     }
 
-    public void setScore(float score) {
+    public void setScore(String score) {
         this.score = score;
     }
 

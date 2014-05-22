@@ -21,24 +21,31 @@ public class Comment implements Serializable {
     private int userId;
     @Column(name = "comment", nullable = true, columnDefinition = "varchar(20480) default ''")
     private String comment;
-    @Column(name = "service_score", nullable = true, columnDefinition = "float default 0.0")
-    private float serviceScore;
-    @Column(name = "environment_score", nullable = true, columnDefinition = "float default 0.0")
-    private float environmentScore;
-    @Column(name = "sound_effects_score", nullable = true, columnDefinition = "float default 0.0")
-    private float soundEffectsScore;
+    @Column(name = "score", nullable = true, columnDefinition = "varchar(32) default 0.0")
+    private String score;
+    @Column(name = "service_score", nullable = true, columnDefinition = "varchar(32) default 0.0")
+    private String serviceScore;
+    @Column(name = "environment_score", nullable = true, columnDefinition = "varchar(32) default 0.0")
+    private String environmentScore;
+    @Column(name = "sound_effects_score", nullable = true, columnDefinition = "varchar(32) default 0.0")
+    private String soundEffectsScore;
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "create_time")
     private Date createTime;
 
     public Comment() {
         this.createTime = new Date();
+        this.score = "0";
+        this.serviceScore = "0";
+        this.environmentScore = "0";
+        this.soundEffectsScore = "0";
     }
 
-    public Comment(int KTVId, int userId, String comment, float serviceScore, float environmentScore, float soundEffectsScore) {
+    public Comment(int KTVId, int userId, String comment,String score, String serviceScore, String environmentScore, String soundEffectsScore) {
         this.KTVId = KTVId;
         this.userId = userId;
         this.comment = comment;
+        this.score = score;
         this.serviceScore = serviceScore;
         this.environmentScore = environmentScore;
         this.soundEffectsScore = soundEffectsScore;
@@ -47,6 +54,14 @@ public class Comment implements Serializable {
 
     public int getId() {
         return id;
+    }
+
+    public String getScore() {
+        return score;
+    }
+
+    public void setScore(String score) {
+        this.score = score;
     }
 
     public void setId(int id) {
@@ -77,27 +92,27 @@ public class Comment implements Serializable {
         this.comment = comment;
     }
 
-    public float getServiceScore() {
+    public String getServiceScore() {
         return serviceScore;
     }
 
-    public void setServiceScore(float serviceScore) {
+    public void setServiceScore(String serviceScore) {
         this.serviceScore = serviceScore;
     }
 
-    public float getEnvironmentScore() {
+    public String getEnvironmentScore() {
         return environmentScore;
     }
 
-    public void setEnvironmentScore(float environmentScore) {
+    public void setEnvironmentScore(String environmentScore) {
         this.environmentScore = environmentScore;
     }
 
-    public float getSoundEffectsScore() {
+    public String getSoundEffectsScore() {
         return soundEffectsScore;
     }
 
-    public void setSoundEffectsScore(float soundEffectsScore) {
+    public void setSoundEffectsScore(String soundEffectsScore) {
         this.soundEffectsScore = soundEffectsScore;
     }
 

@@ -55,6 +55,9 @@ public interface ErrorCode {
     final static String UPDATE_KTV_ERR_CODE = "KK005";
     final static String UPDATE_KTV_ERR_MSG = "Update the ktv info error : ";
 
+    public static String ADD_PICTURE_ERR_CODE = "KP001";
+    public static String ADD_PICTURE_ERR_MSG = "Add a picture error : ";
+
     final static String ADD_STATISTICS_ERR_CODE = "KS001";
     final static String ADD_STATISTICS_ERR_MSG = "Add statistics error : ";
     final static String GET_STATISTICS_ERR_CODE = "KS002";

@@ -1,102 +1,80 @@
 package com.kzone.util;
 
+import com.kzone.bo.Picture;
+
 import javax.imageio.ImageIO;
-import javax.mail.FetchProfile;
+import javax.imageio.stream.ImageOutputStream;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
+import java.io.*;
+import java.util.concurrent.Callable;
 
 /**
- * Created by Jeffy on 14-5-17
- */
-public class PictureUtil {
-    String fromFileStr;
-    String saveToFileStr;
-    String sysimgfile;
-    int width;
-    int height;
-    String suffix;
-    /**
-     * @param fromFileStr
-     *            原始图片完整路径
-     * @param saveToFileStr
-     *            缩略图片保存路径
+* Created by Jeffy on 2014/5/21 0021.
+*/
+public class PictureUtil implements Callable<InputStream> {
+    private String pictureName;
+    private double ratio;
+    private int width;
+    private int height;
+    private String contentType;
 
-     *
-     */
-    public PictureUtil(String fromFileStr, String saveToFileStr, String sysimgfile,String suffix,int width,int height) {
-        this.fromFileStr = fromFileStr;
-        this.saveToFileStr = saveToFileStr;
-        this.sysimgfile = sysimgfile;
-        this.width=width;
-        this.height=height;
-        this.suffix=suffix;
+    public PictureUtil(String pictureName, double ratio, int width, int height, String contentType) {
+        this.pictureName = pictureName;
+        this.ratio = ratio;
+        this.width = width;
+        this.height = height;
+        this.contentType = contentType;
     }
-    public boolean createThumbnail() throws Exception {
-        // fileExtNmae是图片的格式 gif JPG 或png
-        // String fileExtNmae="";
-        double Ratio = 0.0;
-        File F = new File(fromFileStr);
-        if (!F.isFile())
-            throw new Exception(F + " is not image file error in CreateThumbnail!");
-        File ThF = new File(saveToFileStr, sysimgfile +"."+suffix);
 
-
-        InputStream is = null;
-        is = new FileInputStream(F);
-
-        BufferedImage Bi = ImageIO.read(is);
-        Image Itemp = Bi.getScaledInstance(width, height, Bi.SCALE_SMOOTH);
-        if ((Bi.getHeight() > width) || (Bi.getWidth() > height)) {
-            if (Bi.getHeight() > Bi.getWidth())
-                Ratio = (double)width / Bi.getHeight();
+    public static InputStream compressPicture(String pictureName, double ratio, int width, int height, String contentType) throws IOException {
+        File picture = new File(Thread.currentThread().getContextClassLoader().getResource("picture").getPath() + pictureName + "." + contentType);
+        InputStream inputStream = new FileInputStream(picture);
+        BufferedImage bufferedImage = null;
+        try {
+            bufferedImage = ImageIO.read(inputStream);
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new IOException("read input stream of the picture error");
+        }
+        Image image = bufferedImage.getScaledInstance(width, height, bufferedImage.SCALE_SMOOTH);
+        if ((bufferedImage.getHeight() > width) || (bufferedImage.getWidth() > height)) {
+            if (bufferedImage.getHeight() > bufferedImage.getWidth())
+                ratio = (double)width / bufferedImage.getHeight();
             else
-                Ratio = (double)height / Bi.getWidth();
-        }
-        AffineTransformOp op = new AffineTransformOp(AffineTransform.getScaleInstance(Ratio, Ratio), null);
-        Itemp = op.filter(Bi, null);
-
-        try {
-            ImageIO.write((BufferedImage) Itemp, suffix, ThF);
-        } catch (Exception ex) {
-            throw new Exception(" ImageIo.write error in CreatThum.: "
-                    + ex.getMessage());
-        }
-        return (true);
-    }
-    public static void main(String[] args) {
-       PictureUtil UI;
-        boolean ss = false;
-        try {
-            UI = new PictureUtil("f://1.jpg", "f://2", "ps_low1","png",20,20);
-            ss = UI.createThumbnail();
-            if (ss) {
-                System.out.println("Success");
-            } else {
-                System.out.println("Error");
-            }
-        } catch (Exception e) {
-            System.out.print(e.toString());
+                ratio = (double)height / bufferedImage.getWidth();
         }
 
-
-
-
-        File f = new File("F:\\1.jpg");
+        AffineTransformOp affineTransformOp = new AffineTransformOp(AffineTransform.getScaleInstance(ratio, ratio), null);
+        image = affineTransformOp.filter(bufferedImage, null);
+        bufferedImage.flush();
         InputStream is = null;
+        ByteArrayOutputStream bs = new ByteArrayOutputStream();
+        ImageOutputStream imageOutputStream = null;
         try {
-            is = new FileInputStream(f);
-            BufferedImage Bi = ImageIO.read(is);
-        } catch (Exception e) {
+//            File ThF = new File("f://2", "ps_low1" +"."+"jpg");
+//            ImageIO.write((BufferedImage) image, "jpg", ThF);
+            imageOutputStream = ImageIO.createImageOutputStream(bs);
+            ImageIO.write((BufferedImage) image, "jpg", imageOutputStream);
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new IOException("write the stream error");
+        }
+
+        is= new ByteArrayInputStream(bs.toByteArray());
+        return is;
+    }
+
+    @Override
+    public InputStream call(){
+        InputStream inputStream1 = null;
+        try {
+            inputStream1 = compressPicture(pictureName, ratio, width, height, contentType);
+        } catch (IOException e) {
             e.printStackTrace();
         }
-
-
-
+        return inputStream1;
     }
 }

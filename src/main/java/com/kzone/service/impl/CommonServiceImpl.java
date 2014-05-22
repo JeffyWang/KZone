@@ -12,6 +12,7 @@ import java.util.Map;
 
 /**
  * Created by Jeffy on 14-5-17
+ * eq相等   ne、neq不相等，   gt大于， lt小于 gte、ge大于等于   lte、le 小于等于   not非   mod求模
  */
 @Service
 public class CommonServiceImpl<T> implements CommonService<T> {

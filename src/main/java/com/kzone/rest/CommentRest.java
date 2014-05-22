@@ -1,11 +1,16 @@
 package com.kzone.rest;
 
 import com.kzone.bean.Comment;
+import com.kzone.bean.KTV;
 import com.kzone.bean.User;
 import com.kzone.bo.Response;
+import com.kzone.constants.CommonConstants;
 import com.kzone.constants.ErrorCode;
+import com.kzone.constants.ParamsConstants;
 import com.kzone.service.CommentService;
 import com.kzone.service.CommonService;
+import com.kzone.service.KTVService;
+import com.kzone.util.StringUtil;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -14,8 +19,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.UriInfo;
+import java.text.DecimalFormat;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Jeffy on 14-5-17
@@ -26,6 +35,8 @@ public class CommentRest {
     Logger log = Logger.getLogger(CommentRest.class);
     @Autowired
     private CommentService commentService;
+    @Autowired
+    KTVService ktvService;
 
     @GET
     @Path("/info/{id}")
@@ -64,10 +75,36 @@ public class CommentRest {
     }
 
     @GET
-    @Path("/info/{offset}/{length}/{equalParams}/{likePrams}")
+    @Path("/info/{offset}/{length}/{score}/{comment}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getCommentsPage(@Context UriInfo uriInfo) {
         Response response = new Response();
+        List<Comment> commentList = null;
+
+        MultivaluedMap<String, String> params = uriInfo.getPathParameters();
+        Map<String, String> likeCondition = new HashMap<String, String>();
+        Map<String, String> gtCondition = new HashMap<String, String>();
+        int offset = Integer.parseInt(params.getFirst(ParamsConstants.PAGE_PARAMS_OFFSET));
+        int length = Integer.parseInt(params.getFirst(ParamsConstants.PAGE_PARAMS_LENGTH));
+
+        if (params.getFirst(ParamsConstants.PARAM_COMMENT_SCORE) != null
+                && !CommonConstants.NULL_STRING.equals(params.getFirst(ParamsConstants.PARAM_COMMENT_SCORE))
+                && !CommonConstants.NULL.equals(params.getFirst(ParamsConstants.PARAM_COMMENT_SCORE)))
+            gtCondition.put(ParamsConstants.PARAM_COMMENT_SCORE, params.getFirst(ParamsConstants.PARAM_COMMENT_SCORE));
+        // 模糊查询条件健值对
+        if (params.getFirst(ParamsConstants.PARAM_COMMENT_COMMENT) != null
+                && !CommonConstants.NULL_STRING.equals(params.getFirst(ParamsConstants.PARAM_COMMENT_COMMENT))
+                && !CommonConstants.NULL.equals(params.getFirst(ParamsConstants.PARAM_COMMENT_COMMENT)))
+            likeCondition.put(ParamsConstants.PARAM_COMMENT_COMMENT, params.getFirst(ParamsConstants.PARAM_COMMENT_COMMENT));
+
+        try {
+            commentList = commentService.getListForPage(Comment.class, offset, length, null, likeCondition, gtCondition);
+        } catch (Exception e) {
+            log.warn(e);
+            return response.setResponse(ErrorCode.GET_COMMENT_LIST_ERR_CODE, ErrorCode.GET_COMMENT_LIST_ERR_MSG + e.getMessage());
+        }
+
+        response.setData(commentList);
         return response;
     }
 
@@ -76,6 +113,37 @@ public class CommentRest {
     @Produces(MediaType.APPLICATION_JSON)
     public Response addComment(@RequestBody String body) {
         Response response = new Response();
+        Comment comment = null;
+        DecimalFormat decimalFormat = new DecimalFormat(".00");//构造方法的字符格式这里如果小数不足2位,会以0补足.
+
+        try {
+            comment = StringUtil.jsonStringToObject(body, Comment.class);
+            float serviceScore = Float.valueOf(comment.getServiceScore());
+            float environmentScore = Float.valueOf(comment.getEnvironmentScore());
+            float soundEffectsScore = Float.valueOf(comment.getSoundEffectsScore());
+            float score = (float) (serviceScore * 0.3 + environmentScore * 0.3 + soundEffectsScore * 0.4);
+            comment.setServiceScore(decimalFormat.format(serviceScore));
+            comment.setEnvironmentScore(decimalFormat.format(environmentScore));
+            comment.setSoundEffectsScore(decimalFormat.format(soundEffectsScore));
+            comment.setScore(decimalFormat.format(score));
+            comment = commentService.add(comment);
+        } catch (Exception e) {
+            log.warn(e);
+            return response.setResponse(ErrorCode.ADD_COMMENT_ERR_CODE, ErrorCode.ADD_COMMENT_ERR_MSG + e.getMessage());
+        }
+
+        try {
+            Map<String, Object> equalCondition = new HashMap<String, Object>();
+            equalCondition.put(ParamsConstants.PARAM_COMMENT_KTV_ID, comment.getKTVId());
+            float ktvScore = ktvService.countScore(commentService.getListEqual(equalCondition));
+            KTV ktv = ktvService.get(comment.getKTVId());
+            ktv.setScore(decimalFormat.format(ktvScore));
+            ktvService.update(ktv);
+        } catch (Exception e) {
+            log.warn("count ktc score error : " + e);
+        }
+
+        response.setData(comment);
         return response;
     }
 
