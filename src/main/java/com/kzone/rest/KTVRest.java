@@ -7,6 +7,7 @@ import com.kzone.constants.ErrorCode;
 import com.kzone.constants.ParamsConstants;
 import com.kzone.service.KTVService;
 import com.kzone.service.PictureService;
+import com.kzone.util.EncodingUtil;
 import com.kzone.util.StringUtil;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +39,7 @@ public class KTVRest {
 
     @GET
     @Path("/info/{id}")
-    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+    @Produces(MediaType.APPLICATION_JSON)
     public Response getKTV(@PathParam(ParamsConstants.PARAM_ID) int id) {
         Response response = new Response();
         KTV ktv = null;
@@ -56,7 +57,7 @@ public class KTVRest {
 
     @GET
     @Path("/info")
-    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+    @Produces(MediaType.APPLICATION_JSON)
     public Response getKTVs() {
         Response response = new Response();
         List<KTV> ktvList = null;
@@ -74,7 +75,7 @@ public class KTVRest {
 
     @GET
     @Path("/info/{offset}/{length}/{name}/{address}")
-    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+    @Produces(MediaType.APPLICATION_JSON)
     public Response getKTVsPage(@Context UriInfo uriInfo) {
         Response response = new Response();
         List<KTV> ktvPageList = null;
@@ -108,12 +109,14 @@ public class KTVRest {
 
     @POST
     @Path("/info")
-    @Produces("application/json;charset=utf-8")
+    @Produces(MediaType.APPLICATION_JSON)
     public Response addKTV(@RequestBody String body){
         Response response = new Response();
         KTV ktv = null;
+        String encode = EncodingUtil.getEncoding(body);
 
         try {
+            body = new String(body.getBytes(encode),CommonConstants.ENCODE);
             ktv = StringUtil.jsonStringToObject(body, KTV.class);
             ktv = ktvService.add(ktv);
         } catch (Exception e) {
@@ -127,7 +130,7 @@ public class KTVRest {
 
     @DELETE
     @Path("/info/{id}")
-    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+    @Produces(MediaType.APPLICATION_JSON)
     public Response deleteKTV(@PathParam(ParamsConstants.PARAM_ID) int id) {
         Response response = new Response();
         KTV ktv = null;
@@ -146,12 +149,14 @@ public class KTVRest {
 
     @PUT
     @Path("/info/")
-    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+    @Produces(MediaType.APPLICATION_JSON)
     public Response updateKTV(@RequestBody String body) {
         Response response = new Response();
         KTV ktv = null;
+        String encode = EncodingUtil.getEncoding(body);
 
         try {
+            body = new String(body.getBytes(encode),CommonConstants.ENCODE);
             ktv = StringUtil.jsonStringToObject(body, KTV.class);
             ktv = ktvService.update(ktv);
         } catch (Exception e) {
@@ -161,5 +166,39 @@ public class KTVRest {
 
         response.setData(ktv);
         return  response;
+    }
+
+    @GET
+    @Path("/count/{name}/{address}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getKTVCount(@Context UriInfo uriInfo) {
+        Response response = new Response();
+        Map<String, Integer> countMap = new HashMap<String, Integer>();
+        int ktvCount = 0;
+
+        MultivaluedMap<String, String> params = uriInfo.getPathParameters();
+        Map<String, String> likeCondition = new HashMap<String, String>();
+        Map<String, String> equalCondition = new HashMap<String, String>();
+
+        if (params.getFirst(ParamsConstants.PARAM_KTV_NAME) != null
+                && !CommonConstants.NULL_STRING.equals(params.getFirst(ParamsConstants.PARAM_KTV_NAME))
+                && !CommonConstants.NULL.equals(params.getFirst(ParamsConstants.PARAM_KTV_NAME)))
+            likeCondition.put(ParamsConstants.PARAM_KTV_NAME, params.getFirst(ParamsConstants.PARAM_KTV_NAME));
+        // 模糊查询条件健值对
+        if (params.getFirst(ParamsConstants.PARAM_KTV_ADDRESS) != null
+                && !CommonConstants.NULL_STRING.equals(params.getFirst(ParamsConstants.PARAM_KTV_ADDRESS))
+                && !CommonConstants.NULL.equals(params.getFirst(ParamsConstants.PARAM_KTV_ADDRESS)))
+            likeCondition.put(ParamsConstants.PARAM_KTV_ADDRESS, params.getFirst(ParamsConstants.PARAM_KTV_ADDRESS));
+
+        try {
+            ktvCount = (int) ktvService.getListCount(equalCondition,likeCondition);
+        } catch (Exception e) {
+            log.warn(e);
+            return response.setResponse(ErrorCode.COUNT_KTV_ERR_CODE, ErrorCode.COUNT_KTV_ERR_MSG + e.getMessage());
+        }
+
+        countMap.put(ParamsConstants.PAGE_DATA_COUNT, ktvCount);
+        response.setData(countMap);
+        return response;
     }
 }

@@ -8,3 +8,13 @@
 .pagination {
     float: right;
 }
+.btn-primary {
+    float: left;
+}
+.search {
+    width: 220px !important;
+    float: right;
+}
+.are-choice {
+    margin-left: 35px;
+}

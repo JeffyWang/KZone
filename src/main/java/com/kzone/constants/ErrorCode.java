@@ -20,6 +20,8 @@ public interface ErrorCode {
     final static String DELETE_USER_ERR_MSG = "Delete a user error : ";
     final static String UPDATE_USER_ERR_CODE = "KU005";
     final static String UPDATE_USER_ERR_MSG = "Update the user data error : ";
+    final static String COUNT_USER_ERR_CODE = "KU006";
+    final static String COUNT_USER_ERR_MSG = "Count user error : ";
 
     final static String ADD_DISTRICT_ERR_CODE = "KD001";
     final static String ADD_DISTRICT_ERR_MSG = "Add district error : ";
@@ -31,6 +33,8 @@ public interface ErrorCode {
     final static String DELETE_DISTRICT_ERR_MSG = "Delete a district error : ";
     final static String UPDATE_DISTRICT_ERR_CODE = "KD005";
     final static String UPDATE_DISTRICT_ERR_MSG = "Update the district data error : ";
+    final static String COUNT_DISTRICT_ERR_CODE = "KD006";
+    final static String COUNT_DISTRICT_ERR_MSG = "Count district error : ";
 
     final static String ADD_INFORMATION_ERR_CODE = "KI001";
     final static String ADD_INFORMATION_ERR_MSG = "Add information error : ";
@@ -42,6 +46,8 @@ public interface ErrorCode {
     final static String DELETE_INFORMATION_ERR_MSG = "Delete a information error : ";
     final static String UPDATE_INFORMATION_ERR_CODE = "KI005";
     final static String UPDATE_INFORMATION_ERR_MSG = "Update the information data error : ";
+    final static String COUNT_INFORMATION_ERR_CODE = "KI006";
+    final static String COUNT_INFORMATION_ERR_MSG = "Count information error : ";
 
 
     final static String ADD_KTV_ERR_CODE = "KK001";
@@ -54,6 +60,8 @@ public interface ErrorCode {
     final static String DELETE_KTV_ERR_MSG = "Delete a ktv error : ";
     final static String UPDATE_KTV_ERR_CODE = "KK005";
     final static String UPDATE_KTV_ERR_MSG = "Update the ktv info error : ";
+    final static String COUNT_KTV_ERR_CODE = "KK006";
+    final static String COUNT_KTV_ERR_MSG = "Count ktv error : ";
 
     public static String ADD_PICTURE_ERR_CODE = "KP001";
     public static String ADD_PICTURE_ERR_MSG = "Add a picture error : ";
@@ -68,6 +76,9 @@ public interface ErrorCode {
     final static String DELETE_STATISTICS_ERR_MSG = "Delete a statistics error : ";
     final static String UPDATE_STATISTICS_ERR_CODE = "KS005";
     final static String UPDATE_STATISTICS_ERR_MSG = "Update the statistics data error : ";
+    final static String COUNT_STATISTICS_ERR_CODE = "KS006";
+    final static String COUNT_STATISTICS_ERR_MSG = "Count statistics error : ";
+
 
     final static String ADD_COMMENT_ERR_CODE = "KC001";
     final static String ADD_COMMENT_ERR_MSG = "Add comment error : ";
@@ -79,4 +90,6 @@ public interface ErrorCode {
     final static String DELETE_COMMENT_ERR_MSG = "Delete a comment error : ";
     final static String UPDATE_COMMENT_ERR_CODE = "KC005";
     final static String UPDATE_COMMENT_ERR_MSG = "Update the comment data error : ";
+    final static String COUNT_COMMENT_ERR_CODE = "KC006";
+    final static String COUNT_COMMENT_ERR_MSG = "Count comment error : ";
 }

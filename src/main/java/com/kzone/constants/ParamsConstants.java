@@ -8,6 +8,7 @@ public interface ParamsConstants {
     final static String PAGE_PARAMS_LENGTH = "length";
     final static String PAGE_PARAMS_EQUALPARAMS = "equalParams";
     final static String PAGE_PARAMS_LIKEPARAMS = "likePrams";
+    final static String PAGE_DATA_COUNT = "dataCount";
 
     final static String PARAM_NAME = "name";
 
