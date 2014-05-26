@@ -10,6 +10,7 @@ import com.kzone.service.PictureService;
 import com.kzone.util.StringUtil;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.SystemEnvironmentPropertySource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -18,6 +19,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.UriInfo;
+import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,7 +38,7 @@ public class KTVRest {
 
     @GET
     @Path("/info/{id}")
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
     public Response getKTV(@PathParam(ParamsConstants.PARAM_ID) int id) {
         Response response = new Response();
         KTV ktv = null;
@@ -54,7 +56,7 @@ public class KTVRest {
 
     @GET
     @Path("/info")
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
     public Response getKTVs() {
         Response response = new Response();
         List<KTV> ktvList = null;
@@ -72,7 +74,7 @@ public class KTVRest {
 
     @GET
     @Path("/info/{offset}/{length}/{name}/{address}")
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
     public Response getKTVsPage(@Context UriInfo uriInfo) {
         Response response = new Response();
         List<KTV> ktvPageList = null;
@@ -106,7 +108,7 @@ public class KTVRest {
 
     @POST
     @Path("/info")
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces("application/json;charset=utf-8")
     public Response addKTV(@RequestBody String body){
         Response response = new Response();
         KTV ktv = null;
@@ -125,7 +127,7 @@ public class KTVRest {
 
     @DELETE
     @Path("/info/{id}")
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
     public Response deleteKTV(@PathParam(ParamsConstants.PARAM_ID) int id) {
         Response response = new Response();
         KTV ktv = null;
@@ -144,7 +146,7 @@ public class KTVRest {
 
     @PUT
     @Path("/info/")
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
     public Response updateKTV(@RequestBody String body) {
         Response response = new Response();
         KTV ktv = null;

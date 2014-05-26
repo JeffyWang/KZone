@@ -1,0 +1,10 @@
+.form-group {
+    margin-left: 50px;
+    margin-top: 20px;
+}
+.form-control {
+    width: 80%;
+}
+.pagination {
+    float: right;
+}
