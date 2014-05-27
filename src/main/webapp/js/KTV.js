@@ -98,25 +98,27 @@ var initDistrict = function() {
 
 var initPageCount = function() {
     var pageCount = '<li><a href="#" class="lastPage">&laquo;</a></li>';
-//    if(_pageCount < 10) {
-        for(var i = 0; i < _pageCount; i ++) {
+    var startPage = 0;
+    var endPage = 10;
+
+    if(_pageCount < endPage) {
+        for(var i = startPage; i < _pageCount; i ++) {
             if(i == 0) {
                 pageCount += '<li><a rel="' + i + '" href="#" class="page visited">' + (i + 1) + '</a></li>';
             } else {
                 pageCount += '<li><a rel="' + (i * _pageDataCount ) + '" href="#" class="page">' + (i + 1) + '</a></li>';
             }
         }
-//        pageCount += "...";
-//    } else if(_pageCount >= 10 && _pageCount <20) {
-//        for(var i = 0; i < 10; i ++) {
-//            if(i == 0) {
-//                pageCount += '<li><a rel="' + i + '" href="#" class="page visited">' + (i + 1) + '</a></li>';
-//            } else {
-//                pageCount += '<li><a rel="' + (i * _pageDataCount ) + '" href="#" class="page">' + (i + 1) + '</a></li>';
-//            }
-//        }
-//        pageCount += "<li><a>...</a></li>";
-//    }
+    } else if(_pageCount >= endPage) {
+        for(var i = startPage; i < endPage; i ++) {
+            if(i == 0) {
+                pageCount += '<li><a rel="' + i + '" href="#" class="page visited">' + (i + 1) + '</a></li>';
+            } else {
+                pageCount += '<li><a rel="' + (i * _pageDataCount ) + '" href="#" class="page">' + (i + 1) + '</a></li>';
+            }
+        }
+        pageCount += "<li><a>...</a></li>";
+    }
 
     pageCount += '<li><a href="#" class="nextPage">&raquo;</a></li>';
     $("#pageCount").append(pageCount);
