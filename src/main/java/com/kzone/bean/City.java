@@ -18,8 +18,6 @@ public class City implements Serializable {
     private String cityId;
     @Column(name = "city_name", nullable = false, columnDefinition = "varchar(16) default ''")
     private String cityName;
-    @Column(name = "city_code", nullable = false, columnDefinition = "varchar(16) default ''")
-    private String cityCode;
     @Column(name = "reference", nullable = false, columnDefinition = "varchar(16) default ''")
     private String reference;
 
@@ -37,14 +35,6 @@ public class City implements Serializable {
 
     public void setCityId(String cityId) {
         this.cityId = cityId;
-    }
-
-    public String getCityCode() {
-        return cityCode;
-    }
-
-    public void setCityCode(String cityCode) {
-        this.cityCode = cityCode;
     }
 
     public String getReference() {

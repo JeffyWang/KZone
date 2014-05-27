@@ -2,13 +2,11 @@ package com.kzone.rest;
 
 import com.kzone.bean.Comment;
 import com.kzone.bean.KTV;
-import com.kzone.bean.User;
-import com.kzone.bo.Response;
+import com.kzone.bo.ErrorMessage;
 import com.kzone.constants.CommonConstants;
 import com.kzone.constants.ErrorCode;
 import com.kzone.constants.ParamsConstants;
 import com.kzone.service.CommentService;
-import com.kzone.service.CommonService;
 import com.kzone.service.KTVService;
 import com.kzone.util.StringUtil;
 import org.apache.log4j.Logger;
@@ -17,10 +15,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.MultivaluedMap;
-import javax.ws.rs.core.UriInfo;
+import javax.ws.rs.core.*;
 import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.List;
@@ -42,43 +37,38 @@ public class CommentRest {
     @Path("/info/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getComment(@PathParam("id") int id) {
-        Response response = new Response();
         Comment comment = null;
 
         try {
             comment = commentService.get(id);
         } catch (Exception e) {
             log.warn(e);
-            return response.setResponse(ErrorCode.GET_COMMENT_ERR_CODE, ErrorCode.GET_COMMENT_ERR_MSG + e.getMessage());
+            return Response.ok(new ErrorMessage(ErrorCode.GET_COMMENT_ERR_CODE, ErrorCode.GET_COMMENT_ERR_MSG),MediaType.APPLICATION_JSON).build();
         }
 
-        response.setData(comment);
-        return response;
+        return Response.ok(comment, MediaType.APPLICATION_JSON).build();
     }
 
     @GET
     @Path("/info")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getComments() {
-        Response response = new Response();
         List<Comment> commentList = null;
 
         try {
             commentList = commentService.getList();
         } catch (Exception e) {
             log.warn(e);
-            return response.setResponse(ErrorCode.GET_COMMENT_LIST_ERR_CODE, ErrorCode.GET_COMMENT_LIST_ERR_MSG + e.getMessage());
+            return Response.ok(new ErrorMessage(ErrorCode.GET_COMMENT_LIST_ERR_CODE, ErrorCode.GET_COMMENT_LIST_ERR_MSG),MediaType.APPLICATION_JSON).build();
         }
 
-        response.setData(commentList);
-        return response;
+        return Response.ok(commentList, MediaType.APPLICATION_JSON).build();
     }
 
     @GET
     @Path("/info/{offset}/{length}/{score}/{comment}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getCommentsPage(@Context UriInfo uriInfo) {
-        Response response = new Response();
         List<Comment> commentList = null;
 
         MultivaluedMap<String, String> params = uriInfo.getPathParameters();
@@ -101,18 +91,16 @@ public class CommentRest {
             commentList = commentService.getListForPage(Comment.class, offset, length, null, likeCondition, gtCondition);
         } catch (Exception e) {
             log.warn(e);
-            return response.setResponse(ErrorCode.GET_COMMENT_LIST_ERR_CODE, ErrorCode.GET_COMMENT_LIST_ERR_MSG + e.getMessage());
+            return Response.ok(new ErrorMessage(ErrorCode.GET_COMMENT_LIST_ERR_CODE, ErrorCode.GET_COMMENT_LIST_ERR_MSG),MediaType.APPLICATION_JSON).build();
         }
 
-        response.setData(commentList);
-        return response;
+        return Response.ok(commentList, MediaType.APPLICATION_JSON).build();
     }
 
     @POST
     @Path("/info")
     @Produces(MediaType.APPLICATION_JSON)
     public Response addComment(@RequestBody String body) {
-        Response response = new Response();
         Comment comment = null;
         DecimalFormat decimalFormat = new DecimalFormat(".00");//构造方法的字符格式这里如果小数不足2位,会以0补足.
 
@@ -129,7 +117,7 @@ public class CommentRest {
             comment = commentService.add(comment);
         } catch (Exception e) {
             log.warn(e);
-            return response.setResponse(ErrorCode.ADD_COMMENT_ERR_CODE, ErrorCode.ADD_COMMENT_ERR_MSG + e.getMessage());
+            return Response.ok(new ErrorMessage(ErrorCode.ADD_COMMENT_ERR_CODE, ErrorCode.ADD_COMMENT_ERR_MSG),MediaType.APPLICATION_JSON).build();
         }
 
         try {
@@ -143,15 +131,13 @@ public class CommentRest {
             log.warn("count ktc score error : " + e);
         }
 
-        response.setData(comment);
-        return response;
+        return Response.ok(comment, MediaType.APPLICATION_JSON).build();
     }
 
     @DELETE
     @Path("/info/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response deleteComment(@PathParam("id") int id) {
-        Response response = new Response();
-        return response;
+        return Response.ok("", MediaType.APPLICATION_JSON).build();
     }
 }

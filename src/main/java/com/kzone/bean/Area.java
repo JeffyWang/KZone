@@ -18,8 +18,6 @@ public class Area implements Serializable {
     private String areaId;
     @Column(name = "area_name", nullable = false, columnDefinition = "varchar(16) default ''")
     private String areaName;
-    @Column(name = "area_code", nullable = false, columnDefinition = "varchar(16) default ''")
-    private String areaCode;
     @Column(name = "reference", nullable = false, columnDefinition = "varchar(16) default ''")
     private String reference;
 
@@ -33,14 +31,6 @@ public class Area implements Serializable {
 
     public String getAreaId() {
         return areaId;
-    }
-
-    public String getAreaCode() {
-        return areaCode;
-    }
-
-    public void setAreaCode(String areaCode) {
-        this.areaCode = areaCode;
     }
 
     public String getReference() {

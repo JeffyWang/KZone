@@ -1,7 +1,7 @@
 package com.kzone.rest;
 
 import com.kzone.bean.User;
-import com.kzone.bo.Response;
+import com.kzone.bo.ErrorMessage;
 import com.kzone.constants.CommonConstants;
 import com.kzone.constants.ErrorCode;
 import com.kzone.constants.ParamsConstants;
@@ -15,10 +15,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.MultivaluedMap;
-import javax.ws.rs.core.UriInfo;
+import javax.ws.rs.core.*;
 import java.util.*;
 
 /**
@@ -35,7 +32,6 @@ public class UserRest {
     @Path("/info/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getUser(@PathParam("id") String id) {
-        Response response = new Response();
         User user = null;
 
         try {
@@ -46,36 +42,32 @@ public class UserRest {
             }
         } catch (Exception e) {
             log.warn(e);
-            return response.setResponse(ErrorCode.GET_USER_ERR_CODE, ErrorCode.GET_USER_ERR_MSG + e.getMessage());
+            return Response.ok(new ErrorMessage(ErrorCode.GET_USER_ERR_CODE, ErrorCode.GET_USER_ERR_MSG),MediaType.APPLICATION_JSON).build();
         }
 
-        response.setData(user);
-        return response;
+        return Response.ok(user, MediaType.APPLICATION_JSON).build();
     }
 
     @GET
     @Path("/info")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getUsers() {
-        Response response = new Response();
         List<User> userList = null;
 
         try {
             userList = userService.getUsers(null, null);
         } catch (Exception e) {
             log.warn(e);
-            return response.setResponse(ErrorCode.GET_USER_LIST_ERR_CODE, ErrorCode.GET_USER_LIST_ERR_MSG + e.getMessage());
+            return Response.ok(new ErrorMessage(ErrorCode.GET_USER_LIST_ERR_CODE, ErrorCode.GET_USER_LIST_ERR_MSG),MediaType.APPLICATION_JSON).build();
         }
 
-        response.setData(userList);
-        return response;
+        return Response.ok(userList, MediaType.APPLICATION_JSON).build();
     }
 
     @GET
     @Path("/info/{offset}/{length}/{equalParams}/{likePrams}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getUsersPage(@Context UriInfo uriInfo) {
-        Response response = new Response();
         List<User> usersPage = null;
 
         MultivaluedMap<String, String> params = uriInfo.getPathParameters();
@@ -99,34 +91,30 @@ public class UserRest {
             usersPage = userService.getUsersPage(offset, length, equalCondition, likeCondition);
         } catch (Exception e) {
             log.warn(e);
-            return response.setResponse(ErrorCode.GET_USER_LIST_ERR_CODE, ErrorCode.GET_USER_LIST_ERR_MSG + e.getMessage());
+            return Response.ok(new ErrorMessage(ErrorCode.GET_USER_LIST_ERR_CODE, ErrorCode.GET_USER_LIST_ERR_MSG),MediaType.APPLICATION_JSON).build();
         }
 
-        response.setData(usersPage);
-        return response;
+        return Response.ok(usersPage, MediaType.APPLICATION_JSON).build();
     }
 
     @POST
     @Path("/info")
     @Produces(MediaType.APPLICATION_JSON)
     public Response addUser(@RequestBody String body) {
-        Response response = new Response();
         User user = null;
         UUID uuid = UUID.randomUUID();
 
         try {
             user = StringUtil.jsonStringToObject(body, User.class);
             user.setUuid(uuid.toString());
-            response = validateUser(user, response);
             user.setPassword(userService.encryption(user.getPassword()));
             user = userService.addUser(user);
         } catch (Exception e) {
             log.warn(e);
-            return response.setResponse(ErrorCode.ADD_USER_ERR_CODE, ErrorCode.ADD_USER_ERR_MSG + e.getMessage());
+            return Response.ok(new ErrorMessage(ErrorCode.ADD_USER_ERR_CODE, ErrorCode.ADD_USER_ERR_MSG),MediaType.APPLICATION_JSON).build();
         }
 
-        response.setData(user);
-        return response;
+        return Response.ok(user, MediaType.APPLICATION_JSON).build();
     }
 
     public Response validateUser(User user, Response response) throws Exception {

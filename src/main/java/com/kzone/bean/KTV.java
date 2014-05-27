@@ -15,8 +15,8 @@ public class KTV implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @Column(name = "district_id", nullable = true, columnDefinition = "int default 0")
-    private int districtId;
+    @Column(name = "district_id", nullable = true, columnDefinition = "varchar(128) default ''")
+    private String districtId;
     @Column(name = "name", nullable = false, columnDefinition = "varchar(128) default ''")
     private String name;
     @Column(name = "address", nullable = true, columnDefinition = "varchar(256) default ''")
@@ -47,7 +47,7 @@ public class KTV implements Serializable {
         this.score = "0";
     }
 
-    public KTV(int districtId, String name, String address, String phoneNumber, String introduction, int averagePrice, String score, String pictures, String geographicInformation) {
+    public KTV(String districtId, String name, String address, String phoneNumber, String introduction, int averagePrice, String score, String pictures, String geographicInformation) {
         this.districtId = districtId;
         this.name = name;
         this.address = address;
@@ -69,11 +69,11 @@ public class KTV implements Serializable {
         this.id = id;
     }
 
-    public int getDistrictId() {
+    public String getDistrictId() {
         return districtId;
     }
 
-    public void setDistrictId(int districtId) {
+    public void setDistrictId(String districtId) {
         this.districtId = districtId;
     }
 

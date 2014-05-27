@@ -18,8 +18,6 @@ public class Province implements Serializable {
     private String provinceId;
     @Column(name = "province_name", nullable = false, columnDefinition = "varchar(16) default ''")
     private String provinceName;
-    @Column(name = "province_code", nullable = false, columnDefinition = "varchar(16) default ''")
-    private String provinceCode;
 
     public int getId() {
         return id;
@@ -35,14 +33,6 @@ public class Province implements Serializable {
 
     public void setProvinceId(String provinceId) {
         this.provinceId = provinceId;
-    }
-
-    public String getProvinceCode() {
-        return provinceCode;
-    }
-
-    public void setProvinceCode(String provinceCode) {
-        this.provinceCode = provinceCode;
     }
 
     public String getProvinceName() {

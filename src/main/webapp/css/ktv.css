@@ -18,3 +18,13 @@
 .are-choice {
     margin-left: 35px;
 }
+.visited {
+    background-color: #eeeeee !important;
+}
+.pre-scrollable {
+    max-height: 340px;
+    overflow-y: scroll;
+}
+.getCity{
+    cursor: pointer;
+}

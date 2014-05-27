@@ -1,7 +1,7 @@
 package com.kzone.rest;
 
 import com.kzone.bean.Statistics;
-import com.kzone.bo.Response;
+import com.kzone.bo.ErrorMessage;
 import com.kzone.constants.ErrorCode;
 import com.kzone.service.StatisticsService;
 import org.apache.log4j.Logger;
@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import java.util.List;
 
@@ -29,36 +30,32 @@ public class StatisticsRest {
     @Path("/info/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getStatistics(@PathParam("id") int id) {
-        Response response = new Response();
         Statistics statistics = null;
 
         try {
             statistics = statisticsService.get(id);
         } catch (Exception e) {
             log.warn(e);
-            return response.setResponse(ErrorCode.GET_STATISTICS_ERR_CODE, ErrorCode.GET_STATISTICS_ERR_MSG + e.getMessage());
+            return Response.ok(new ErrorMessage(ErrorCode.GET_STATISTICS_ERR_CODE, ErrorCode.GET_STATISTICS_ERR_MSG),MediaType.APPLICATION_JSON).build();
         }
 
-        response.setData(statistics);
-        return response;
+        return Response.ok(statistics, MediaType.APPLICATION_JSON).build();
     }
 
     @GET
     @Path("/info")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getStatisticss() {
-        Response response = new Response();
         List<Statistics> statisticsList = null;
 
         try {
             statisticsList = statisticsService.getList();
         } catch (Exception e) {
             log.warn(e);
-            return response.setResponse(ErrorCode.GET_STATISTICS_LIST_ERR_CODE, ErrorCode.GET_STATISTICS_LIST_ERR_MSG + e.getMessage());
+            return Response.ok(new ErrorMessage(ErrorCode.GET_STATISTICS_LIST_ERR_CODE, ErrorCode.GET_STATISTICS_LIST_ERR_MSG),MediaType.APPLICATION_JSON).build();
         }
 
-        response.setData(statisticsList);
-        return response;
+        return Response.ok(statisticsList, MediaType.APPLICATION_JSON).build();
     }
 
     @GET
@@ -72,15 +69,13 @@ public class StatisticsRest {
     @Path("/info")
     @Produces(MediaType.APPLICATION_JSON)
     public Response addStatistics(@RequestBody String body) {
-        Response response = new Response();
-        return response;
+        return null;
     }
 
     @DELETE
     @Path("/info/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response deleteStatistics(@PathParam("id") int id) {
-        Response response = new Response();
-        return response;
+        return null;
     }
 }

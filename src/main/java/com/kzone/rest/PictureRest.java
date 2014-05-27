@@ -1,8 +1,8 @@
 package com.kzone.rest;
 
 import com.kzone.bean.KTV;
+import com.kzone.bo.ErrorMessage;
 import com.kzone.bo.Picture;
-import com.kzone.bo.Response;
 import com.kzone.constants.CommonConstants;
 import com.kzone.constants.ErrorCode;
 import com.kzone.constants.ParamsConstants;
@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
@@ -41,7 +42,6 @@ public class PictureRest {
     @Consumes({ MediaType.MULTIPART_FORM_DATA, MediaType.APPLICATION_JSON })
     @Produces(MediaType.APPLICATION_JSON)
     public Response addKTV(@Context HttpServletRequest request, @PathParam(ParamsConstants.PARAM_KTV_ID) int ktvId) {
-        Response response = new Response();
         String picture = null;
         KTV ktv = null;
         String pictureName = "";
@@ -65,18 +65,16 @@ public class PictureRest {
             pictureService.deletePicture(pictureName + "_0");
             pictureService.deletePicture(pictureName + "_1");
             pictureService.deletePicture(pictureName + "_2");
-            return response.setResponse(ErrorCode.ADD_PICTURE_ERR_CODE, ErrorCode.ADD_PICTURE_ERR_MSG + e.getMessage());
+            return javax.ws.rs.core.Response.ok(new ErrorMessage(ErrorCode.ADD_PICTURE_ERR_CODE, ErrorCode.ADD_PICTURE_ERR_MSG), MediaType.APPLICATION_JSON).build();
         }
 
-        response.setData(ktv);
-        return response;
+        return Response.ok(ktv, MediaType.APPLICATION_JSON).build();
     }
 
     @GET
     @Path("/{name}")
     @Produces(MediaType.TEXT_PLAIN)
     public InputStream getKTVPictures (@PathParam(ParamsConstants.PARAM_NAME) String name) {
-        Response response = new Response();
         InputStream inputStream = null;
 
         try {
@@ -92,8 +90,6 @@ public class PictureRest {
     @Path("/{name}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response deletePictures (@PathParam(ParamsConstants.PARAM_NAME) String name) {
-        Response response = new Response();
-
         try {
             log.debug("delete a picture, the picture's name is [" + name + "]");
             pictureService.deletePicture(name);
@@ -101,7 +97,7 @@ public class PictureRest {
             e.printStackTrace();
         }
 
-        return response;
+        return Response.ok(new com.kzone.bo.Response(), MediaType.APPLICATION_JSON).build();
     }
 
 }

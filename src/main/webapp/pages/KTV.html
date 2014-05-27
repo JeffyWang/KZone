@@ -50,6 +50,31 @@
     <p>
         <a class="btn btn-primary" role="button" data-toggle="modal" data-target="#myModal">添加</a>
         <div class="input-group">
+
+            <div class="btn-group are-choice">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                    Province <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu province pre-scrollable" role="menu">
+                </ul>
+            </div>
+            <div class="btn-group are-choice">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                    City <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu city pre-scrollable" role="menu">
+                </ul>
+            </div>
+            <div class="btn-group are-choice">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                    Area <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu area pre-scrollable" role="menu">
+                </ul>
+            </div>
+
+            <button type="button" class="btn btn-default dropdown-toggle" id="go">GO</button>
+
             <input type="text" class="form-control search" id="searchInput">
             <div class="input-group-btn">
                 <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" id="likeSearch"> &nbsp;<span class="caret"></span></button>
@@ -104,35 +129,23 @@
                     <label>Area</label>
                     <div class="btn-group are-choice">
                         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                            Action <span class="caret"></span>
+                            Province <span class="caret"></span>
                         </button>
-                        <ul class="dropdown-menu" role="menu">
-                            <li><a href="#">Action</a></li>
-                            <li><a href="#">Another action</a></li>
-                            <li><a href="#">Something else here</a></li>
-                            <li><a href="#">Separated link</a></li>
+                        <ul class="dropdown-menu province pre-scrollable" role="menu">
                         </ul>
                     </div>
                     <div class="btn-group are-choice">
                         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                            Action <span class="caret"></span>
+                            City <span class="caret"></span>
                         </button>
-                        <ul class="dropdown-menu" role="menu">
-                            <li><a href="#">Action</a></li>
-                            <li><a href="#">Another action</a></li>
-                            <li><a href="#">Something else here</a></li>
-                            <li><a href="#">Separated link</a></li>
+                        <ul class="dropdown-menu city pre-scrollable" role="menu">
                         </ul>
                     </div>
                     <div class="btn-group are-choice">
                         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                            Action <span class="caret"></span>
+                            Area <span class="caret"></span>
                         </button>
-                        <ul class="dropdown-menu" role="menu">
-                            <li><a href="#">Action</a></li>
-                            <li><a href="#">Another action</a></li>
-                            <li><a href="#">Something else here</a></li>
-                            <li><a href="#">Separated link</a></li>
+                        <ul class="dropdown-menu area pre-scrollable" role="menu">
                         </ul>
                     </div>
                 </div>

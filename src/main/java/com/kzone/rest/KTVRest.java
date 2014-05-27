@@ -1,7 +1,7 @@
 package com.kzone.rest;
 
 import com.kzone.bean.KTV;
-import com.kzone.bo.Response;
+import com.kzone.bo.ErrorMessage;
 import com.kzone.constants.CommonConstants;
 import com.kzone.constants.ErrorCode;
 import com.kzone.constants.ParamsConstants;
@@ -11,15 +11,13 @@ import com.kzone.util.EncodingUtil;
 import com.kzone.util.StringUtil;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.SystemEnvironmentPropertySource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.MultivaluedMap;
-import javax.ws.rs.core.UriInfo;
+import javax.ws.rs.core.*;
+import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.List;
@@ -41,77 +39,57 @@ public class KTVRest {
     @Path("/info/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getKTV(@PathParam(ParamsConstants.PARAM_ID) int id) {
-        Response response = new Response();
         KTV ktv = null;
 
         try {
             ktv = ktvService.get(id);
         } catch (Exception e) {
             log.warn(e);
-            return response.setResponse(ErrorCode.GET_KTV_ERR_CODE, ErrorCode.GET_KTV_ERR_MSG + e.getMessage());
+            return Response.ok(new ErrorMessage(ErrorCode.GET_KTV_ERR_CODE, ErrorCode.GET_KTV_ERR_MSG),MediaType.APPLICATION_JSON).build();
         }
 
-        response.setData(ktv);
-        return response;
+        return Response.ok(ktv,MediaType.APPLICATION_JSON).build();
     }
 
     @GET
     @Path("/info")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getKTVs() {
-        Response response = new Response();
-        List<KTV> ktvList = null;
-
-        try {
-            ktvList = ktvService.getList();
-        } catch (Exception e) {
-            log.warn(e);
-            return response.setResponse(ErrorCode.GET_KTV_LIST_ERR_CODE, ErrorCode.GET_KTV_LIST_ERR_MSG + e.getMessage());
-        }
-
-        response.setData(ktvList);
-        return response;
-    }
-
-    @GET
-    @Path("/info/{offset}/{length}/{name}/{address}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getKTVsPage(@Context UriInfo uriInfo) {
-        Response response = new Response();
+    public Response getKTVsPage(@QueryParam(ParamsConstants.PAGE_PARAMS_OFFSET) int offset, @QueryParam(ParamsConstants.PAGE_PARAMS_LENGTH) int length,
+                                @QueryParam(ParamsConstants.PARAM_KTV_NAME) String name, @QueryParam(ParamsConstants.PARAM_KTV_ADDRESS) String address,
+                                @QueryParam(ParamsConstants.PARAM_KTV_DISTRICT_ID) String districtId) {
         List<KTV> ktvPageList = null;
 
-        MultivaluedMap<String, String> params = uriInfo.getPathParameters();
         Map<String, String> likeCondition = new HashMap<String, String>();
         Map<String, String> equalCondition = new HashMap<String, String>();
-        int offset = Integer.parseInt(params.getFirst(ParamsConstants.PAGE_PARAMS_OFFSET));
-        int length = Integer.parseInt(params.getFirst(ParamsConstants.PAGE_PARAMS_LENGTH));
 
-        if (params.getFirst(ParamsConstants.PARAM_KTV_NAME) != null
-                && !CommonConstants.NULL_STRING.equals(params.getFirst(ParamsConstants.PARAM_KTV_NAME))
-                && !CommonConstants.NULL.equals(params.getFirst(ParamsConstants.PARAM_KTV_NAME)))
-            likeCondition.put(ParamsConstants.PARAM_KTV_NAME, params.getFirst(ParamsConstants.PARAM_KTV_NAME));
+        if (name != null
+                && !CommonConstants.NULL_STRING.equals(name)
+                && !CommonConstants.NULL.equals(name))
+            likeCondition.put(ParamsConstants.PARAM_KTV_NAME, name);
         // 模糊查询条件健值对
-        if (params.getFirst(ParamsConstants.PARAM_KTV_ADDRESS) != null
-                && !CommonConstants.NULL_STRING.equals(params.getFirst(ParamsConstants.PARAM_KTV_ADDRESS))
-                && !CommonConstants.NULL.equals(params.getFirst(ParamsConstants.PARAM_KTV_ADDRESS)))
-            likeCondition.put(ParamsConstants.PARAM_KTV_ADDRESS, params.getFirst(ParamsConstants.PARAM_KTV_ADDRESS));
+        if (address != null
+                && !CommonConstants.NULL_STRING.equals(address)
+                && !CommonConstants.NULL.equals(address))
+            likeCondition.put(ParamsConstants.PARAM_KTV_ADDRESS, address);
+        if (districtId != null
+                && !CommonConstants.NULL_STRING.equals(districtId)
+                && !CommonConstants.NULL.equals(districtId))
+            likeCondition.put(ParamsConstants.PARAM_KTV_DISTRICT_ID, districtId);
 
         try {
             ktvPageList = ktvService.getListForPage(KTV.class, offset, length, equalCondition, likeCondition);
         } catch (Exception e) {
             log.warn(e);
-            return response.setResponse(ErrorCode.GET_KTV_LIST_ERR_CODE, ErrorCode.GET_KTV_LIST_ERR_MSG + e.getMessage());
+            return Response.ok(new ErrorMessage(ErrorCode.GET_KTV_LIST_ERR_CODE, ErrorCode.GET_KTV_LIST_ERR_MSG),MediaType.APPLICATION_JSON).build();
         }
 
-        response.setData(ktvPageList);
-        return response;
+        return Response.ok(ktvPageList, MediaType.APPLICATION_JSON).build();
     }
 
     @POST
     @Path("/info")
     @Produces(MediaType.APPLICATION_JSON)
     public Response addKTV(@RequestBody String body){
-        Response response = new Response();
         KTV ktv = null;
         String encode = EncodingUtil.getEncoding(body);
 
@@ -121,18 +99,16 @@ public class KTVRest {
             ktv = ktvService.add(ktv);
         } catch (Exception e) {
             log.warn(e);
-            return response.setResponse(ErrorCode.ADD_KTV_ERR_CODE, ErrorCode.ADD_KTV_ERR_MSG + e.getMessage());
+            return Response.ok(new ErrorMessage(ErrorCode.ADD_KTV_ERR_CODE, ErrorCode.ADD_KTV_ERR_MSG),MediaType.APPLICATION_JSON).build();
         }
 
-        response.setData(ktv);
-        return response;
+        return Response.ok(ktv, MediaType.APPLICATION_JSON).build();
     }
 
     @DELETE
     @Path("/info/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response deleteKTV(@PathParam(ParamsConstants.PARAM_ID) int id) {
-        Response response = new Response();
         KTV ktv = null;
 
         try {
@@ -140,18 +116,16 @@ public class KTVRest {
             ktvService.delete(ktv);
         } catch (Exception e) {
             log.warn(e);
-            return response.setResponse(ErrorCode.DELETE_KTV_ERR_CODE, ErrorCode.DELETE_KTV_ERR_MSG + e.getMessage());
+            return Response.ok(new ErrorMessage(ErrorCode.DELETE_KTV_ERR_CODE, ErrorCode.DELETE_KTV_ERR_MSG),MediaType.APPLICATION_JSON).build();
         }
 
-        response.setData(ktv);
-        return response;
+        return Response.ok(ktv, MediaType.APPLICATION_JSON).build();
     }
 
     @PUT
     @Path("/info/")
     @Produces(MediaType.APPLICATION_JSON)
     public Response updateKTV(@RequestBody String body) {
-        Response response = new Response();
         KTV ktv = null;
         String encode = EncodingUtil.getEncoding(body);
 
@@ -161,44 +135,52 @@ public class KTVRest {
             ktv = ktvService.update(ktv);
         } catch (Exception e) {
             log.warn(e);
-            return response.setResponse(ErrorCode.UPDATE_KTV_ERR_CODE, ErrorCode.UPDATE_KTV_ERR_MSG + e.getMessage());
+            return Response.ok(new ErrorMessage(ErrorCode.UPDATE_KTV_ERR_CODE, ErrorCode.UPDATE_KTV_ERR_MSG),MediaType.APPLICATION_JSON).build();
         }
 
-        response.setData(ktv);
-        return  response;
+        return Response.ok(ktv, MediaType.APPLICATION_JSON).build();
     }
 
     @GET
-    @Path("/count/{name}/{address}")
+    @Path("/count")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getKTVCount(@Context UriInfo uriInfo) {
-        Response response = new Response();
+    public Response getKTVCount(@QueryParam(ParamsConstants.PARAM_KTV_NAME) String name, @QueryParam(ParamsConstants.PARAM_KTV_ADDRESS) String address,
+                                    @QueryParam(ParamsConstants.PARAM_KTV_DISTRICT_ID) String districtId) {
         Map<String, Integer> countMap = new HashMap<String, Integer>();
         int ktvCount = 0;
 
-        MultivaluedMap<String, String> params = uriInfo.getPathParameters();
+        try {
+            name = URLDecoder.decode(name , CommonConstants.ENCODE);
+        } catch (UnsupportedEncodingException e) {
+            log.warn(e);
+            return Response.ok(new ErrorMessage(ErrorCode.COUNT_KTV_ERR_CODE, ErrorCode.COUNT_KTV_ERR_MSG),MediaType.APPLICATION_JSON).build();
+        }
+
         Map<String, String> likeCondition = new HashMap<String, String>();
         Map<String, String> equalCondition = new HashMap<String, String>();
 
-        if (params.getFirst(ParamsConstants.PARAM_KTV_NAME) != null
-                && !CommonConstants.NULL_STRING.equals(params.getFirst(ParamsConstants.PARAM_KTV_NAME))
-                && !CommonConstants.NULL.equals(params.getFirst(ParamsConstants.PARAM_KTV_NAME)))
-            likeCondition.put(ParamsConstants.PARAM_KTV_NAME, params.getFirst(ParamsConstants.PARAM_KTV_NAME));
+        if (name != null
+                && !CommonConstants.NULL_STRING.equals(name)
+                && !CommonConstants.NULL.equals(name))
+            likeCondition.put(ParamsConstants.PARAM_KTV_NAME, name);
         // 模糊查询条件健值对
-        if (params.getFirst(ParamsConstants.PARAM_KTV_ADDRESS) != null
-                && !CommonConstants.NULL_STRING.equals(params.getFirst(ParamsConstants.PARAM_KTV_ADDRESS))
-                && !CommonConstants.NULL.equals(params.getFirst(ParamsConstants.PARAM_KTV_ADDRESS)))
-            likeCondition.put(ParamsConstants.PARAM_KTV_ADDRESS, params.getFirst(ParamsConstants.PARAM_KTV_ADDRESS));
+        if (address != null
+                && !CommonConstants.NULL_STRING.equals(address)
+                && !CommonConstants.NULL.equals(address))
+            likeCondition.put(ParamsConstants.PARAM_KTV_ADDRESS, address);
+        if (districtId != null
+                && !CommonConstants.NULL_STRING.equals(districtId)
+                && !CommonConstants.NULL.equals(districtId))
+            likeCondition.put(ParamsConstants.PARAM_KTV_DISTRICT_ID, districtId);
 
         try {
             ktvCount = (int) ktvService.getListCount(equalCondition,likeCondition);
         } catch (Exception e) {
             log.warn(e);
-            return response.setResponse(ErrorCode.COUNT_KTV_ERR_CODE, ErrorCode.COUNT_KTV_ERR_MSG + e.getMessage());
+            return Response.ok(new ErrorMessage(ErrorCode.COUNT_KTV_ERR_CODE, ErrorCode.COUNT_KTV_ERR_MSG),MediaType.APPLICATION_JSON).build();
         }
 
         countMap.put(ParamsConstants.PAGE_DATA_COUNT, ktvCount);
-        response.setData(countMap);
-        return response;
+        return Response.ok(countMap, MediaType.APPLICATION_JSON).build();
     }
 }
