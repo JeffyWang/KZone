@@ -8,6 +8,7 @@ import com.kzone.constants.ErrorCode;
 import com.kzone.constants.ParamsConstants;
 import com.kzone.service.KTVService;
 import com.kzone.service.PictureService;
+import com.kzone.util.Pinyin4jUtil;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -48,11 +49,12 @@ public class PictureRest {
 
         MultipartResolver resolver = new CommonsMultipartResolver(request.getSession().getServletContext());
         MultipartHttpServletRequest multipartRequest = resolver.resolveMultipart(request);
-        MultipartFile file = multipartRequest.getFile(ParamsConstants.PARAM_PICTURE);
+        MultipartFile file = multipartRequest.getFile("Filedata");
 
         try {
             ktv =  ktvService.get(ktvId);
-            pictureName = ktv.getName() + ktv.getDistrictId() + "_" + System.currentTimeMillis();
+            String tmp = Pinyin4jUtil.getPinyinJianPin(ktv.getName()).split(",")[0];
+            pictureName = tmp + "_" + ktv.getDistrictId() + "_" + System.currentTimeMillis();
             InputStream input = file.getInputStream();
             pictureService.addPicture(input, pictureName, CommonConstants.CONTENT_TYPE, CommonConstants.PICTURE_TYPE_KTV, String.valueOf(ktvId));
             picture = pictureService.addPictureName(ktv.getPictures(),pictureName);

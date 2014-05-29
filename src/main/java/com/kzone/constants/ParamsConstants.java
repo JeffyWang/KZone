@@ -31,8 +31,13 @@ public interface ParamsConstants {
     final static String PARAM_COMMENT_SCORE = "score";
     final static String PARAM_COMMENT_KTV_ID = "KTVId";
 
+    final static String PARAM_SMALL_PICTURES = "bigPictures";
+    final static String PARAM_MIDDLE_PICTURES = "middlePictures";
+    final static String PARAM_BIG_PICTURES = "smallPictures";
+
     final static String DISTRICT_ID_REFERENCE = "reference";
     final static String DISTRICT_PROVINCE_ID = "provinceId";
     final static String DISTRICT_CITY_ID = "cityId";
     final static String DISTRICT_AREA_ID = "areaId";
+
 }

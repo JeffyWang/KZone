@@ -17,9 +17,9 @@ public class Information implements Serializable {
     private int id;
     @Column(name = "title", nullable = true, columnDefinition = "varchar(128) default ''")
     private String title;
-    @Column(name = "article", nullable = true, columnDefinition = "varchar(10240) default ''")
+    @Column(name = "article", nullable = true, columnDefinition = "text")
     private String article;
-    @Column(name = "pictures", nullable = true, columnDefinition = "varchar(4096) default ''")
+    @Column(name = "pictures", nullable = true, columnDefinition = "text")
     private String pictures;
     @Column(name = "link", nullable = true, columnDefinition = "varchar(256) default ''")
     private String link;

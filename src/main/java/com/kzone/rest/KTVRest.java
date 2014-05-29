@@ -9,6 +9,7 @@ import com.kzone.service.KTVService;
 import com.kzone.service.PictureService;
 import com.kzone.util.EncodingUtil;
 import com.kzone.util.StringUtil;
+import net.sf.json.JSONObject;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -182,5 +183,38 @@ public class KTVRest {
 
         countMap.put(ParamsConstants.PAGE_DATA_COUNT, ktvCount);
         return Response.ok(countMap, MediaType.APPLICATION_JSON).build();
+    }
+
+    @DELETE
+    @Path("/picture/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response deleteKTVPictures(@PathParam(ParamsConstants.PARAM_ID) int id) {
+        KTV ktv = null;
+
+        try {
+            ktv = ktvService.get(id);
+            String picturesString = ktv.getPictures();
+            JSONObject jsonObject = StringUtil.stringToJSON(picturesString);
+            String smallPicturesString = (String) jsonObject.get(ParamsConstants.PARAM_SMALL_PICTURES);
+            String middlePicturesString = (String) jsonObject.get(ParamsConstants.PARAM_MIDDLE_PICTURES);
+            String bigPicturesString = (String) jsonObject.get(ParamsConstants.PARAM_BIG_PICTURES);
+            String[] smallPictures = smallPicturesString.split(",");
+            String[] middlePictures = middlePicturesString.split(",");
+            String[] bigPictures = bigPicturesString.split(",");
+            String[] pictureName = new String[smallPictures.length + middlePictures.length + bigPictures.length];
+            System.arraycopy(smallPictures, 0, pictureName, 0, smallPictures.length);
+            System.arraycopy(middlePictures, 0, pictureName, smallPictures.length, middlePictures.length);
+            System.arraycopy(bigPictures, 0, pictureName, middlePictures.length + smallPictures.length, bigPictures.length);
+
+            for(String s : pictureName) {
+                pictureService.deletePicture(s);
+            }
+
+        } catch (Exception e) {
+            log.warn(e);
+        }
+
+//        pictureService
+        return Response.ok().build();
     }
 }

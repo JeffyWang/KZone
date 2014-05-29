@@ -19,17 +19,17 @@ public class KTV implements Serializable {
     private String districtId;
     @Column(name = "name", nullable = false, columnDefinition = "varchar(128) default ''")
     private String name;
-    @Column(name = "address", nullable = true, columnDefinition = "varchar(256) default ''")
+    @Column(name = "address", nullable = true, columnDefinition = "varchar(512) default ''")
     private String address;
     @Column(name = "phone_number", nullable = true, columnDefinition = "varchar(16) default ''")
     private String phoneNumber;
-    @Column(name = "introduction", nullable = true, columnDefinition = "varchar(10240) default ''")
+    @Column(name = "introduction", nullable = true, columnDefinition = "varchar(20480) default ''")
     private String introduction;
     @Column(name = "average_price", nullable = true, columnDefinition = "int default 0")
     private int averagePrice;
     @Column(name = "score", nullable = true, columnDefinition = "varchar(32) default 0.0")
     private String  score;
-    @Column(name = "pictures", nullable = true, columnDefinition = "varchar(4096) default ''")
+    @Column(name = "pictures", nullable = true, columnDefinition = "text")
     private String pictures;
     @Column(name = "geographic_information", nullable = true, columnDefinition = "varchar(32) default ''")
     private String geographicInformation;

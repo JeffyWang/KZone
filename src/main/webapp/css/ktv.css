@@ -28,3 +28,12 @@
 .getCity{
     cursor: pointer;
 }
+a{
+    cursor: pointer;
+}
+.info{
+    width: 80%;
+}
+.img{
+    margin: auto;
+}

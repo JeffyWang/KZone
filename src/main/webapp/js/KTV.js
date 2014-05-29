@@ -12,6 +12,7 @@ var _districtCode = null;
 var _provinceCode = null;
 var _cityCode = null;
 var _areaCode = null;
+var _ktvInfoId = 0;
 
 $(document).ready(function(){
     var curWwwPath = window.document.location.href;
@@ -38,13 +39,26 @@ var initPageData = function() {
             $.each(data, function(ktvIndex, ktv) {
                 var createTime = date(ktv.createTime);
                 var updateTime = date(ktv.updateTime);
-                ktvString += "<tr><td>" +ktv.name.substr(0,6) +  "</td><td>" +ktv.phoneNumber + "</td><td>" +ktv.address.substr(0,10) + "</td><td>" +ktv.score +
+                ktvString += "<tr><td><a data-toggle='modal' data-target='#ktvInfo' class='ktvInfo' rel='" + ktv.id + "'>" +ktv.name.substr(0,6) +  "</a></td><td>" +ktv.phoneNumber + "</td><td>" +ktv.address.substr(0,10) + "</td><td>" +ktv.score +
                     "</td><td>" +createTime + "</td><td>" +updateTime +
                     "</td><td><button type='button' class='btn btn-default btn-sm remove'rel='" + ktv.id + "'><span class='glyphicon glyphicon-remove'></span></button>" +
                     "<button type='button' class='btn btn-default btn-sm refresh'><span class='glyphicon glyphicon-refresh'></span></button>" +
-                    "<button type='button' class='btn btn-default btn-sm picture'><span class='glyphicon glyphicon-picture'></span></button></td></tr>";
+                    "<button type='button' data-toggle='modal' data-target='#upload' class='btn btn-default btn-sm picture' rel='" + ktv.id + "'><span class='glyphicon glyphicon-picture'></span></button></td></tr>";
             });
             $("#ktv").append(ktvString);
+
+            $(".ktvInfo").bind("click", function() {
+                ktvId = $(this).attr("rel");
+                    $.ajax({
+                        url: _localhostPath + '/rest/ktv/info/' + ktvId,
+                        type: 'GET',
+                        contentType: 'application/json;charset=UTF-8',
+                        timeout: 1000,
+                        success: function (data) {
+                            showKTVInfo(data);
+                        }
+                    });
+            });
 
             $(".remove").bind("click", function() {
                 ktvId = $(this).attr("rel");
@@ -56,8 +70,17 @@ var initPageData = function() {
             });
 
             $(".picture").bind("click", function() {
+                var ktvId = $(this).attr("rel");
 
-            })
+                $("#removePicture").on("click", function() {
+                    removePicture(ktvId);
+                });
+
+                $('#file_upload').uploadify({
+                    "swf" : "../js/uploadify.swf",
+                    "uploader" : _localhostPath + "/rest/picture/ktv/" + ktvId
+                });
+            });
 
             initDistrict();
         },
@@ -98,26 +121,13 @@ var initDistrict = function() {
 
 var initPageCount = function() {
     var pageCount = '<li><a href="#" class="lastPage">&laquo;</a></li>';
-    var startPage = 0;
-    var endPage = 10;
 
-    if(_pageCount < endPage) {
-        for(var i = startPage; i < _pageCount; i ++) {
-            if(i == 0) {
-                pageCount += '<li><a rel="' + i + '" href="#" class="page visited">' + (i + 1) + '</a></li>';
-            } else {
-                pageCount += '<li><a rel="' + (i * _pageDataCount ) + '" href="#" class="page">' + (i + 1) + '</a></li>';
-            }
+    for(var i = 0; i < _pageCount; i ++) {
+        if(i == 0) {
+            pageCount += '<li><a rel="' + i + '" href="#" class="page visited">' + (i + 1) + '</a></li>';
+        } else {
+            pageCount += '<li><a rel="' + (i * _pageDataCount ) + '" href="#" class="page">' + (i + 1) + '</a></li>';
         }
-    } else if(_pageCount >= endPage) {
-        for(var i = startPage; i < endPage; i ++) {
-            if(i == 0) {
-                pageCount += '<li><a rel="' + i + '" href="#" class="page visited">' + (i + 1) + '</a></li>';
-            } else {
-                pageCount += '<li><a rel="' + (i * _pageDataCount ) + '" href="#" class="page">' + (i + 1) + '</a></li>';
-            }
-        }
-        pageCount += "<li><a>...</a></li>";
     }
 
     pageCount += '<li><a href="#" class="nextPage">&raquo;</a></li>';
@@ -196,6 +206,8 @@ $("#addKtv").on("click", function(){
         },
         error : function(XMLHttpRequest, textStatus, errorThrown) {
             console.log(errorThrown);
+            console.log(textStatus);
+            console.log(XMLHttpRequest);
         }
     });
 });
@@ -234,8 +246,24 @@ $("#ktvAddress").on("click", function(){
 
 /////////////////////////////////////////////////////-----function
 var removeKtv = function(ktvId) {
+    removePicture(ktvId);
     $.ajax({
         url: _localhostPath + '/rest/ktv/info/' + ktvId,
+        type: 'DELETE',
+        contentType:'application/json;charset=UTF-8',
+        timeout: 1000,
+        success: function(data){
+            window.location.reload();
+        },
+        error : function(XMLHttpRequest, textStatus, errorThrown) {
+            console.log(errorThrown);
+        }
+    });
+};
+
+var removePicture = function(ktvId) {
+    $.ajax({
+        url: _localhostPath + '/rest/ktv/picture/' + ktvId,
         type: 'DELETE',
         contentType:'application/json;charset=UTF-8',
         timeout: 1000,
@@ -301,4 +329,45 @@ var getArea = function(cityId) {
             console.log(errorThrown);
         }
     });
+};
+
+var showKTVInfo = function(data) {
+//    <div class="item active">
+//        <img class="img" src="http://115.28.168.153:8080/rest/picture/XYD_100000-100100-100101_1401340845116_2" alt="First slide image">
+//            <div class="carousel-caption">
+//                <h3>First slide label</h3>
+//                <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+//            </div>
+//        </div>
+//        <div class="item">
+//            <img class="img" src="http://115.28.168.153:8080/rest/picture/XYD_100000-100100-100101_1401340845116_1" alt="Second slide image">
+//                <div class="carousel-caption">
+//                    <h3>Second slide label</h3>
+//                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+//                </div>
+//            </div>
+//            <div class="item">
+//                <img class="img" src="http://115.28.168.153:8080/rest/picture/XYD_100000-100100-100101_1401340845116_0" alt="Third slide image">
+//                    <div class="carousel-caption">
+//                        <h3>Third slide label</h3>
+//                        <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
+//                    </div>
+//                </div>
+
+    var pictureName = data.pictures;
+    var pictureJson = JSON.parse(pictureName);
+    var picture = pictureJson.bigPictures.split(",");
+    var url = _localhostPath + '/rest/picture/';
+    var pictureItem = "";
+    console.log(picture.length)
+    for(var i = 0; i < picture.length - 1; i ++) {
+        console.log(picture[i]);
+        var pictureUrl = url + picture[i];
+        console.log(pictureUrl)
+        if(i == 0) {
+            pictureItem += '<div class="item active"><img class="img" src="' + pictureUrl + '"><div class="carousel-caption"></div></div>'
+        }
+        pictureItem += '<div class="item"><img class="img" src="' + pictureUrl + '"><div class="carousel-caption"></div></div>'
+    }
+    $("#picture").append(pictureItem);
 };
