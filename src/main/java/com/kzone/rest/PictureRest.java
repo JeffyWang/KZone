@@ -53,8 +53,8 @@ public class PictureRest {
 
         try {
             ktv =  ktvService.get(ktvId);
-            String tmp = Pinyin4jUtil.getPinyinJianPin(ktv.getName()).split(",")[0];
-            pictureName = tmp + "_" + ktv.getDistrictId() + "_" + System.currentTimeMillis();
+            String tmp = Pinyin4jUtil.getPinyinJianPin(ktv.getName().replaceAll("[0-9]","")).split(",")[0];
+            pictureName = tmp + "_" + ktv.getDistrictId();
             InputStream input = file.getInputStream();
             pictureService.addPicture(input, pictureName, CommonConstants.CONTENT_TYPE, CommonConstants.PICTURE_TYPE_KTV, String.valueOf(ktvId));
             picture = pictureService.addPictureName(ktv.getPictures(),pictureName);

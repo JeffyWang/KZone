@@ -9,7 +9,7 @@ http://www.springframework.org/schema/data/mongo http://www.springframework.org/
 
     <context:property-placeholder location="classpath:kzone-config.properties" />
 
-    <mongo:mongo host="192.168.0.147" port="27017">
+    <mongo:mongo host="115.28.168.153" port="27017">
         <mongo:options connections-per-host="10"
                        threads-allowed-to-block-for-connection-multiplier="5"
                        connect-timeout="0" max-wait-time="120000" auto-connect-retry="false"

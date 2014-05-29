@@ -9,6 +9,8 @@ import net.sourceforge.pinyin4j.format.exception.BadHanyuPinyinOutputFormatCombi
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Pinyin4jUtil {
 
@@ -146,14 +148,19 @@ public class Pinyin4jUtil {
 
     public static void main(String[] args) {
         String str = "星乐迪";
-        str = "111111";
-        System.out.println("小写输出：" + getPinyinToLowerCase(str));
-        System.out.println("大写输出：" + getPinyinToUpperCase(str));
-        System.out.println("首字母大写输出：" + getPinyinFirstToUpperCase(str));
-        System.out.println("简拼输出：" + getPinyinJianPin(str));
+        str = "11adasd11乐11";
+//        System.out.println("小写输出：" + getPinyinToLowerCase(str));
+//        System.out.println("大写输出：" + getPinyinToUpperCase(str));
+//        System.out.println("首字母大写输出：" + getPinyinFirstToUpperCase(str));
+//        System.out.println("简拼输出：" + getPinyinJianPin(str));
 
-        String s = getPinyinJianPin(str);
-        String ws[] = s.split(",");
-        System.out.println(ws[0]);
+//        String regEx="[^0-9]";
+//        Pattern p = Pattern.compile(regEx);
+//        Matcher m = p.matcher(str);
+//        System.out.println( m.replaceAll("").trim());
+        System.out.println(str.replaceAll("[0-9]",""));
+//        String s = getPinyinJianPin(str);
+//        String ws[] = s.split(",");
+//        System.out.println(ws[0]);
     }
 }
