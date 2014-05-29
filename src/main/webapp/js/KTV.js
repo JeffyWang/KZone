@@ -332,42 +332,30 @@ var getArea = function(cityId) {
 };
 
 var showKTVInfo = function(data) {
-//    <div class="item active">
-//        <img class="img" src="http://115.28.168.153:8080/rest/picture/XYD_100000-100100-100101_1401340845116_2" alt="First slide image">
-//            <div class="carousel-caption">
-//                <h3>First slide label</h3>
-//                <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
-//            </div>
-//        </div>
-//        <div class="item">
-//            <img class="img" src="http://115.28.168.153:8080/rest/picture/XYD_100000-100100-100101_1401340845116_1" alt="Second slide image">
-//                <div class="carousel-caption">
-//                    <h3>Second slide label</h3>
-//                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-//                </div>
-//            </div>
-//            <div class="item">
-//                <img class="img" src="http://115.28.168.153:8080/rest/picture/XYD_100000-100100-100101_1401340845116_0" alt="Third slide image">
-//                    <div class="carousel-caption">
-//                        <h3>Third slide label</h3>
-//                        <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
-//                    </div>
-//                </div>
-
     var pictureName = data.pictures;
     var pictureJson = JSON.parse(pictureName);
     var picture = pictureJson.bigPictures.split(",");
     var url = _localhostPath + '/rest/picture/';
     var pictureItem = "";
+    var picturePoint = "";
     console.log(picture.length)
     for(var i = 0; i < picture.length - 1; i ++) {
-        console.log(picture[i]);
         var pictureUrl = url + picture[i];
-        console.log(pictureUrl)
         if(i == 0) {
             pictureItem += '<div class="item active"><img class="img" src="' + pictureUrl + '"><div class="carousel-caption"></div></div>'
+            picturePoint += '<li data-target="#carousel-example-captions" data-slide-to="0" class="active"></li>';
+        } else {
+            pictureItem += '<div class="item"><img class="img" src="' + pictureUrl + '"><div class="carousel-caption"></div></div>'
+            picturePoint += ' <li data-target="#carousel-example-captions" data-slide-to="' + i + '"></li>';
         }
-        pictureItem += '<div class="item"><img class="img" src="' + pictureUrl + '"><div class="carousel-caption"></div></div>'
+
     }
+    $("#picture").html("");
+    $("#point").html("");
     $("#picture").append(pictureItem);
+    $("#point").append(picturePoint);
 };
+
+var reload = function() {
+    window.location.reload();
+}

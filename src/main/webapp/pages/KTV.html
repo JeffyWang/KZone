@@ -191,7 +191,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal" id="removePicture">Close</button>
-                <button type="button" class="btn btn-primary" data-dismiss="modal">Save</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="reload()">Save</button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
@@ -209,16 +209,14 @@
                 <!--<iframe src="ktvInfo.html" width="100%" height="100%">-->
                     <div class="bs-example">
                         <div id="carousel-example-captions" class="carousel slide" data-ride="carousel">
-                            <ol class="carousel-indicators">
-                                <li data-target="#carousel-example-captions" data-slide-to="0" class="active"></li>
-                                <li data-target="#carousel-example-captions" data-slide-to="1"></li>
-                                <li data-target="#carousel-example-captions" data-slide-to="2"></li>
+                            <ol class="carousel-indicators" id="point">
+
                             </ol>
                             <div class="carousel-inner" id="picture">
                                 <div class="item">
                                     <!--<img class="img" src="http://115.28.168.153:8080/rest/picture/XYD_100000-100100-100101_1401340845116_2" alt="First slide image">-->
-                                    <div class="carousel-caption">
-                                    </div>
+                                    <!--<div class="carousel-caption">-->
+                                    <!--</div>-->
                                 </div>
                             </div>
                             <a class="left carousel-control" href="#carousel-example-captions" data-slide="prev">
