@@ -39,7 +39,7 @@ public class DistrictRest {
             provinceList = districtService.getProvinceList();
         } catch (Exception e) {
             log.warn(e);
-            return Response.ok(new ErrorMessage(ErrorCode.GET_DISTRICT_ERR_CODE, ErrorCode.GET_DISTRICT_ERR_MSG),MediaType.APPLICATION_JSON).build();
+            return Response.ok(new ErrorMessage(ErrorCode.GET_DISTRICT_ERR_CODE, ErrorCode.GET_DISTRICT_ERR_MSG),MediaType.APPLICATION_JSON).status(500).build();
         }
 
         return Response.ok(provinceList, MediaType.APPLICATION_JSON).build();
@@ -55,7 +55,7 @@ public class DistrictRest {
             province = districtService.getProvince(provinceId);
         } catch (Exception e) {
             log.warn(e);
-            return Response.ok(new ErrorMessage(ErrorCode.GET_DISTRICT_ERR_CODE, ErrorCode.GET_DISTRICT_ERR_MSG),MediaType.APPLICATION_JSON).build();
+            return Response.ok(new ErrorMessage(ErrorCode.GET_DISTRICT_ERR_CODE, ErrorCode.GET_DISTRICT_ERR_MSG),MediaType.APPLICATION_JSON).status(500).build();
         }
 
         return Response.ok(province, MediaType.APPLICATION_JSON).build();
@@ -71,7 +71,7 @@ public class DistrictRest {
             cityList = districtService.getCityList();
         } catch (Exception e) {
             log.warn(e);
-            return Response.ok(new ErrorMessage(ErrorCode.GET_DISTRICT_ERR_CODE, ErrorCode.GET_DISTRICT_ERR_MSG),MediaType.APPLICATION_JSON).build();
+            return Response.ok(new ErrorMessage(ErrorCode.GET_DISTRICT_ERR_CODE, ErrorCode.GET_DISTRICT_ERR_MSG),MediaType.APPLICATION_JSON).status(500).build();
         }
 
         return Response.ok(cityList, MediaType.APPLICATION_JSON).build();
@@ -87,7 +87,7 @@ public class DistrictRest {
             city = districtService.getCity(cityId);
         } catch (Exception e) {
             log.warn(e);
-            return Response.ok(new ErrorMessage(ErrorCode.GET_DISTRICT_ERR_CODE, ErrorCode.GET_DISTRICT_ERR_MSG),MediaType.APPLICATION_JSON).build();
+            return Response.ok(new ErrorMessage(ErrorCode.GET_DISTRICT_ERR_CODE, ErrorCode.GET_DISTRICT_ERR_MSG),MediaType.APPLICATION_JSON).status(500).build();
         }
 
         return Response.ok(city, MediaType.APPLICATION_JSON).build();
@@ -103,7 +103,7 @@ public class DistrictRest {
             cityList = districtService.getCityList(provinceId);
         } catch (Exception e) {
             log.warn(e);
-            return Response.ok(new ErrorMessage(ErrorCode.GET_DISTRICT_ERR_CODE, ErrorCode.GET_DISTRICT_ERR_MSG),MediaType.APPLICATION_JSON).build();
+            return Response.ok(new ErrorMessage(ErrorCode.GET_DISTRICT_ERR_CODE, ErrorCode.GET_DISTRICT_ERR_MSG),MediaType.APPLICATION_JSON).status(500).build();
         }
 
         return Response.ok(cityList, MediaType.APPLICATION_JSON).build();
@@ -119,7 +119,7 @@ public class DistrictRest {
             areaList = districtService.getAreaList();
         } catch (Exception e) {
             log.warn(e);
-            return Response.ok(new ErrorMessage(ErrorCode.GET_DISTRICT_ERR_CODE, ErrorCode.GET_DISTRICT_ERR_MSG),MediaType.APPLICATION_JSON).build();
+            return Response.ok(new ErrorMessage(ErrorCode.GET_DISTRICT_ERR_CODE, ErrorCode.GET_DISTRICT_ERR_MSG),MediaType.APPLICATION_JSON).status(500).build();
         }
 
         return Response.ok(areaList, MediaType.APPLICATION_JSON).build();
@@ -135,7 +135,7 @@ public class DistrictRest {
             area = districtService.getArea(areaId);
         } catch (Exception e) {
             log.warn(e);
-            return Response.ok(new ErrorMessage(ErrorCode.GET_DISTRICT_ERR_CODE, ErrorCode.GET_DISTRICT_ERR_MSG),MediaType.APPLICATION_JSON).build();
+            return Response.ok(new ErrorMessage(ErrorCode.GET_DISTRICT_ERR_CODE, ErrorCode.GET_DISTRICT_ERR_MSG),MediaType.APPLICATION_JSON).status(500).build();
         }
 
         return Response.ok(area, MediaType.APPLICATION_JSON).build();
@@ -151,7 +151,7 @@ public class DistrictRest {
             areaList = districtService.getAreaList(cityId);
         } catch (Exception e) {
             log.warn(e);
-            return Response.ok(new ErrorMessage(ErrorCode.GET_DISTRICT_ERR_CODE, ErrorCode.GET_DISTRICT_ERR_MSG),MediaType.APPLICATION_JSON).build();
+            return Response.ok(new ErrorMessage(ErrorCode.GET_DISTRICT_ERR_CODE, ErrorCode.GET_DISTRICT_ERR_MSG),MediaType.APPLICATION_JSON).status(500).build();
         }
 
         return Response.ok(areaList, MediaType.APPLICATION_JSON).build();

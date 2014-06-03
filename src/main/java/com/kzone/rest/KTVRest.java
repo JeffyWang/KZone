@@ -46,7 +46,7 @@ public class KTVRest {
             ktv = ktvService.get(id);
         } catch (Exception e) {
             log.warn(e);
-            return Response.ok(new ErrorMessage(ErrorCode.GET_KTV_ERR_CODE, ErrorCode.GET_KTV_ERR_MSG),MediaType.APPLICATION_JSON).build();
+            return Response.ok(new ErrorMessage(ErrorCode.GET_KTV_ERR_CODE, ErrorCode.GET_KTV_ERR_MSG),MediaType.APPLICATION_JSON).status(500).build();
         }
 
         return Response.ok(ktv,MediaType.APPLICATION_JSON).build();
@@ -81,7 +81,7 @@ public class KTVRest {
             ktvPageList = ktvService.getListForPage(KTV.class, offset, length, equalCondition, likeCondition);
         } catch (Exception e) {
             log.warn(e);
-            return Response.ok(new ErrorMessage(ErrorCode.GET_KTV_LIST_ERR_CODE, ErrorCode.GET_KTV_LIST_ERR_MSG),MediaType.APPLICATION_JSON).build();
+            return Response.ok(new ErrorMessage(ErrorCode.GET_KTV_LIST_ERR_CODE, ErrorCode.GET_KTV_LIST_ERR_MSG),MediaType.APPLICATION_JSON).status(500).build();
         }
 
         return Response.ok(ktvPageList, MediaType.APPLICATION_JSON).build();
@@ -100,7 +100,7 @@ public class KTVRest {
             ktv = ktvService.add(ktv);
         } catch (Exception e) {
             log.warn(e);
-            return Response.ok(new ErrorMessage(ErrorCode.ADD_KTV_ERR_CODE, ErrorCode.ADD_KTV_ERR_MSG),MediaType.APPLICATION_JSON).build();
+            return Response.ok(new ErrorMessage(ErrorCode.ADD_KTV_ERR_CODE, ErrorCode.ADD_KTV_ERR_MSG),MediaType.APPLICATION_JSON).status(500).build();
         }
 
         return Response.ok(ktv, MediaType.APPLICATION_JSON).build();
@@ -117,7 +117,7 @@ public class KTVRest {
             ktvService.delete(ktv);
         } catch (Exception e) {
             log.warn(e);
-            return Response.ok(new ErrorMessage(ErrorCode.DELETE_KTV_ERR_CODE, ErrorCode.DELETE_KTV_ERR_MSG),MediaType.APPLICATION_JSON).build();
+            return Response.ok(new ErrorMessage(ErrorCode.DELETE_KTV_ERR_CODE, ErrorCode.DELETE_KTV_ERR_MSG),MediaType.APPLICATION_JSON).status(500).build();
         }
 
         return Response.ok(ktv, MediaType.APPLICATION_JSON).build();
@@ -136,7 +136,7 @@ public class KTVRest {
             ktv = ktvService.update(ktv);
         } catch (Exception e) {
             log.warn(e);
-            return Response.ok(new ErrorMessage(ErrorCode.UPDATE_KTV_ERR_CODE, ErrorCode.UPDATE_KTV_ERR_MSG),MediaType.APPLICATION_JSON).build();
+            return Response.ok(new ErrorMessage(ErrorCode.UPDATE_KTV_ERR_CODE, ErrorCode.UPDATE_KTV_ERR_MSG),MediaType.APPLICATION_JSON).status(500).build();
         }
 
         return Response.ok(ktv, MediaType.APPLICATION_JSON).build();
@@ -149,13 +149,6 @@ public class KTVRest {
                                     @QueryParam(ParamsConstants.PARAM_KTV_DISTRICT_ID) String districtId) {
         Map<String, Integer> countMap = new HashMap<String, Integer>();
         int ktvCount = 0;
-
-        try {
-            name = URLDecoder.decode(name , CommonConstants.ENCODE);
-        } catch (UnsupportedEncodingException e) {
-            log.warn(e);
-            return Response.ok(new ErrorMessage(ErrorCode.COUNT_KTV_ERR_CODE, ErrorCode.COUNT_KTV_ERR_MSG),MediaType.APPLICATION_JSON).build();
-        }
 
         Map<String, String> likeCondition = new HashMap<String, String>();
         Map<String, String> equalCondition = new HashMap<String, String>();
@@ -178,7 +171,7 @@ public class KTVRest {
             ktvCount = (int) ktvService.getListCount(equalCondition,likeCondition);
         } catch (Exception e) {
             log.warn(e);
-            return Response.ok(new ErrorMessage(ErrorCode.COUNT_KTV_ERR_CODE, ErrorCode.COUNT_KTV_ERR_MSG),MediaType.APPLICATION_JSON).build();
+            return Response.ok(new ErrorMessage(ErrorCode.COUNT_KTV_ERR_CODE, ErrorCode.COUNT_KTV_ERR_MSG),MediaType.APPLICATION_JSON).status(500).build();
         }
 
         countMap.put(ParamsConstants.PAGE_DATA_COUNT, ktvCount);

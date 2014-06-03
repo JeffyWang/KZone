@@ -54,11 +54,11 @@ public class PictureRest {
         try {
             ktv =  ktvService.get(ktvId);
             String tmp = "";
-            tmp = Pinyin4jUtil.getPinyinJianPin(ktv.getName().replaceAll("[0-9]","")).split(",")[0];
-            pictureName = tmp + "_" + ktv.getDistrictId() + "_" + System.currentTimeMillis();
+            tmp = Pinyin4jUtil.getPinyinJianPin(ktv.getName().trim().replaceAll("[0-9]","")).split(",")[0];
+            pictureName = tmp + System.currentTimeMillis();
             InputStream input = file.getInputStream();
             pictureService.addPicture(input, pictureName, CommonConstants.CONTENT_TYPE, CommonConstants.PICTURE_TYPE_KTV, String.valueOf(ktvId));
-            picture = pictureService.addPictureName(ktv.getPictures(),pictureName);
+            picture = pictureService.addPictureName(ktv.getPictures(),pictureName, ktvId);
             ktv.setPictures(picture);
             ktvService.update(ktv);
 
@@ -75,13 +75,13 @@ public class PictureRest {
     }
 
     @GET
-    @Path("/{name}")
+    @Path("/{id}/{name}")
     @Produces(MediaType.TEXT_PLAIN)
-    public InputStream getKTVPictures (@PathParam(ParamsConstants.PARAM_NAME) String name) {
+    public InputStream getKTVPictures (@PathParam(ParamsConstants.PARAM_NAME) String name, @PathParam(ParamsConstants.PARAM_ID) int id) {
         InputStream inputStream = null;
 
         try {
-            inputStream = pictureService.getPicture(name).getInputStream();
+            inputStream = pictureService.getPicture(name, id).getInputStream();
         } catch (Exception e) {
             e.printStackTrace();
         }

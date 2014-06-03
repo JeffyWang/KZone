@@ -33,6 +33,7 @@ public class Information implements Serializable {
     public Information() {
         this.createTime = new Date();
         this.updateTime = new Date();
+        this.pictures = "{\"bigPictures\":\"\",\"middlePictures\":\"\",\"smallPictures\":\"\"}";
     }
 
     public Information(String title, String article, String pictures, String link) {

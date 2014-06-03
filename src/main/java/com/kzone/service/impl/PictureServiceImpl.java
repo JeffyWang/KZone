@@ -3,6 +3,7 @@ package com.kzone.service.impl;
 import com.kzone.bean.KTV;
 import com.kzone.bo.Picture;
 import com.kzone.constants.CommonConstants;
+import com.kzone.constants.MongoConstants;
 import com.kzone.constants.ParamsConstants;
 import com.kzone.dao.MongoDao;
 import com.kzone.service.PictureService;
@@ -17,6 +18,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -47,6 +49,8 @@ public class PictureServiceImpl implements PictureService {
     private int bigPictureWidth;
     @Value("#{kzoneConfig['big.picture.height']}")
     private int bigPictureHeight;
+    @Value("#{kzoneConfig['picture.base.url']}")
+    private String baseURL;
 
     @Override
     public void addPicture(InputStream inputStream, String pictureName, String contentType, String Type, String id) throws Exception {
@@ -87,8 +91,10 @@ public class PictureServiceImpl implements PictureService {
     }
 
     @Override
-    public GridFSDBFile getPicture(String name) {
-        GridFSDBFile result = mongoDao.find(new Query().addCriteria(Criteria.where(ParamsConstants.PARAM_MONGO_FILE_NAME).is(name))).get(0);
+    public GridFSDBFile getPicture(String name,int KTVId) {
+        GridFSDBFile result = mongoDao.find(new Query().addCriteria(Criteria.where(ParamsConstants.PARAM_MONGO_FILE_NAME).is(name)
+                .andOperator(Criteria.where(MongoConstants.MONGO_METADATA_PICTURE_TYPE).is(CommonConstants.PICTURE_TYPE_KTV)
+                .andOperator(Criteria.where(MongoConstants.MONGO_METADATA_PICTURE_TYPE).is(CommonConstants.PICTURE_TYPE_KTV))))).get(0);
         return result;
     }
 
@@ -98,7 +104,7 @@ public class PictureServiceImpl implements PictureService {
     }
 
     @Override
-    public String addPictureName(String picture, String pictureName) {
+    public String addPictureName(String picture, String pictureName, int KTVId) {
         Picture pic = null;
 
         try {
@@ -106,9 +112,10 @@ public class PictureServiceImpl implements PictureService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        String sp = pic.getSmallPictures() + pictureName + "_0,";
-        String mp = pic.getMiddlePictures() + pictureName + "_1,";
-        String bp = pic.getBigPictures() + pictureName + "_2,";
+
+        String sp = pic.getSmallPictures() + baseURL + KTVId + "/" + pictureName + "_0,";
+        String mp = pic.getMiddlePictures() +  baseURL + KTVId + "/" + pictureName + "_1,";
+        String bp = pic.getBigPictures() + baseURL + KTVId + "/" + pictureName + "_2,";
         pic.setSmallPictures(sp);
         pic.setMiddlePictures(mp);
         pic.setBigPictures(bp);

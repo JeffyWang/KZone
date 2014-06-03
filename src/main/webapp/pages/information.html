@@ -15,6 +15,7 @@
 
     <!-- Custom styles for this template -->
     <link href="../css/index.css" rel="stylesheet">
+    <link href="../css/information.css" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -24,6 +25,7 @@
 </head>
 
 <body>
+<!--<p id="back-to-top"><a href="#top"><span></span>返回顶部</a></p>-->
 
 <div class="container">
 
@@ -47,21 +49,37 @@
             </ul>
         </div><!--/.nav-collapse -->
     </div>
+    <div id="information">
 
-    <div class="well well-lg">...</div>
-    <div class="well well-lg">...</div>
-    <div class="well well-lg">...</div>
-    <div class="well well-lg">...</div>
-    <div class="well well-lg">...</div>
-    <div class="well well-lg">...</div>
 
+    </div>
 
 </div> <!-- /container -->
+
+<!-- Modal -->
+<div class="modal fade" id="article" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Upload picture</h4>
+            </div>
+            <div class="modal-body">
+                test
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" id="removePicture">Close</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="reload()">Save</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 
 <!-- Bootstrap core JavaScript
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
 <script src="../js/jquery.min.1.10.2.js"></script>
 <script src="../js/bootstrap.min.js"></script>
+<script src="../js/information.js"></script>
 </body>
 </html>

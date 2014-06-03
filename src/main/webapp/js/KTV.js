@@ -335,12 +335,11 @@ var showKTVInfo = function(data) {
     var pictureName = data.pictures;
     var pictureJson = JSON.parse(pictureName);
     var picture = pictureJson.bigPictures.split(",");
-    var url = _localhostPath + '/rest/picture/';
     var pictureItem = "";
     var picturePoint = "";
-    console.log(picture.length)
+
     for(var i = 0; i < picture.length - 1; i ++) {
-        var pictureUrl = url + picture[i];
+        var pictureUrl = picture[i];
         if(i == 0) {
             pictureItem += '<div class="item active"><img class="img" src="' + pictureUrl + '"><div class="carousel-caption"></div></div>'
             picturePoint += '<li data-target="#carousel-example-captions" data-slide-to="0" class="active"></li>';

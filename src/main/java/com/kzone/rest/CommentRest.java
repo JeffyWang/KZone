@@ -43,26 +43,10 @@ public class CommentRest {
             comment = commentService.get(id);
         } catch (Exception e) {
             log.warn(e);
-            return Response.ok(new ErrorMessage(ErrorCode.GET_COMMENT_ERR_CODE, ErrorCode.GET_COMMENT_ERR_MSG),MediaType.APPLICATION_JSON).build();
+            return Response.ok(new ErrorMessage(ErrorCode.GET_COMMENT_ERR_CODE, ErrorCode.GET_COMMENT_ERR_MSG),MediaType.APPLICATION_JSON).status(500).build();
         }
 
         return Response.ok(comment, MediaType.APPLICATION_JSON).build();
-    }
-
-    @GET
-    @Path("/info")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getComments() {
-        List<Comment> commentList = null;
-
-        try {
-            commentList = commentService.getList();
-        } catch (Exception e) {
-            log.warn(e);
-            return Response.ok(new ErrorMessage(ErrorCode.GET_COMMENT_LIST_ERR_CODE, ErrorCode.GET_COMMENT_LIST_ERR_MSG),MediaType.APPLICATION_JSON).build();
-        }
-
-        return Response.ok(commentList, MediaType.APPLICATION_JSON).build();
     }
 
     @GET
@@ -91,7 +75,7 @@ public class CommentRest {
             commentList = commentService.getListForPage(Comment.class, offset, length, null, likeCondition, gtCondition);
         } catch (Exception e) {
             log.warn(e);
-            return Response.ok(new ErrorMessage(ErrorCode.GET_COMMENT_LIST_ERR_CODE, ErrorCode.GET_COMMENT_LIST_ERR_MSG),MediaType.APPLICATION_JSON).build();
+            return Response.ok(new ErrorMessage(ErrorCode.GET_COMMENT_LIST_ERR_CODE, ErrorCode.GET_COMMENT_LIST_ERR_MSG),MediaType.APPLICATION_JSON).status(500).build();
         }
 
         return Response.ok(commentList, MediaType.APPLICATION_JSON).build();
@@ -117,7 +101,7 @@ public class CommentRest {
             comment = commentService.add(comment);
         } catch (Exception e) {
             log.warn(e);
-            return Response.ok(new ErrorMessage(ErrorCode.ADD_COMMENT_ERR_CODE, ErrorCode.ADD_COMMENT_ERR_MSG),MediaType.APPLICATION_JSON).build();
+            return Response.ok(new ErrorMessage(ErrorCode.ADD_COMMENT_ERR_CODE, ErrorCode.ADD_COMMENT_ERR_MSG),MediaType.APPLICATION_JSON).status(500).build();
         }
 
         try {
@@ -138,6 +122,15 @@ public class CommentRest {
     @Path("/info/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response deleteComment(@PathParam("id") int id) {
-        return Response.ok("", MediaType.APPLICATION_JSON).build();
+        Comment comment = null;
+
+        try {
+            comment = commentService.get(id);
+        } catch (Exception e) {
+            log.warn(e);
+            return Response.ok(new ErrorMessage(ErrorCode.COUNT_COMMENT_ERR_CODE, ErrorCode.COUNT_COMMENT_ERR_MSG),MediaType.APPLICATION_JSON).status(500).build();
+        }
+
+        return Response.ok(comment, MediaType.APPLICATION_JSON).build();
     }
 }

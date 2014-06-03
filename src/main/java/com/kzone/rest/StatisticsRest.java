@@ -36,7 +36,7 @@ public class StatisticsRest {
             statistics = statisticsService.get(id);
         } catch (Exception e) {
             log.warn(e);
-            return Response.ok(new ErrorMessage(ErrorCode.GET_STATISTICS_ERR_CODE, ErrorCode.GET_STATISTICS_ERR_MSG),MediaType.APPLICATION_JSON).build();
+            return Response.ok(new ErrorMessage(ErrorCode.GET_STATISTICS_ERR_CODE, ErrorCode.GET_STATISTICS_ERR_MSG),MediaType.APPLICATION_JSON).status(500).build();
         }
 
         return Response.ok(statistics, MediaType.APPLICATION_JSON).build();
@@ -52,7 +52,7 @@ public class StatisticsRest {
             statisticsList = statisticsService.getList();
         } catch (Exception e) {
             log.warn(e);
-            return Response.ok(new ErrorMessage(ErrorCode.GET_STATISTICS_LIST_ERR_CODE, ErrorCode.GET_STATISTICS_LIST_ERR_MSG),MediaType.APPLICATION_JSON).build();
+            return Response.ok(new ErrorMessage(ErrorCode.GET_STATISTICS_LIST_ERR_CODE, ErrorCode.GET_STATISTICS_LIST_ERR_MSG),MediaType.APPLICATION_JSON).status(500).build();
         }
 
         return Response.ok(statisticsList, MediaType.APPLICATION_JSON).build();
