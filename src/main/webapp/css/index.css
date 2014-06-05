@@ -10,3 +10,8 @@ body {
 .row{
     float: left;
 }
+
+.ktvImg{
+    width: 350px!important;
+    height: 270px!important;
+}
