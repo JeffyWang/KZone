@@ -77,7 +77,7 @@ var getKTVInfo = function () {
             $.each(data, function(ktvIndex, ktv) {
                 var imgSrc = JSON.parse(ktv.pictures).bigPictures.split(",")[0];
                 console.log(imgSrc);
-                ktvString += '<div class="col-sm-6 col-md-4"><div class="thumbnail"><img class="ktvImg" src="' + imgSrc + '" alt="..."><div class="caption"><h3>' + ktv.name + '</h3><p>' + ktv.score + '</p><p><a href="#" class="btn btn-primary" role="button">Button</a> <a href="#" class="btn btn-default" role="button">Button</a></p></div></div></div>'
+                ktvString += '<div class="col-sm-6 col-md-4"><div class="thumbnail"><img class="ktvImg" src="' + imgSrc + '" alt="..."><div class="caption"><h3>' + ktv.name.substr(0, 8) + '</h3><p>' + ktv.score + '</p><p><a href="#" class="btn btn-primary" role="button">Button</a> <a href="#" class="btn btn-default" role="button">Button</a></p></div></div></div>'
             })
             $(".row").append(ktvString);
         }

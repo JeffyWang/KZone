@@ -38,3 +38,10 @@ p#back-to-top a span{
 .well{
     cursor: pointer;
 }
+
+.info{
+    width: 60%;
+}
+.infobody{
+    height: 20%;
+}

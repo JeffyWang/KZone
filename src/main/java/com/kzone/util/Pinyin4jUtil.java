@@ -146,9 +146,9 @@ public class Pinyin4jUtil {
         return strChar;
     }
 
-    public static void main(String[] args) {
-        String str = "星乐迪";
-        str = "11adasd11乐11";
+    // public static void main(String[] args) {
+    //     String str = "星乐迪";
+    //     str = "11adasd11乐11";
 //        System.out.println("小写输出：" + getPinyinToLowerCase(str));
 //        System.out.println("大写输出：" + getPinyinToUpperCase(str));
 //        System.out.println("首字母大写输出：" + getPinyinFirstToUpperCase(str));
@@ -158,9 +158,9 @@ public class Pinyin4jUtil {
 //        Pattern p = Pattern.compile(regEx);
 //        Matcher m = p.matcher(str);
 //        System.out.println( m.replaceAll("").trim());
-        System.out.println(str.replaceAll("[0-9]",""));
+        // System.out.println(str.replaceAll("[0-9]",""));
 //        String s = getPinyinJianPin(str);
 //        String ws[] = s.split(",");
 //        System.out.println(ws[0]);
-    }
+    // }
 }

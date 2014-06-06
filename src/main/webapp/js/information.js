@@ -75,3 +75,10 @@ var initPageData = function() {
         }
     })
 }
+
+var submit = function() {
+    console.log("~~~~~~~~~~~~~~~~~")
+    console.log($("#info").contents().find("#editor").val())
+    console.log($("#info").contents().find("#editor").html())
+    console.log($("#info").contents().find("#editor").text())
+}

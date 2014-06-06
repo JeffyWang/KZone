@@ -97,7 +97,6 @@ var initDistrict = function() {
         url: _localhostPath + '/rest/district/province/info',
         type: 'GET',
         contentType:'application/json;charset=UTF-8',
-        timeout: 1000,
         success: function(data){
             $(".province").html("");
             $.each(data, function(provinceIndex, province) {
