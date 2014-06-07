@@ -54,8 +54,8 @@ public class UserServiceImpl extends CommonServiceImpl<User> implements UserServ
     }
 
     @Override
-    public List<User> getUsersPage(int offset, int length, Map<String, String> equalCondition, Map<String, String> likeCondition) throws Exception {
-        List<User> users = userDao.getListForPage(User.class, offset, length, equalCondition, likeCondition);
+    public List<User> getUsersPage(int offset, int length,String orderDesc, Map<String, String> equalCondition, Map<String, String> likeCondition) throws Exception {
+        List<User> users = userDao.getListForPage(User.class, offset, length,orderDesc, equalCondition, likeCondition);
         return users;
     }
 

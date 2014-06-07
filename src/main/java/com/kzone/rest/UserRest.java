@@ -65,7 +65,7 @@ public class UserRest {
     }
 
     @GET
-    @Path("/info/{offset}/{length}/{equalParams}/{likePrams}")
+    @Path("/info/{offset}/{length}/{orderDesc}/{equalParams}/{likePrams}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getUsersPage(@Context UriInfo uriInfo) {
         List<User> usersPage = null;
@@ -75,6 +75,7 @@ public class UserRest {
         Map<String, String> likeCondition = new HashMap<String, String>();
         int offset = Integer.parseInt(params.getFirst(ParamsConstants.PAGE_PARAMS_OFFSET));
         int length = Integer.parseInt(params.getFirst(ParamsConstants.PAGE_PARAMS_LENGTH));
+        String orderDesc = params.getFirst(ParamsConstants.PAGE_PARAMS_ORDER_DESC);
 
         // 精确查询条件健值对
         if (params.getFirst(ParamsConstants.PAGE_PARAMS_EQUALPARAMS) != null
@@ -88,7 +89,7 @@ public class UserRest {
             likeCondition.put(ParamsConstants.PARAM_UUID, params.getFirst(ParamsConstants.PAGE_PARAMS_LIKEPARAMS));
 
         try {
-            usersPage = userService.getUsersPage(offset, length, equalCondition, likeCondition);
+            usersPage = userService.getUsersPage(offset, length, orderDesc, equalCondition, likeCondition);
         } catch (Exception e) {
             log.warn(e);
             return Response.ok(new ErrorMessage(ErrorCode.GET_USER_LIST_ERR_CODE, ErrorCode.GET_USER_LIST_ERR_MSG),MediaType.APPLICATION_JSON).build();

@@ -56,8 +56,8 @@ public class KTVRest {
     @Path("/info")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getKTVsPage(@QueryParam(ParamsConstants.PAGE_PARAMS_OFFSET) int offset, @QueryParam(ParamsConstants.PAGE_PARAMS_LENGTH) int length,
-                                @QueryParam(ParamsConstants.PARAM_KTV_NAME) String name, @QueryParam(ParamsConstants.PARAM_KTV_ADDRESS) String address,
-                                @QueryParam(ParamsConstants.PARAM_KTV_DISTRICT_ID) String districtId) {
+                                @QueryParam(ParamsConstants.PAGE_PARAMS_ORDER_DESC) String orderDesc, @QueryParam(ParamsConstants.PARAM_KTV_NAME) String name,
+                                @QueryParam(ParamsConstants.PARAM_KTV_ADDRESS) String address, @QueryParam(ParamsConstants.PARAM_KTV_DISTRICT_ID) String districtId) {
         List<KTV> ktvPageList = null;
 
         Map<String, String> likeCondition = new HashMap<String, String>();
@@ -78,7 +78,7 @@ public class KTVRest {
             likeCondition.put(ParamsConstants.PARAM_KTV_DISTRICT_ID, districtId);
 
         try {
-            ktvPageList = ktvService.getListForPage(KTV.class, offset, length, equalCondition, likeCondition);
+            ktvPageList = ktvService.getListForPage(KTV.class, offset, length, orderDesc, equalCondition, likeCondition);
         } catch (Exception e) {
             log.warn(e);
             return Response.ok(new ErrorMessage(ErrorCode.GET_KTV_LIST_ERR_CODE, ErrorCode.GET_KTV_LIST_ERR_MSG),MediaType.APPLICATION_JSON).status(500).build();

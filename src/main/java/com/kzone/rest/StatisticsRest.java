@@ -2,8 +2,11 @@ package com.kzone.rest;
 
 import com.kzone.bean.Statistics;
 import com.kzone.bo.ErrorMessage;
+import com.kzone.constants.CommonConstants;
 import com.kzone.constants.ErrorCode;
 import com.kzone.service.StatisticsService;
+import com.kzone.util.EncodingUtil;
+import com.kzone.util.StringUtil;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -14,6 +17,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 /**
@@ -69,7 +73,19 @@ public class StatisticsRest {
     @Path("/info")
     @Produces(MediaType.APPLICATION_JSON)
     public Response addStatistics(@RequestBody String body) {
-        return null;
+        Statistics statistics = null;
+        String encode = EncodingUtil.getEncoding(body);
+
+        try {
+            body = new String(body.getBytes(encode), CommonConstants.ENCODE);
+            statistics = StringUtil.jsonStringToObject(body, Statistics.class);
+            statistics = statisticsService.add(statistics);
+        } catch (Exception e) {
+            log.warn(e);
+            return Response.ok(new ErrorMessage(ErrorCode.ADD_STATISTICS_ERR_CODE, ErrorCode.ADD_STATISTICS_ERR_MSG),MediaType.APPLICATION_JSON).status(500).build();
+
+        }
+        return Response.ok(statistics, MediaType.APPLICATION_JSON).build();
     }
 
     @DELETE

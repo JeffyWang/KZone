@@ -54,7 +54,7 @@ public class InformationRest {
     @Path("/info")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getInformationsPage(@QueryParam(ParamsConstants.PAGE_PARAMS_OFFSET) int offset, @QueryParam(ParamsConstants.PAGE_PARAMS_LENGTH) int length,
-                                        @QueryParam(ParamsConstants.PARAM_INFORMATION_TITLE) String title) {
+                                        @QueryParam(ParamsConstants.PAGE_PARAMS_ORDER_DESC) String orderDesc,@QueryParam(ParamsConstants.PARAM_INFORMATION_TITLE) String title) {
         List<Information> informationsPageList = null;
 
         Map<String, String> likeCondition = new HashMap<String, String>();
@@ -66,7 +66,7 @@ public class InformationRest {
             likeCondition.put(ParamsConstants.PARAM_INFORMATION_TITLE, title);
 
         try {
-            informationsPageList = informationService.getListForPage(Information.class, offset, length, equalCondition, likeCondition);
+            informationsPageList = informationService.getListForPage(Information.class, offset, length,orderDesc, equalCondition, likeCondition);
         } catch (Exception e) {
             log.warn(e);
             return Response.ok(new ErrorMessage(ErrorCode.GET_INFORMATION_ERR_CODE, ErrorCode.GET_INFORMATION_ERR_MSG),MediaType.APPLICATION_JSON).status(500).build();

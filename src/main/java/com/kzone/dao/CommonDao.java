@@ -33,18 +33,18 @@ public interface CommonDao<T> {
                            final Map<String, String> likeCondition) throws Exception;
 
     public List<T> getListForPage(final Class<T> clazz, final int offset,
-                                  final int length, final Map<String, String> equalCondition,
+                                  final int length,final String orderDesc, final Map<String, String> equalCondition,
                                   final Map<String, String> likeCondition);
 
     //gtCondition 大于
     //GE是大于等于号(>=),GT是大于号(>),LE是小于等于号(<=),LT是小于号(<)
     public List<T> getListForPage(final Class<T> clazz, final int offset,
-                                  final int length, final Map<String, String> equalCondition,
+                                  final int length,final String orderDesc, final Map<String, String> equalCondition,
                                   final Map<String, String> likeCondition,
                                   final Map<String, String> gtCondition);
 
     public List<T> getListForPage(final Class<T> clazz, final int offset,
-                                  final int length, final List<Map<String, Object>> equalCondition,
+                                  final int length,final String orderDesc, final List<Map<String, Object>> equalCondition,
                                   final Map<String, String> likeCondition);
 
     long getListCount(final Map<String, String> equalCondition, final Map<String, String> likeCondition) throws Exception;

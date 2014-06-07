@@ -29,6 +29,8 @@ public class KTV implements Serializable {
     private int averagePrice;
     @Column(name = "score", nullable = true, columnDefinition = "varchar(32) default 0.0")
     private String  score;
+    @Column(name = "price", nullable = true, columnDefinition = "varchar(32) default 0.0")
+    private String  price;
     @Column(name = "pictures", nullable = true, columnDefinition = "text")
     private String pictures;
     @Column(name = "geographic_information", nullable = true, columnDefinition = "varchar(32) default ''")
@@ -155,5 +157,13 @@ public class KTV implements Serializable {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public String getPrice() {
+        return price;
+    }
+
+    public void setPrice(String price) {
+        this.price = price;
     }
 }

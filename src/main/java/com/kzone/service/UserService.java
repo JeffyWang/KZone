@@ -21,7 +21,7 @@ public interface UserService extends CommonService<User> {
 
     public List<User> getUsers(Map<String, Object> equalCondition,  Map<String, String> likeCondition) throws Exception;
 
-    public List<User> getUsersPage(int offset, int length, Map<String, String> equalCondition, Map<String, String> likeCondition) throws Exception ;
+    public List<User> getUsersPage(int offset, int length,String orderDesc, Map<String, String> equalCondition, Map<String, String> likeCondition) throws Exception ;
 
     public User addUser(User user) throws Exception;
 

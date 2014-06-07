@@ -27,7 +27,7 @@ $(document).ready(function(){
 var initPageData = function() {
     var ktvString  = "";
     var ktvId = 0;
-    var url = _localhostPath + "/rest/ktv/info?offset=" + _dataOffset + "&length=" + _pageDataCount + "&name=" + _likeKTVName + "&address=" + _likeKTVAddress + "&districtId=" + _districtCode;
+    var url = _localhostPath + "/rest/ktv/info?offset=" + _dataOffset + "&length=" + _pageDataCount + "&orderDesc=" + "id" + "&name=" + _likeKTVName + "&address=" + _likeKTVAddress + "&districtId=" + _districtCode;
 
     $.ajax({
         url : url,

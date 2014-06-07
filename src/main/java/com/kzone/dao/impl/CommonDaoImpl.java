@@ -183,14 +183,14 @@ public class CommonDaoImpl<T> extends HibernateDaoSupport implements CommonDao<T
 	}
 
     public List<T> getListForPage(final Class<T> clazz, final int offset,
-                                  final int length, final Map<String, String> equalCondition,
+                                  final int length,final String orderDesc, final Map<String, String> equalCondition,
                                   final Map<String, String> likeCondition) {
-        return getListForPage(clazz, offset, length, equalCondition,
+        return getListForPage(clazz, offset, length,orderDesc, equalCondition,
                 likeCondition, null);
     }
 
     public List<T> getListForPage(final Class<T> clazz, final int offset,
-                                  final int length, final Map<String, String> equalCondition,
+                                  final int length,final String orderDesc, final Map<String, String> equalCondition,
                                   final Map<String, String> likeCondition,
                                   final Map<String, String> gtCondition) {
         // @SuppressWarnings("unchecked")
@@ -241,7 +241,10 @@ public class CommonDaoImpl<T> extends HibernateDaoSupport implements CommonDao<T
                         }
                         crit.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
                         crit.setFirstResult(offset);
-                        crit.addOrder(Order.desc("id"));
+                        if(orderDesc == null)
+                            crit.addOrder(Order.desc("id"));
+                        else
+                            crit.addOrder(Order.desc(orderDesc));
                         crit.setMaxResults(length);
                         List<T> page = crit.list();
                         return page;
@@ -266,7 +269,7 @@ public class CommonDaoImpl<T> extends HibernateDaoSupport implements CommonDao<T
      */
 
     public List<T> getListForPage(final Class<T> clazz, final int offset,
-                                  final int length, final List<Map<String, Object>> equalCondition,
+                                  final int length,final String orderDesc, final List<Map<String, Object>> equalCondition,
                                   final Map<String, String> likeCondition) {
         // @SuppressWarnings("unchecked")
         List<T> list = getHibernateTemplate().execute(
@@ -315,7 +318,10 @@ public class CommonDaoImpl<T> extends HibernateDaoSupport implements CommonDao<T
                         }
                         crit.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
                         crit.setFirstResult(offset);
-                        crit.addOrder(Order.desc("id"));
+                        if(orderDesc == null)
+                            crit.addOrder(Order.desc("id"));
+                        else
+                            crit.addOrder(Order.desc(orderDesc));
                         crit.setMaxResults(length);
                         List<T> page = crit.list();
                         return page;

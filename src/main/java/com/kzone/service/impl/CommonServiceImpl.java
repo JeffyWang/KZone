@@ -75,18 +75,18 @@ public class CommonServiceImpl<T> implements CommonService<T> {
     }
 
     @Override
-    public List<T> getListForPage(Class<T> clazz, int offset, int length, Map<String, String> equalCondition, Map<String, String> likeCondition) {
-        return commonDao.getListForPage(clazz, offset, length, equalCondition, likeCondition);
+    public List<T> getListForPage(Class<T> clazz, int offset, int length,String orderDesc, Map<String, String> equalCondition, Map<String, String> likeCondition) {
+        return commonDao.getListForPage(clazz, offset, length,orderDesc, equalCondition, likeCondition);
     }
 
     @Override
-    public List<T> getListForPage(Class<T> clazz, int offset, int length, Map<String, String> equalCondition, Map<String, String> likeCondition, Map<String, String> gtCondition) {
-        return commonDao.getListForPage(clazz, offset, length, equalCondition, likeCondition, gtCondition);
+    public List<T> getListForPage(Class<T> clazz, int offset, int length,String orderDesc, Map<String, String> equalCondition, Map<String, String> likeCondition, Map<String, String> gtCondition) {
+        return commonDao.getListForPage(clazz, offset, length,orderDesc, equalCondition, likeCondition, gtCondition);
     }
 
     @Override
-    public List<T> getListForPage(Class<T> clazz, int offset, int length, List<Map<String, Object>> equalCondition, Map<String, String> likeCondition) {
-        return commonDao.getListForPage(clazz, offset, length, equalCondition, likeCondition);
+    public List<T> getListForPage(Class<T> clazz, int offset, int length,String orderDesc, List<Map<String, Object>> equalCondition, Map<String, String> likeCondition) {
+        return commonDao.getListForPage(clazz, offset, length,orderDesc, equalCondition, likeCondition);
     }
 
     @Override

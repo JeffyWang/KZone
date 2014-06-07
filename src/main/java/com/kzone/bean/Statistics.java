@@ -17,23 +17,27 @@ public class Statistics implements Serializable {
     private int id;
     @Column(name = "user_id", nullable = true, columnDefinition = "int default 0")
     private int userId;
-
+    @Column(name = "os_type", nullable = false, columnDefinition = "varchar(128) default ''")
+    private String osType;
+    @Column(name = "os_version", nullable = false, columnDefinition = "varchar(128) default ''")
+    private String osVersion;
+    @Column(name = "app_version", nullable = false, columnDefinition = "varchar(128) default ''")
+    private String appVersion;
+    @Column(name = "app_name", nullable = false, columnDefinition = "varchar(128) default ''")
+    private String appName;
+    @Column(name = "token", nullable = false, columnDefinition = "varchar(128) default ''")
+    private String token;
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "create_time")
     private Date createTime;
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "update_time")
-    private Date updateTime;
 
     public Statistics() {
         this.createTime = new Date();
-        this.updateTime = new Date();
     }
 
     public Statistics(int userId) {
         this.userId = userId;
         this.createTime = new Date();
-        this.updateTime = new Date();
     }
 
     public int getId() {
@@ -60,11 +64,43 @@ public class Statistics implements Serializable {
         this.createTime = createTime;
     }
 
-    public Date getUpdateTime() {
-        return updateTime;
+    public String getOsType() {
+        return osType;
     }
 
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
+    public void setOsType(String osType) {
+        this.osType = osType;
+    }
+
+    public String getOsVersion() {
+        return osVersion;
+    }
+
+    public void setOsVersion(String osVersion) {
+        this.osVersion = osVersion;
+    }
+
+    public String getAppVersion() {
+        return appVersion;
+    }
+
+    public void setAppVersion(String appVersion) {
+        this.appVersion = appVersion;
+    }
+
+    public String getAppName() {
+        return appName;
+    }
+
+    public void setAppName(String appName) {
+        this.appName = appName;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }
