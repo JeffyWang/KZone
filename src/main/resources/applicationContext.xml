@@ -36,6 +36,7 @@
             <bean class="com.kzone.rest.KTVRest" />
             <bean class="com.kzone.rest.StatisticsRest" />
             <bean class="com.kzone.rest.PictureRest" />
+            <bean class="com.kzone.rest.ImportDataRest" />
         </jaxrs:serviceBeans>
         <jaxrs:providers>
             <bean class="com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider"/>

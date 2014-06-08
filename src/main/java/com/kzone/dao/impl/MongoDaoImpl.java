@@ -50,7 +50,12 @@ public class MongoDaoImpl implements MongoDao {
 	    mongoTemplate.updateFirst(query, update, entityClass);
 	}
 
-	/**
+    @Override
+    public List<Object> find(Query query, Class clazz, String collectionName) {
+        return mongoTemplate.find(query, clazz, collectionName);
+    }
+
+    /**
 	 * @category mogoDb中fs.files中结构关键项说明<br>
 	 * <p>
 	 * filename:附件文件名（不包含后缀名）

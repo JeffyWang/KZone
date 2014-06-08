@@ -14,6 +14,8 @@ public interface MongoDao {
     public void delete(Object obj, String collectionName);
 
     public void update(Query query, Update update, Class entityClass);
+
+    public List<Object> find(Query query, Class clazz, String collectionName);
 	
 	public void store(InputStream inputStream, String fileName, String contentType, Object obj);
 	

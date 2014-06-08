@@ -1,6 +1,7 @@
 package com.kzone.rest;
 
 import com.kzone.bean.Information;
+import com.kzone.bo.Article;
 import com.kzone.bo.ErrorMessage;
 import com.kzone.constants.CommonConstants;
 import com.kzone.constants.ErrorCode;
@@ -12,13 +13,19 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.multipart.MultipartResolver;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
+import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,7 +44,7 @@ public class InformationRest {
     @GET
     @Path("/info/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getInformation(@PathParam("id") int id) {
+    public Response getInformation(@PathParam(ParamsConstants.PARAM_ID) int id) {
         Information information = null;
 
         try {
@@ -94,6 +101,44 @@ public class InformationRest {
         return Response.ok(information, MediaType.APPLICATION_JSON).build();
     }
 
+    @POST
+    @Path("/info/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response addArticle(@Context HttpServletRequest request, @PathParam(ParamsConstants.PARAM_ID) int id) {
+        Information information = null;
+
+        try {
+            InputStream is = request.getInputStream();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+            String s = null;
+            String info = "";
+            while((s=reader.readLine())!=null){
+                info += s;
+            }
+
+            information = informationService.get(id);
+            informationService.addArticle(id, info);
+        } catch (Exception e) {
+            log.warn(e);
+            return Response.ok(new ErrorMessage(ErrorCode.ADD_INFORMATION_ERR_CODE, ErrorCode.ADD_INFORMATION_ERR_MSG),MediaType.APPLICATION_JSON).status(500).build();
+        }
+
+        return Response.ok(information, MediaType.APPLICATION_JSON).build();
+    }
+
+    @GET
+    @Path("/info/article/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response addArticle(@PathParam(ParamsConstants.PARAM_ID) int id) {
+        Article article = null;
+        try {
+            article = informationService.getArticle(id);
+        } catch (Exception e) {
+            log.warn(e);
+            return Response.ok(new ErrorMessage(ErrorCode.GET_INFORMATION_ERR_CODE, ErrorCode.GET_INFORMATION_ERR_MSG),MediaType.APPLICATION_JSON).status(500).build();
+        }
+        return Response.ok(article, MediaType.APPLICATION_JSON).build();
+    }
     @DELETE
     @Path("/info/{id}")
     @Produces(MediaType.APPLICATION_JSON)

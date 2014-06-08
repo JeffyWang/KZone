@@ -2,7 +2,6 @@ package com.kzone.rest;
 
 import com.kzone.bean.KTV;
 import com.kzone.bo.ErrorMessage;
-import com.kzone.bo.Picture;
 import com.kzone.constants.CommonConstants;
 import com.kzone.constants.ErrorCode;
 import com.kzone.constants.ParamsConstants;
@@ -23,8 +22,6 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by Jeffy on 2014/5/19 0019.
@@ -58,7 +55,7 @@ public class PictureRest {
             pictureName = tmp + System.currentTimeMillis();
             InputStream input = file.getInputStream();
             pictureService.addPicture(input, pictureName, CommonConstants.CONTENT_TYPE, CommonConstants.PICTURE_TYPE_KTV, String.valueOf(ktvId));
-            picture = pictureService.addPictureName(ktv.getPictures(),pictureName, ktvId);
+            picture = pictureService.addKtvPictureName(ktv.getPictures(), pictureName, ktvId);
             ktv.setPictures(picture);
             ktvService.update(ktv);
 

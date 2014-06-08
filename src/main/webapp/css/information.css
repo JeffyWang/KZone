@@ -40,8 +40,9 @@ p#back-to-top a span{
 }
 
 .info{
-    width: 60%;
+    width: 80%;
+    height: 80%!important;
 }
 .infobody{
-    height: 20%;
+    height: 100%!important;
 }

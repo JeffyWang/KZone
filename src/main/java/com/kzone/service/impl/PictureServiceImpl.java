@@ -91,7 +91,7 @@ public class PictureServiceImpl implements PictureService {
     }
 
     @Override
-    public GridFSDBFile getPicture(String name,int KTVId) {
+    public GridFSDBFile getPicture(String name,int id) {
         GridFSDBFile result = mongoDao.find(new Query().addCriteria(Criteria.where(ParamsConstants.PARAM_MONGO_FILE_NAME).is(name)
                 .andOperator(Criteria.where(MongoConstants.MONGO_METADATA_PICTURE_TYPE).is(CommonConstants.PICTURE_TYPE_KTV)
                 .andOperator(Criteria.where(MongoConstants.MONGO_METADATA_PICTURE_TYPE).is(CommonConstants.PICTURE_TYPE_KTV))))).get(0);
@@ -104,7 +104,7 @@ public class PictureServiceImpl implements PictureService {
     }
 
     @Override
-    public String addPictureName(String picture, String pictureName, int KTVId) {
+    public String addKtvPictureName(String picture, String pictureName, int KTVId) {
         Picture pic = null;
 
         try {

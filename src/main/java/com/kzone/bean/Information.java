@@ -19,6 +19,8 @@ public class Information implements Serializable {
     private String title;
     @Column(name = "article", nullable = true, columnDefinition = "text")
     private String article;
+    @Column(name = "introduction", nullable = true, columnDefinition = "text")
+    private String introduction;
     @Column(name = "pictures", nullable = true, columnDefinition = "text")
     private String pictures;
     @Column(name = "link", nullable = true, columnDefinition = "varchar(256) default ''")
@@ -99,5 +101,13 @@ public class Information implements Serializable {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public String getIntroduction() {
+        return introduction;
+    }
+
+    public void setIntroduction(String introduction) {
+        this.introduction = introduction;
     }
 }

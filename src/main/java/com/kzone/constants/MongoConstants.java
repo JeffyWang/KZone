@@ -5,6 +5,7 @@ package com.kzone.constants;
  */
 public interface MongoConstants {
     final static String MONGO_COLLECTION_USER = "k_user";
+    final static String MONGO_COLLECTION_INFORMATION = "k_information";
     final static String MONGO_METADATA_PICTURE_TYPE = "metadata.picture_type";
     final static String MONGO_METADATA_REF_ID = "metadata.ref_id";
 }

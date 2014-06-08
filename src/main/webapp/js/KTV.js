@@ -199,7 +199,6 @@ $("#addKtv").on("click", function(){
         type: 'POST',
         data:data,
         contentType:'application/json;charset=UTF-8',
-        timeout: 1000,
         success: function(data){
             window.location.reload();
         },

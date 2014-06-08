@@ -13,9 +13,9 @@ import java.io.InputStream;
 public interface PictureService {
     public void addPicture(InputStream inputStream, String pictureName, String contentType, String type, String id) throws Exception;
 
-    public GridFSDBFile getPicture(String name, int KTVId);
+    public GridFSDBFile getPicture(String name, int id);
 
     public void deletePicture(String name);
 
-    public String addPictureName(String picture, String pictureName, int KTVId);
+    public String addKtvPictureName(String picture, String pictureName, int KTVId);
 }

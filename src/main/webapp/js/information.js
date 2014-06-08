@@ -69,16 +69,71 @@ var initPageData = function() {
         success: function (data) {
             $.each(data, function(informationIndex, information) {
 //                informationString += '<div class="well well-lg"><div>' + information.id + '</div><div rel="' + information.id + '">' + information.title + '</div></div>';
-                informationString += '<div class="well well-lg" data-toggle="modal" data-target="#article"><div class="media"><a class="pull-left" href="#"><img class="media-object" src="../img/Hydrangeas.jpg" alt="..."></a><div class="media-body"><h4 class="media-heading">'+ information.title + '</h4>'+ information.article + '</div></div></div>';
+                informationString += '<div class="well well-lg show" data-toggle="modal" data-target="#article" rel="' + information.id + '"><div class="media"><a class="pull-left" href="#"><img class="media-object" src="../img/Hydrangeas.jpg" alt="..."></a><div class="media-body"><h4 class="media-heading">'+ information.title + '</h4>'+ information.introduction + '</div></div></div>';
             });
             $("#information").append(informationString);
+
+            $(".show").on("click", function() {
+                var informationId = $(this).attr("rel");
+                $.ajax({
+                    url: _localhostPath + '/rest/information/info/' + informationId,
+                    type: 'GET',
+                    data:data,
+                    contentType:'application/json;charset=UTF-8',
+                    success: function(data){
+                        console.log(data)
+                        $("#tit").html("");
+                        $("#art").html("");
+                        $("#tit").append(data.title);
+                        $("#art").append(data.article);
+                    },
+                    error : function(XMLHttpRequest, textStatus, errorThrown) {
+                        console.log(errorThrown);
+                        console.log(textStatus);
+                        console.log(XMLHttpRequest);
+                    }
+                });
+            });
         }
     })
 }
 
 var submit = function() {
-    console.log("~~~~~~~~~~~~~~~~~")
-    console.log($("#info").contents().find("#editor").val())
-    console.log($("#info").contents().find("#editor").html())
-    console.log($("#info").contents().find("#editor").text())
+    var title = $("#title").val();
+    var introduction = $("#info").contents().find("#editor").text().replace(/(\n)+|(\r\n)+/g, "");
+    var article = $("#info").contents().find("#editor").html();
+    var data = '{"title":"' + title + '", "introduction":"' + introduction + '"}';
+
+    $.ajax({
+        url: _localhostPath + '/rest/information/info',
+        type: 'POST',
+        data:data,
+        contentType:'application/json;charset=UTF-8',
+        success: function(data){
+            $.ajax({
+                url: _localhostPath + '/rest/information/info/' + data.id,
+                type: 'POST',
+                data:article,
+                contentType:'application/json;charset=UTF-8',
+                success: function(data){
+                    console.log(data);
+                },
+                error : function(XMLHttpRequest, textStatus, errorThrown) {
+                    console.log(errorThrown);
+                    console.log(textStatus);
+                    console.log(XMLHttpRequest);
+                }
+            });
+//            window.location.reload();
+        },
+        error : function(XMLHttpRequest, textStatus, errorThrown) {
+            console.log(errorThrown);
+            console.log(textStatus);
+            console.log(XMLHttpRequest);
+        }
+    });
+
 }
+
+
+
