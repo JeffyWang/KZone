@@ -30,6 +30,7 @@ public interface ParamsConstants {
     final static String PARAM_KTV_DISTRICT_ID = "districtId";
 
     final static String PARAM_INFORMATION_TITLE = "title";
+    final static String PARAM_INFORMATION_ID = "informationId";
 
     final static String PARAM_COMMENT_COMMENT = "comment";
     final static String PARAM_COMMENT_SCORE = "score";

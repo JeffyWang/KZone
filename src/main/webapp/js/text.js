@@ -28,3 +28,7 @@ $(function(){
     $('#editor').wysiwyg();
     window.prettyPrint && prettyPrint();
 });
+
+$("#pictureBtn").on("click", function() {
+
+})

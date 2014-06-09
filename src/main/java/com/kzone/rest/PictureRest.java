@@ -39,7 +39,7 @@ public class PictureRest {
     @Path("/ktv/{ktvId}")
     @Consumes({ MediaType.MULTIPART_FORM_DATA, MediaType.APPLICATION_JSON })
     @Produces(MediaType.APPLICATION_JSON)
-    public Response addKTV(@Context HttpServletRequest request, @PathParam(ParamsConstants.PARAM_KTV_ID) int ktvId) {
+    public Response addKTVPicture(@Context HttpServletRequest request, @PathParam(ParamsConstants.PARAM_KTV_ID) int ktvId) {
         String picture = null;
         KTV ktv = null;
         String pictureName = "";
@@ -69,6 +69,15 @@ public class PictureRest {
         }
 
         return Response.ok(ktv, MediaType.APPLICATION_JSON).build();
+    }
+
+    @POST
+    @Path("/information/{informationId}")
+    @Consumes({ MediaType.MULTIPART_FORM_DATA, MediaType.APPLICATION_JSON })
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response addInformationPicture(@Context HttpServletRequest request, @PathParam(ParamsConstants.PARAM_INFORMATION_ID) int informationId) {
+
+        return Response.ok().build();
     }
 
     @GET
