@@ -11,6 +11,7 @@ import com.kzone.util.EncodingUtil;
 import com.kzone.util.StringUtil;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.SystemEnvironmentPropertySource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -82,7 +83,7 @@ public class InformationRest {
         return Response.ok(informationsPageList, MediaType.APPLICATION_JSON).build();
     }
 
-    @POST
+    @PUT
     @Path("/info")
     @Produces(MediaType.APPLICATION_JSON)
     public Response addInformation(@RequestBody String body) {
@@ -92,7 +93,10 @@ public class InformationRest {
         try {
             body = new String(body.getBytes(encode), CommonConstants.ENCODE);
             information = StringUtil.jsonStringToObject(body, Information.class);
-            informationService.add(information);
+            String article = information.getArticle();
+            article = URLDecoder.decode(article,"UTF-8");
+            information.setArticle(article);
+            informationService.update(information);
         } catch (Exception e) {
             log.warn(e);
             return Response.ok(new ErrorMessage(ErrorCode.ADD_INFORMATION_ERR_CODE, ErrorCode.ADD_INFORMATION_ERR_MSG),MediaType.APPLICATION_JSON).status(500).build();
@@ -102,22 +106,13 @@ public class InformationRest {
     }
 
     @POST
-    @Path("/info/{id}")
+    @Path("/info")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response addArticle(@Context HttpServletRequest request, @PathParam(ParamsConstants.PARAM_ID) int id) {
-        Information information = null;
+    public Response newInformation(@RequestBody String body) {
+        Information information = new Information("infor"," "," ");
 
         try {
-            InputStream is = request.getInputStream();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-            String s = null;
-            String info = "";
-            while((s=reader.readLine())!=null){
-                info += s;
-            }
-
-            information = informationService.get(id);
-            informationService.addArticle(id, info);
+            informationService.add(information);
         } catch (Exception e) {
             log.warn(e);
             return Response.ok(new ErrorMessage(ErrorCode.ADD_INFORMATION_ERR_CODE, ErrorCode.ADD_INFORMATION_ERR_MSG),MediaType.APPLICATION_JSON).status(500).build();
@@ -151,25 +146,6 @@ public class InformationRest {
         } catch (Exception e) {
             log.warn(e);
             return Response.ok(new ErrorMessage(ErrorCode.DELETE_INFORMATION_ERR_CODE, ErrorCode.DELETE_INFORMATION_ERR_MSG),MediaType.APPLICATION_JSON).status(500).build();
-        }
-
-        return Response.ok(information, MediaType.APPLICATION_JSON).build();
-    }
-
-    @PUT
-    @Path("/info/")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response updateInformation(@RequestBody String body) {
-        Information information = null;
-        String encode = EncodingUtil.getEncoding(body);
-
-        try {
-            body = new String(body.getBytes(encode), CommonConstants.ENCODE);
-            information = StringUtil.jsonStringToObject(body, Information.class);
-            information = informationService.update(information);
-        } catch (Exception e) {
-            log.warn(e);
-            return Response.ok(new ErrorMessage(ErrorCode.UPDATE_INFORMATION_ERR_CODE, ErrorCode.UPDATE_INFORMATION_ERR_MSG),MediaType.APPLICATION_JSON).status(500).build();
         }
 
         return Response.ok(information, MediaType.APPLICATION_JSON).build();

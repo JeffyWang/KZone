@@ -54,7 +54,7 @@
     </div>
 
     <p>
-        <a class="btn btn-primary" role="button" data-toggle="modal" data-target="#addInformation">添加</a>
+        <a id="add" class="btn btn-primary" role="button" data-toggle="modal" data-target="#addInformation">添加</a>
     </p>
 
     <div id="information">
@@ -65,7 +65,7 @@
 
 <!-- Modal -->
 <div class="modal fade" id="article" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog info">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -76,7 +76,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal" id="removePicture">Close</button>
-                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="reload()">Save</button>
+                <!--<button type="button" class="btn btn-primary" data-dismiss="modal" onclick="reload()">Save</button>-->
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
@@ -89,7 +89,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">Upload picture</h4>
+                <h4 class="modal-title">Add information</h4>
             </div>
             <div class="modal-body infobody">
                 <form role="form">
@@ -104,8 +104,8 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal" id="">Close</button>
-                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="submit()">Save</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" id="close">Close</button>
+                <button id="infoId" rel="" type="button" class="btn btn-primary" data-dismiss="modal" onclick="submit()">Save</button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->

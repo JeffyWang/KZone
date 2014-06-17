@@ -26,7 +26,6 @@ var loadData = function() {
     if ($(document).height() <= totalHeight)     //当文档的高度小于或者等于总的高度的时候，开始动态加载数据
     {
         //加载数据
-        console.log("`````````````````");
 //        $("#information").append('<div class="well well-lg">new data</div><div class="well well-lg">...</div><div class="well well-lg">...</div><div class="well well-lg">...</div><div class="well well-lg">asdfasdf</div><div class="well well-lg">...</div><div class="well well-lg">...</div><div class="well well-lg">...</div>');
 
         _dataOffset = _dataOffset + _pageDataCount;
@@ -48,9 +47,7 @@ var getDataCount = function() {
         contentType: 'application/json;charset=utf-8',
         success: function (data) {
             _totalDataCount = data.dataCount;
-            console.log(_totalDataCount)
             _pageCount = Math.ceil(_totalDataCount / _pageDataCount);
-            console.log(_pageCount)
 
             initPageData();
         }
@@ -68,8 +65,8 @@ var initPageData = function() {
         contentType: 'application/json;charset=utf-8',
         success: function (data) {
             $.each(data, function(informationIndex, information) {
-//                informationString += '<div class="well well-lg"><div>' + information.id + '</div><div rel="' + information.id + '">' + information.title + '</div></div>';
-                informationString += '<div class="well well-lg show" data-toggle="modal" data-target="#article" rel="' + information.id + '"><div class="media"><a class="pull-left" href="#"><img class="media-object" src="../img/Hydrangeas.jpg" alt="..."></a><div class="media-body"><h4 class="media-heading">'+ information.title + '</h4>'+ information.introduction + '</div></div></div>';
+                var picUrl = $("<div>" + information.article + "</div>").find(".pic").attr("src");
+                informationString += '<div class="well well-lg show" data-toggle="modal" data-target="#article" rel="' + information.id + '"><div class="media"><a class="pull-left" href="#"><img class="media-object" src="' + picUrl + '" alt="..."></a><div class="media-body"><h4 class="media-heading">'+ information.title + '</h4>'+ information.introduction + '</div></div></div>';
             });
             $("#information").append(informationString);
 
@@ -97,34 +94,21 @@ var initPageData = function() {
         }
     })
 }
+function parseDom(arg) {
+    var objE = document.createElement("div");
+    objE.innerHTML = arg;//赋值以后其实objE已经具有DOM的对象了
+    return objE.childNodes;
+};
 
-var submit = function() {
-    var title = $("#title").val();
-    var introduction = $("#info").contents().find("#editor").text().replace(/(\n)+|(\r\n)+/g, "");
-    var article = $("#info").contents().find("#editor").html();
-    var data = '{"title":"' + title + '", "introduction":"' + introduction + '"}';
-
+$("#add").on("click", function() {
     $.ajax({
         url: _localhostPath + '/rest/information/info',
         type: 'POST',
-        data:data,
         contentType:'application/json;charset=UTF-8',
         success: function(data){
-            $.ajax({
-                url: _localhostPath + '/rest/information/info/' + data.id,
-                type: 'POST',
-                data:article,
-                contentType:'application/json;charset=UTF-8',
-                success: function(data){
-                    console.log(data);
-                },
-                error : function(XMLHttpRequest, textStatus, errorThrown) {
-                    console.log(errorThrown);
-                    console.log(textStatus);
-                    console.log(XMLHttpRequest);
-                }
-            });
-//            window.location.reload();
+           console.log(data);
+            $("#infoId").attr("rel",data.id);
+            $("#info").contents().find("#Filedata").attr("rel",data.id);
         },
         error : function(XMLHttpRequest, textStatus, errorThrown) {
             console.log(errorThrown);
@@ -132,8 +116,83 @@ var submit = function() {
             console.log(XMLHttpRequest);
         }
     });
+})
+
+$("#close").on("click", function() {
+    var id = $("#infoId").attr("rel");
+    deleteInformation(id);
+    deleteImg();
+    window.location.reload();
+})
+
+var submit = function() {
+    var id = $("#infoId").attr("rel");
+    var title = $("#title").val();
+    var introduction = $("#info").contents().find("#editor").text().replace(/(\n)+|(\r\n)+/g, "");
+    var article = encodeURIComponent($("#info").contents().find("#editor").html());
+    var data = '{"id":' + id + ',"title":"' + title + '", "introduction":"' + introduction + '", "article":"' + article + '"}';
+    console.log(data)
+
+    $.ajax({
+        url: _localhostPath + '/rest/information/info',
+        type: 'PUT',
+        data:data,
+        contentType:'application/json;charset=UTF-8',
+        success: function(data){
+            console.log(data)
+            window.location.reload();
+        },
+        error : function(XMLHttpRequest, textStatus, errorThrown) {
+            console.log(errorThrown);
+            console.log(textStatus);
+            console.log(XMLHttpRequest);
+            deleteInformation(id);
+            deleteImg();
+
+            window.location.reload();
+
+        }
+    });
 
 }
 
+var deleteInformation = function(id) {
+    console.log("delete" + id)
+    $.ajax({
+        url: _localhostPath + '/rest/information/info/' + id,
+        type: 'DELETE',
+        contentType:'application/json;charset=UTF-8',
+        success: function(data){
+            console.log(data)
+        },
+        error : function(XMLHttpRequest, textStatus, errorThrown) {
+            console.log(errorThrown);
+            console.log(textStatus);
+            console.log(XMLHttpRequest);
+        }
+    });
+}
 
+var deleteImg = function() {
+    var img = $("#info").contents().find(".pic");
 
+    for(var i = 0; i < img.length; i ++) {
+        var imgUrl = img[i].src
+        var imgName = imgUrl.split("/");
+        var name = imgName[imgName.length - 1];
+        $.ajax({
+            url: _localhostPath + '/rest/picture/' + name,
+            type: 'DELETE',
+            contentType:'application/json;charset=UTF-8',
+            success: function(data){
+                console.log(data)
+
+            },
+            error : function(XMLHttpRequest, textStatus, errorThrown) {
+                console.log(errorThrown);
+                console.log(textStatus);
+                console.log(XMLHttpRequest);
+            }
+        });
+    }
+}

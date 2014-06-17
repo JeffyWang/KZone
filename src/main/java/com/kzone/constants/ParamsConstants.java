@@ -12,6 +12,7 @@ public interface ParamsConstants {
     final static String PAGE_DATA_COUNT = "dataCount";
 
     final static String PARAM_NAME = "name";
+    final static String PARAM_TYPE = "type";
 
     final static String PARAM_MONGO_FILE_NAME = "filename";
     final static String PARAM_MONGO_ARTICLE_INFORMATION_ID = "informationId";

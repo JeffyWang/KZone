@@ -17,12 +17,10 @@ public class Information implements Serializable {
     private int id;
     @Column(name = "title", nullable = true, columnDefinition = "varchar(128) default ''")
     private String title;
-    @Column(name = "article", nullable = true, columnDefinition = "text")
+    @Column(name = "article", nullable = true, length = 16777216)
     private String article;
     @Column(name = "introduction", nullable = true, columnDefinition = "text")
     private String introduction;
-    @Column(name = "pictures", nullable = true, columnDefinition = "text")
-    private String pictures;
     @Column(name = "link", nullable = true, columnDefinition = "varchar(256) default ''")
     private String link;
     @Temporal(TemporalType.TIMESTAMP)
@@ -35,13 +33,11 @@ public class Information implements Serializable {
     public Information() {
         this.createTime = new Date();
         this.updateTime = new Date();
-        this.pictures = "{\"bigPictures\":\"\",\"middlePictures\":\"\",\"smallPictures\":\"\"}";
     }
 
-    public Information(String title, String article, String pictures, String link) {
+    public Information(String title, String article, String link) {
         this.title = title;
         this.article = article;
-        this.pictures = pictures;
         this.link = link;
         this.createTime = new Date();
         this.updateTime = new Date();
@@ -69,14 +65,6 @@ public class Information implements Serializable {
 
     public void setArticle(String article) {
         this.article = article;
-    }
-
-    public String getPictures() {
-        return pictures;
-    }
-
-    public void setPictures(String pictures) {
-        this.pictures = pictures;
     }
 
     public String getLink() {
