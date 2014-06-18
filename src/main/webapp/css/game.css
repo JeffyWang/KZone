@@ -1,0 +1,27 @@
+.marketing{
+    text-align: center;
+}
+
+.name{
+    max-width: 340px;
+    overflow: hidden;
+}
+
+.introduce{
+    min-height: 100px!important;
+    max-height: 120px;
+    width: 360px;
+    overflow: hidden;
+}
+
+.game{
+    height: 400px;
+}
+
+.games{
+    width: 80%;
+    height: 80%!important;
+}
+.gamebody{
+    height: 100%!important;
+}

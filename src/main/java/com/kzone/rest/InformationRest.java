@@ -77,7 +77,7 @@ public class InformationRest {
             informationsPageList = informationService.getListForPage(Information.class, offset, length,orderDesc, equalCondition, likeCondition);
         } catch (Exception e) {
             log.warn(e);
-            return Response.ok(new ErrorMessage(ErrorCode.GET_INFORMATION_ERR_CODE, ErrorCode.GET_INFORMATION_ERR_MSG),MediaType.APPLICATION_JSON).status(500).build();
+            return Response.ok(new ErrorMessage(ErrorCode.GET_INFORMATION_LIST_ERR_CODE, ErrorCode.GET_INFORMATION_LIST_ERR_MSG),MediaType.APPLICATION_JSON).status(500).build();
         }
 
         return Response.ok(informationsPageList, MediaType.APPLICATION_JSON).build();
@@ -93,8 +93,7 @@ public class InformationRest {
         try {
             body = new String(body.getBytes(encode), CommonConstants.ENCODE);
             information = StringUtil.jsonStringToObject(body, Information.class);
-            String article = information.getArticle();
-            article = URLDecoder.decode(article,"UTF-8");
+            String article = StringUtil.stringToHtml(information.getTitle(), information.getArticle());
             information.setArticle(article);
             informationService.update(information);
         } catch (Exception e) {
@@ -134,6 +133,7 @@ public class InformationRest {
         }
         return Response.ok(article, MediaType.APPLICATION_JSON).build();
     }
+
     @DELETE
     @Path("/info/{id}")
     @Produces(MediaType.APPLICATION_JSON)

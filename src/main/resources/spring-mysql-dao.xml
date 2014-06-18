@@ -38,6 +38,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
                 <entry key="City" value-ref="cityDao"/>
                 <entry key="Area" value-ref="areaDao"/>
                 <entry key="Common" value-ref="commonDao"/>
+                <entry key="Game" value-ref="gameDao"/>
             </map>
         </constructor-arg>
     </bean>
@@ -106,6 +107,11 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
         </property>
     </bean>
     <bean id="statisticsDao" class="com.kzone.dao.impl.StatisticsDaoImpl">
+        <property name="sessionFactory">
+            <ref bean="sessionFactory" />
+        </property>
+    </bean>
+    <bean id="gameDao" class="com.kzone.dao.impl.GameDaoImpl">
         <property name="sessionFactory">
             <ref bean="sessionFactory" />
         </property>

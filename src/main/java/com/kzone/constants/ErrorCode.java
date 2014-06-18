@@ -92,4 +92,17 @@ public interface ErrorCode {
     final static String UPDATE_COMMENT_ERR_MSG = "Update the comment data error : ";
     final static String COUNT_COMMENT_ERR_CODE = "KC006";
     final static String COUNT_COMMENT_ERR_MSG = "Count comment error : ";
+
+    final static String ADD_GAME_ERR_CODE = "KG001";
+    final static String ADD_GAME_ERR_MSG = "Add game error : ";
+    final static String GET_GAME_ERR_CODE = "KG002";
+    final static String GET_GAME_ERR_MSG = "Get game's data error : ";
+    final static String GET_GAME_LIST_ERR_CODE = "KG003";
+    final static String GET_GAME_LIST_ERR_MSG = "Get game' data error : ";
+    final static String DELETE_GAME_ERR_CODE = "KG004";
+    final static String DELETE_GAME_ERR_MSG = "Delete a game error : ";
+    final static String UPDATE_GAME_ERR_CODE = "KG005";
+    final static String UPDATE_GAME_ERR_MSG = "Update the game data error : ";
+    final static String COUNT_GAME_ERR_CODE = "KG006";
+    final static String COUNT_GAME_ERR_MSG = "Count game error : ";
 }

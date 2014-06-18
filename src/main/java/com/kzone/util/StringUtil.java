@@ -3,8 +3,10 @@ package com.kzone.util;
 import java.beans.PropertyDescriptor;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -15,6 +17,7 @@ import java.util.StringTokenizer;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import com.kzone.constants.CommonConstants;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import net.sf.json.JSONSerializer;
@@ -431,5 +434,13 @@ public class StringUtil {
         }
 
         return map;
+    }
+
+    public static String stringToHtml(String title, String body) throws UnsupportedEncodingException {
+        body = URLDecoder.decode(body, CommonConstants.ENCODE);
+        StringBuffer sb = new StringBuffer("<html><head><title>");
+        sb.append(title).append("</title></head><body>").append(body).append("</body></html>");
+
+        return sb.toString();
     }
 }

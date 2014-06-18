@@ -65,7 +65,7 @@ var initPageData = function() {
         contentType: 'application/json;charset=utf-8',
         success: function (data) {
             $.each(data, function(informationIndex, information) {
-                var picUrl = $("<div>" + information.article + "</div>").find(".pic").attr("src");
+                var picUrl = $(information.article).find(".pic").attr("src");
                 informationString += '<div class="well well-lg show" data-toggle="modal" data-target="#article" rel="' + information.id + '"><div class="media"><a class="pull-left" href="#"><img class="media-object" src="' + picUrl + '" alt="..."></a><div class="media-body"><h4 class="media-heading">'+ information.title + '</h4>'+ information.introduction + '</div></div></div>';
             });
             $("#information").append(informationString);
@@ -94,11 +94,6 @@ var initPageData = function() {
         }
     })
 }
-function parseDom(arg) {
-    var objE = document.createElement("div");
-    objE.innerHTML = arg;//赋值以后其实objE已经具有DOM的对象了
-    return objE.childNodes;
-};
 
 $("#add").on("click", function() {
     $.ajax({
