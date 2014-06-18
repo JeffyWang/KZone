@@ -14,4 +14,5 @@ public interface CommonConstants {
     final static String PICTURE_TYPE = "picture_type";
     final static String PICTURE_TYPE_KTV = "ktv";
     final static String PICTURE_TYPE_INFORMATION = "information";
+    final static String PICTURE_TYPE_GAME = "game";
 }

@@ -65,24 +65,25 @@ var initPageData = function() {
         success: function (data) {
             console.log(data)
             $.each(data, function(gameIndex, game) {
-                var picUrl = $(game.game).find(".pic").attr("src");
-                informationString += '<div class="col-lg-4 game"><img class="img-circle" src="../img/Chrysanthemum.jpg" alt="Generic placeholder image" style="width: 140px; height: 140px;"><h2 class="name">' + game.name + '</h2><p lass="introduce">' + game.introduction + '</p><p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p></div>'
+                var picUrl = $("<div>" + game.game + "</div>").find(".pic").attr("src");
+                informationString += '<div class="col-lg-4 game"><img class="img-circle" src="' + picUrl + '" alt="Generic placeholder image" style="width: 140px; height: 140px;"><h2 class="name">' + game.name + '</h2><p lass="introduce">' + game.introduction + '</p><p><a class="btn btn-default shows" data-toggle="modal"  data-target="#gameBody" rel="' + game.id + '" role="button">View details &raquo;</a></p></div>'
             });
             $("#games").append(informationString);
 
-            $(".show").on("click", function() {
-                var informationId = $(this).attr("rel");
+            $(".shows").on("click", function() {
+                var gameId = $(this).attr("rel");
+                console.log(gameId + " gameId")
                 $.ajax({
-                    url: _localhostPath + '/rest/game/info/' + informationId,
+                    url: _localhostPath + '/rest/game/info/' + gameId,
                     type: 'GET',
                     data:data,
                     contentType:'application/json;charset=UTF-8',
                     success: function(data){
                         console.log(data)
-                        $("#tit").html("");
-                        $("#art").html("");
-                        $("#tit").append(data.title);
-                        $("#art").append(data.article);
+                        $("#nam").html("");
+                        $("#gam").html("");
+                        $("#nam").append(data.name);
+                        $("#gam").append(data.game);
                     },
                     error : function(XMLHttpRequest, textStatus, errorThrown) {
                         console.log(errorThrown);
@@ -114,18 +115,18 @@ $("#add").on("click", function() {
 })
 
 $("#close").on("click", function() {
-    var id = $("#infoId").attr("rel");
-    deleteInformation(id);
+    var id = $("#gameId").attr("rel");
+    deleteGame(id);
     deleteImg();
     window.location.reload();
 })
 
 var submit = function() {
-    var id = $("#infoId").attr("rel");
-    var title = $("#title").val();
-    var introduction = $("#info").contents().find("#editor").text().replace(/(\n)+|(\r\n)+/g, "");
-    var article = encodeURIComponent($("#info").contents().find("#editor").html());
-    var data = '{"id":' + id + ',"title":"' + title + '", "introduction":"' + introduction + '", "article":"' + article + '"}';
+    var id = $("#gameId").attr("rel");
+    var name = $("#name").val();
+    var introduction = $("#game").contents().find("#editor").text().replace(/(\n)+|(\r\n)+/g, "");
+    var game = encodeURIComponent($("#game").contents().find("#editor").html());
+    var data = '{"id":' + id + ',"name":"' + name + '", "introduction":"' + introduction + '", "game":"' + game + '"}';
     console.log(data)
 
     $.ajax({
@@ -141,7 +142,7 @@ var submit = function() {
             console.log(errorThrown);
             console.log(textStatus);
             console.log(XMLHttpRequest);
-            deleteInformation(id);
+            deleteGame(id);
             deleteImg();
 
             window.location.reload();
@@ -149,4 +150,45 @@ var submit = function() {
         }
     });
 
+}
+
+var deleteGame = function(id) {
+    console.log("delete" + id)
+    $.ajax({
+        url: _localhostPath + '/rest/game/info/' + id,
+        type: 'DELETE',
+        contentType:'application/json;charset=UTF-8',
+        success: function(data){
+            console.log(data)
+        },
+        error : function(XMLHttpRequest, textStatus, errorThrown) {
+            console.log(errorThrown);
+            console.log(textStatus);
+            console.log(XMLHttpRequest);
+        }
+    });
+}
+
+var deleteImg = function() {
+    var img = $("#game").contents().find(".pic");
+
+    for(var i = 0; i < img.length; i ++) {
+        var imgUrl = img[i].src
+        var imgName = imgUrl.split("/");
+        var name = imgName[imgName.length - 1];
+        $.ajax({
+            url: _localhostPath + '/rest/picture/' + name,
+            type: 'DELETE',
+            contentType:'application/json;charset=UTF-8',
+            success: function(data){
+                console.log(data)
+
+            },
+            error : function(XMLHttpRequest, textStatus, errorThrown) {
+                console.log(errorThrown);
+                console.log(textStatus);
+                console.log(XMLHttpRequest);
+            }
+        });
+    }
 }

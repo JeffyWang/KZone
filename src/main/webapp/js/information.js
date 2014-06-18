@@ -12,7 +12,6 @@ $(document).ready(function(){
     var pos=curWwwPath.indexOf(pathName);
     _localhostPath = curWwwPath.substring(0,pos);
 
-
     getDataCount();
 });
 
@@ -65,7 +64,7 @@ var initPageData = function() {
         contentType: 'application/json;charset=utf-8',
         success: function (data) {
             $.each(data, function(informationIndex, information) {
-                var picUrl = $(information.article).find(".pic").attr("src");
+                var picUrl = $("<div>" + information.article + "</div>").find(".pic").attr("src");
                 informationString += '<div class="well well-lg show" data-toggle="modal" data-target="#article" rel="' + information.id + '"><div class="media"><a class="pull-left" href="#"><img class="media-object" src="' + picUrl + '" alt="..."></a><div class="media-body"><h4 class="media-heading">'+ information.title + '</h4>'+ information.introduction + '</div></div></div>';
             });
             $("#information").append(informationString);
@@ -101,7 +100,6 @@ $("#add").on("click", function() {
         type: 'POST',
         contentType:'application/json;charset=UTF-8',
         success: function(data){
-           console.log(data);
             $("#infoId").attr("rel",data.id);
             $("#info").contents().find("#Filedata").attr("rel",data.id);
         },

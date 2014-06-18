@@ -67,6 +67,24 @@
 
 </div> <!-- /container -->
 
+<div class="modal fade" id="gameBody" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog show">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="nam">Game</h4>
+            </div>
+            <div class="modal-body" id="gam">
+                test
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" id="removePicture">Close</button>
+                <!--<button type="button" class="btn btn-primary" data-dismiss="modal" onclick="reload()">Save</button>-->
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
 <!-- Modal -->
 <div class="modal fade" id="addGame" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog games">
@@ -79,9 +97,9 @@
                 <form role="form">
                     <div class="form-group">
                         <label>name</label>
-                        <input class="form-control" id="title">
+                        <input class="form-control" id="name">
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" id="pictureType" rel="game">
                         <label>game</label>
                         <iframe id="game" width=100% height=450px src="text.html"></iframe>
                     </div>

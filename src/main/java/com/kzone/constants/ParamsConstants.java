@@ -38,6 +38,7 @@ public interface ParamsConstants {
     final static String PARAM_COMMENT_KTV_ID = "KTVId";
 
     final static String PARAM_GAME_NAME = "name";
+    final static String PARAM_GAME_ID = "gameId";
 
     final static String PARAM_SMALL_PICTURES = "bigPictures";
     final static String PARAM_MIDDLE_PICTURES = "middlePictures";

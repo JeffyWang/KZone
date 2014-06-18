@@ -1,10 +1,13 @@
 var _localhostPath = "";
+var _pictureType = "";
 
 $(function(){
     var curWwwPath = window.document.location.href;
     var pathName=window.document.location.pathname;
     var pos=curWwwPath.indexOf(pathName);
     _localhostPath = curWwwPath.substring(0,pos);
+    _pictureType = $("#pictureType",parent.document).attr("rel");
+    console.log(_pictureType)
 
     function initToolbarBootstrapBindings() {
         var fonts = ['Serif', 'Sans', 'Arial', 'Arial Black', 'Courier',
@@ -38,14 +41,16 @@ $(".pictureBtn").on("click", function() {
 
 var uploadImg = function() {
     var id = $("#Filedata").attr("rel");
+    console.log(_pictureType)
     $.ajaxFileUpload(
         {
-            url: _localhostPath + "/rest/picture/information/" + id,
+            url: _localhostPath + "/rest/picture/" + _pictureType + "/" + id,
             fileElementId: 'Filedata',
 
             success: function(data) {
                 data = jQuery.parseJSON(jQuery(data).text());
                 var pictureUrl = data.pictureUrl;
+                console.log(pictureUrl)
                 var img = '<img class="img pic" src="' + pictureUrl + '">'
                 $('#editor').append(img);
             },

@@ -167,4 +167,43 @@ public class PictureServiceImpl implements PictureService {
         return pictureUrl;
     }
 
+    public Map addGamePicture(InputStream inputStream, String pictureName, String contentType, String type, String id) throws Exception {
+        String picturePath = Thread.currentThread().getContextClassLoader().getResource("picture").getPath() + pictureName + "." + contentType;
+        OutputStream os = new FileOutputStream(picturePath);
+        int bytesRead = 0;
+        byte[] buffer = new byte[8192];
+        while ((bytesRead = inputStream.read(buffer, 0, 8192)) != -1) {
+            os.write(buffer, 0, bytesRead);
+        }
+
+        ExecutorService exec = Executors.newCachedThreadPool();
+        List<Future<InputStream>> results = new ArrayList<Future<InputStream>>();
+        results.add(0,exec.submit(new PictureUtil(pictureName, ratio, bigPictureWidth, bigPictureHeight, contentType)));
+        exec.shutdown();
+
+        Picture pictures = null;
+        for(int i = 0; i < results.size(); i ++) {
+            try {
+                Map<String, String> pictureMeteData = new HashMap<String, String>();
+                pictureMeteData.put(CommonConstants.PICTURE_TYPE, type);
+                pictureMeteData.put(CommonConstants.PICTURE_REF_ID, id);
+                mongoDao.store(results.get(i).get(), pictureName + "_2", contentType, pictureMeteData);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
+        }
+        inputStream.close();
+        os.flush();
+        os.close();
+
+        File file = new File(picturePath);
+        file.delete();
+
+        Map<String, String> pictureUrl = new HashMap<String, String>();
+        pictureUrl.put("pictureUrl", baseURL + CommonConstants.PICTURE_TYPE_GAME + "/" + id + "/" + pictureName + "_2");
+
+        return pictureUrl;
+    }
 }

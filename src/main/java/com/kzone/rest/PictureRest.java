@@ -1,11 +1,13 @@
 package com.kzone.rest;
 
+import com.kzone.bean.Game;
 import com.kzone.bean.Information;
 import com.kzone.bean.KTV;
 import com.kzone.bo.ErrorMessage;
 import com.kzone.constants.CommonConstants;
 import com.kzone.constants.ErrorCode;
 import com.kzone.constants.ParamsConstants;
+import com.kzone.service.GameService;
 import com.kzone.service.InformationService;
 import com.kzone.service.KTVService;
 import com.kzone.service.PictureService;
@@ -39,6 +41,8 @@ public class PictureRest {
     private KTVService ktvService;
     @Autowired
     private InformationService informationService;
+    @Autowired
+    private GameService gameService;
 
     @POST
     @Path("/ktv/{ktvId}")
@@ -123,7 +127,6 @@ public class PictureRest {
     @Consumes({ MediaType.MULTIPART_FORM_DATA, MediaType.APPLICATION_JSON })
     @Produces(MediaType.APPLICATION_JSON)
     public Response addInformationPicture(@Context HttpServletRequest request, @PathParam(ParamsConstants.PARAM_INFORMATION_ID) int informationId) {
-        String picture = null;
         Information information = null;
         String pictureName = "";
         Map pictureUrl = null;
@@ -139,6 +142,38 @@ public class PictureRest {
             pictureName = tmp + System.currentTimeMillis();
             InputStream input = file.getInputStream();
             pictureUrl = pictureService.addInformationPicture(input, pictureName, CommonConstants.CONTENT_TYPE, CommonConstants.PICTURE_TYPE_INFORMATION, String.valueOf(informationId));
+            input.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            pictureService.deletePicture(pictureName + "_0");
+            pictureService.deletePicture(pictureName + "_1");
+            pictureService.deletePicture(pictureName + "_2");
+            return Response.ok(new ErrorMessage(ErrorCode.ADD_PICTURE_ERR_CODE, ErrorCode.ADD_PICTURE_ERR_MSG), MediaType.APPLICATION_JSON).build();
+        }
+
+        return Response.ok(pictureUrl, MediaType.APPLICATION_JSON).build();
+    }
+
+    @POST
+    @Path("/game/{gameId}")
+    @Consumes({ MediaType.MULTIPART_FORM_DATA, MediaType.APPLICATION_JSON })
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response addGamePicture(@Context HttpServletRequest request, @PathParam(ParamsConstants.PARAM_GAME_ID) int gameId) {
+        Game game = null;
+        String pictureName = "";
+        Map pictureUrl = null;
+
+        MultipartResolver resolver = new CommonsMultipartResolver(request.getSession().getServletContext());
+        MultipartHttpServletRequest multipartRequest = resolver.resolveMultipart(request);
+        MultipartFile file = multipartRequest.getFile("Filedata");
+
+        try {
+            game =  gameService.get(gameId);
+            String tmp = "";
+            tmp = Pinyin4jUtil.getPinyinJianPin(game.getName().trim().replaceAll("[0-9]","")).split(",")[0];
+            pictureName = tmp + System.currentTimeMillis();
+            InputStream input = file.getInputStream();
+            pictureUrl = pictureService.addGamePicture(input, pictureName, CommonConstants.CONTENT_TYPE, CommonConstants.PICTURE_TYPE_GAME, String.valueOf(gameId));
             input.close();
         } catch (Exception e) {
             e.printStackTrace();

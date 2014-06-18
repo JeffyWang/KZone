@@ -24,4 +24,5 @@ public interface PictureService {
 
     public Map addInformationPicture(InputStream inputStream, String pictureName, String contentType, String type, String id) throws Exception;
 
+    public Map addGamePicture(InputStream inputStream, String pictureName, String contentType, String type, String id) throws Exception;
 }
