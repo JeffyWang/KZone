@@ -38,6 +38,7 @@
             <bean class="com.kzone.rest.PictureRest" />
             <bean class="com.kzone.rest.ImportDataRest" />
             <bean class="com.kzone.rest.GameRest" />
+            <bean class="com.kzone.rest.InitializeRest" />
         </jaxrs:serviceBeans>
         <jaxrs:providers>
             <bean class="com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider"/>

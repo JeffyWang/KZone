@@ -15,3 +15,7 @@ body {
     width: 350px!important;
     height: 270px!important;
 }
+
+.index{
+    min-width: 380px;
+}

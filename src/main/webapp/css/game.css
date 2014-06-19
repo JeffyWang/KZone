@@ -16,6 +16,7 @@
 
 .game{
     height: 400px;
+    min-width: 380px;
 }
 
 .games{
@@ -24,4 +25,5 @@
 }
 .gamebody{
     height: 100%!important;
+
 }

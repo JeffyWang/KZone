@@ -116,4 +116,9 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
             <ref bean="sessionFactory" />
         </property>
     </bean>
+    <bean id="initializeDao" class="com.kzone.dao.impl.InitializeDaoImpl">
+        <property name="sessionFactory">
+            <ref bean="sessionFactory" />
+        </property>
+    </bean>
 </beans>

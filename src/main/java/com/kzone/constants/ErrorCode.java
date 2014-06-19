@@ -10,6 +10,9 @@ public interface ErrorCode {
     final static String LOGIN_ERR_MSG = "login failed";
     final static String PERMISSION_ERR_MSG = "Permission denied";
 
+    final static String INITIALIZE_ERR_CODE = "K0001";
+    final static String INITIALIZE_ERR_MSG = "Initialize data error : ";
+
     final static String ADD_USER_ERR_CODE = "KU001";
     final static String ADD_USER_ERR_MSG = "Add user error : ";
     final static String GET_USER_ERR_CODE = "KU002";

@@ -66,7 +66,7 @@ var initPageData = function() {
             console.log(data)
             $.each(data, function(gameIndex, game) {
                 var picUrl = $("<div>" + game.game + "</div>").find(".pic").attr("src");
-                informationString += '<div class="col-lg-4 game"><img class="img-circle" src="' + picUrl + '" alt="Generic placeholder image" style="width: 140px; height: 140px;"><h2 class="name">' + game.name + '</h2><p lass="introduce">' + game.introduction + '</p><p><a class="btn btn-default shows" data-toggle="modal"  data-target="#gameBody" rel="' + game.id + '" role="button">View details &raquo;</a></p></div>'
+                informationString += '<div class="col-lg-4 game"><img class="img-circle" src="' + picUrl + '" alt="Generic placeholder image" style="width: 140px; height: 140px;"><h2 class="name">' + game.name + '</h2><p class="introduce">' + game.introduction + '</p><p><a class="btn btn-default shows" data-toggle="modal"  data-target="#gameBody" rel="' + game.id + '" role="button">View details</a></p></div>'
             });
             $("#games").append(informationString);
 
