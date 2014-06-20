@@ -3,8 +3,12 @@ package com.kzone.rest;
 import au.com.bytecode.opencsv.CSVReader;
 import au.com.bytecode.opencsv.bean.ColumnPositionMappingStrategy;
 import au.com.bytecode.opencsv.bean.CsvToBean;
-import com.kzone.bean.TestBean;
+import com.kzone.bean.KTV;
+import com.kzone.bo.KTVData;
+import com.kzone.service.KTVService;
 import org.apache.commons.io.FileUtils;
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,6 +21,7 @@ import javax.ws.rs.core.Response;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,29 +30,78 @@ import java.util.List;
 @Component
 @Path("/import")
 public class ImportDataRest {
+    Logger log = Logger.getLogger(ImportDataRest.class);
+    @Autowired
+    private KTVService ktvService;
+
     @POST
     @Path("/ktv/data")
 //    @Consumes({ MediaType.MULTIPART_FORM_DATA, MediaType.APPLICATION_JSON })
     @Produces(MediaType.APPLICATION_JSON)
     public Response importKtvData(@Context HttpServletRequest request) {
-        List csv = null;
+        List<KTV> ktvList = new ArrayList<KTV>();
         try {
-            csv = readCSV("a");
-        } catch (IOException e) {
+            ktvList = readCSV("a");
+            for(KTV ktv : ktvList) {
+                ktvService.add(ktv);
+            }
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        return Response.ok(csv, MediaType.APPLICATION_JSON).build();
+        return Response.ok(ktvList, MediaType.APPLICATION_JSON).build();
     }
 
     public List readCSV(String f) throws IOException {
-        CSVReader reader = new CSVReader(new InputStreamReader(FileUtils.openInputStream(new File("C:\\Users\\jeffy\\Desktop\\test.csv"))));
-        ColumnPositionMappingStrategy strat = new ColumnPositionMappingStrategy();
-        strat.setType(TestBean.class);
-        String[] columns = new String[] {"name", "address"}; // the fields to bind do in your JavaBean
-        strat.setColumnMapping(columns);
-        CsvToBean csv = new CsvToBean();
-        List list = csv.parse(strat, reader);
+        String path = "C:\\Users\\Administrator\\Desktop\\510000";
+        File dir=new File(path);
+        File[] files = dir.listFiles();
+        List<KTV> dataList = new ArrayList<KTV>();
+        String provinceId = dir.getName();
 
-        return list;
+        for(File file : files) {
+            String cityId = file.getName().replace(".csv", "");
+
+            List<KTVData> data = new ArrayList<KTVData>();
+            List<KTV> ktvList = new ArrayList<KTV>();
+            InputStreamReader isr = new InputStreamReader(FileUtils.openInputStream(file));
+            CSVReader reader = new CSVReader(isr);
+            ColumnPositionMappingStrategy strat = new ColumnPositionMappingStrategy();
+            strat.setType(KTVData.class);
+            String[] columns = new String[] {"name", "area", "address", "phoneNumber"}; // the fields to bind do in your JavaBean
+            strat.setColumnMapping(columns);
+            CsvToBean csv = new CsvToBean();
+            data = csv.parse(strat, reader);
+            for(KTVData ktvData : data) {
+                String districtId = provinceId + "-" + cityId + "-" + ktvData.getArea();
+                ktvList.add(new KTV(districtId, ktvData.getName(), ktvData.getAddress(), ktvData.getPhoneNumber()));
+            }
+
+            dataList.addAll(ktvList);
+        }
+
+        return dataList;
+    }
+
+    public static void main(String[] args) throws IOException {
+        String path = "C:\\Users\\Administrator\\Desktop\\1";
+        File dir=new File(path);
+        File[] files = dir.listFiles();
+        System.out.println(dir.getName());
+//        String s[] = path.split("\\");
+//        System.out.println(s.length);
+
+//        for(File file : files) {
+//            String cityId = file.getName().replace(".csv", "");
+//            System.out.println(cityId);
+//
+//        CSVReader reader = new CSVReader(new InputStreamReader(FileUtils.openInputStream(file)));
+//        ColumnPositionMappingStrategy strat = new ColumnPositionMappingStrategy();
+//        strat.setType(KTVData.class);
+//        String[] columns = new String[] {"name", "area", "address", "phoneNumber"}; // the fields to bind do in your JavaBean
+//        strat.setColumnMapping(columns);
+//        CsvToBean csv = new CsvToBean();
+//        List list = csv.parse(strat, reader);
+
+//        }
     }
 }

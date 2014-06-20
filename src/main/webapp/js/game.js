@@ -37,7 +37,7 @@ var loadData = function() {
 }
 
 var getDataCount = function() {
-    var url = _localhostPath + "/rest/game/count?title=" + _likeGameName;
+    var url = _localhostPath + "/rest/game/count?name=" + _likeGameName;
 
     $.ajax({
         url: url,

@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html lang="zh-cn">
+<html>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -12,10 +11,11 @@
 
     <!-- Bootstrap core CSS -->
     <link href="../css/bootstrap.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../css/ktvInfo.css">
 
     <!-- Custom styles for this template -->
     <link href="../css/index.css" rel="stylesheet">
-    <link href="../css/top.css" rel="stylesheet">
+    <link href="../css/statistics.css" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -23,11 +23,9 @@
     <script src="http://cdn.bootcss.com/respond.js/1.3.0/respond.min.js"></script>
     <![endif]-->
 </head>
-
 <body>
 
 <div class="container">
-
     <!-- Static navbar -->
     <div class="navbar navbar-default" role="navigation">
         <div class="navbar-header">
@@ -42,39 +40,28 @@
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
                 <li><a href="../index.html">HOME</a></li>
-                <li><a href="KTV.html">KTV</a></li>
-                <li class="active"><a href="#">COMMENT</a></li>
+                <li ><a href="KTV.html">KTV</a></li>
+                <li><a href="comment.html">COMMENT</a></li>
                 <li><a href="information.html">INFORMATION</a></li>
                 <li><a href="game.html">GAME</a></li>
-                <li><a href="statistics.html">STATISTICS</a></li>
+                <li class="active"><a href="#">STATISTICS</a></li>
             </ul>
         </div><!--/.nav-collapse -->
     </div>
-    <div id="comment">
-        <div class="well well-lg">...</div>
-        <div class="well well-lg">...</div>
-        <div class="well well-lg">...</div>
-        <div class="well well-lg">...</div>
-        <div class="well well-lg">...</div>
-        <div class="well well-lg">...</div>
-        <div class="well well-lg">...</div>
-        <div class="well well-lg">...</div>
-        <div class="well well-lg">...</div>
-        <div class="well well-lg">...</div>
-    </div>
-</div> <!-- /container -->
 
-<div id="share">
-    <a id="totop" title="">返回顶部</a>
-    <a href="#" target="_blank" class="sina">关注找乐子网新浪微博</a>
-    <a href="#"  target="_blank" class="tencent">关注找乐子网腾讯微博</a>
+    <div id="count" class="chart" style="width:570px;height:400px"></div>
+
+    <div id="areaUser" class="chart" style="min-width:700px;height:400px"></div>
+
 </div>
+
 <!-- Bootstrap core JavaScript
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
 <script src="../js/jquery.min.1.10.2.js"></script>
 <script src="../js/bootstrap.min.js"></script>
-<script src="../js/top.js"></script>
-<script src="../js/comment.js"></script>
+<script src="../js/highcharts.js"></script>
+<script src="../js/statistics.js"></script>
+
 </body>
 </html>

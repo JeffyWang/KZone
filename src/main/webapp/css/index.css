@@ -1,6 +1,7 @@
 body {
     padding-top: 20px;
     padding-bottom: 20px;
+    background: url('../img/p6.png') repeat;
 }
 
 .navbar {

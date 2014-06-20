@@ -39,7 +39,7 @@ var initPageData = function() {
             $.each(data, function(ktvIndex, ktv) {
                 var createTime = date(ktv.createTime);
                 var updateTime = date(ktv.updateTime);
-                ktvString += "<tr><td><a data-toggle='modal' data-target='#ktvInfo' class='ktvInfo' rel='" + ktv.id + "'>" +ktv.name.substr(0,6) +  "</a></td><td>" +ktv.phoneNumber + "</td><td>" +ktv.address.substr(0,10) + "</td><td>" +ktv.score +
+                ktvString += "<tr><td><a data-toggle='modal' data-target='#ktvInfo' class='ktvInfo' rel='" + ktv.id + "'>" +ktv.name.substr(0,20) +  "</a></td><td>" +ktv.phoneNumber + "</td><td>" +ktv.address.substr(0,10) + "</td><td>" +ktv.score +
                     "</td><td>" +createTime + "</td><td>" +updateTime +
                     "</td><td><button type='button' class='btn btn-default btn-sm remove'rel='" + ktv.id + "'><span class='glyphicon glyphicon-remove'></span></button>" +
                     "<button type='button' class='btn btn-default btn-sm refresh'><span class='glyphicon glyphicon-refresh'></span></button>" +

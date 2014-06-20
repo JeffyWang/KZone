@@ -133,4 +133,30 @@ public class CommentRest {
 
         return Response.ok(comment, MediaType.APPLICATION_JSON).build();
     }
+
+    @GET
+    @Path("/count")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getCommentCount( @QueryParam(ParamsConstants.PARAM_COMMENT_COMMENT) String comment) {
+        Map<String, Integer> countMap = new HashMap<String, Integer>();
+        int commentCount = 0;
+
+        Map<String, String> likeCondition = new HashMap<String, String>();
+        Map<String, String> equalCondition = new HashMap<String, String>();
+
+        if (comment != null
+                && !CommonConstants.NULL_STRING.equals(comment)
+                && !CommonConstants.NULL.equals(comment))
+            likeCondition.put(ParamsConstants.PARAM_COMMENT_COMMENT, comment);
+
+        try {
+            commentCount = (int) commentService.getListCount(equalCondition, likeCondition);
+        } catch (Exception e) {
+            log.warn(e);
+            return Response.ok(new ErrorMessage(ErrorCode.COUNT_COMMENT_ERR_CODE, ErrorCode.COUNT_COMMENT_ERR_MSG),MediaType.APPLICATION_JSON).status(500).build();
+        }
+
+        countMap.put(ParamsConstants.PAGE_DATA_COUNT, commentCount);
+        return Response.ok(countMap, MediaType.APPLICATION_JSON).build();
+    }
 }

@@ -63,6 +63,16 @@ public class KTV implements Serializable {
         this.updateTime = new Date();
     }
 
+    public KTV(String districtId, String name, String address, String phoneNumber) {
+        this.districtId = districtId;
+        this.name = name;
+        this.address = address;
+        this.phoneNumber = phoneNumber;
+        this.pictures = "{\"bigPictures\":\"\",\"middlePictures\":\"\",\"smallPictures\":\"\"}";
+        this.createTime = new Date();
+        this.updateTime = new Date();
+    }
+
     public int getId() {
         return id;
     }
