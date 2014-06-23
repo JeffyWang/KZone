@@ -1,0 +1,12 @@
+.userName {
+    width: 300px;
+    float: left;
+}
+.time{
+    width: 200px;
+    float: left;
+}
+.search{
+    float: left;
+    margin-left: 10px;
+}

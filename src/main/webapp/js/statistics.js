@@ -167,7 +167,7 @@ var countKTV = function() {
 };
 
 var countComment = function() {
-    var url = _localhostPath + "/rest/information/count?comment=" + null;
+    var url = _localhostPath + "/rest/comment/count?comment=" + null + "&KTVId=" + null;
 
     $.ajax({
         url: url,

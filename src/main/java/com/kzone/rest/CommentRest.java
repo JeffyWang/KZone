@@ -50,29 +50,33 @@ public class CommentRest {
     }
 
     @GET
-    @Path("/info/{offset}/{length}/{score}/{comment}")
+    @Path("/info")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getCommentsPage(@Context UriInfo uriInfo) {
+    public Response getCommentsPage(@QueryParam(ParamsConstants.PAGE_PARAMS_OFFSET) int offset, @QueryParam(ParamsConstants.PAGE_PARAMS_LENGTH) int length,
+                                    @QueryParam(ParamsConstants.PAGE_PARAMS_ORDER_DESC) String orderDesc, @QueryParam(ParamsConstants.PARAM_COMMENT_SCORE) String score,
+                                    @QueryParam(ParamsConstants.PARAM_COMMENT_COMMENT) String comment, @QueryParam(ParamsConstants.PARAM_COMMENT_KTV_ID) String ktvId) {
         List<Comment> commentList = null;
 
-        MultivaluedMap<String, String> params = uriInfo.getPathParameters();
         Map<String, String> likeCondition = new HashMap<String, String>();
+        Map<String, String> equalCondition = new HashMap<String, String>();
         Map<String, String> gtCondition = new HashMap<String, String>();
-        int offset = Integer.parseInt(params.getFirst(ParamsConstants.PAGE_PARAMS_OFFSET));
-        int length = Integer.parseInt(params.getFirst(ParamsConstants.PAGE_PARAMS_LENGTH));
 
-        if (params.getFirst(ParamsConstants.PARAM_COMMENT_SCORE) != null
-                && !CommonConstants.NULL_STRING.equals(params.getFirst(ParamsConstants.PARAM_COMMENT_SCORE))
-                && !CommonConstants.NULL.equals(params.getFirst(ParamsConstants.PARAM_COMMENT_SCORE)))
-            gtCondition.put(ParamsConstants.PARAM_COMMENT_SCORE, params.getFirst(ParamsConstants.PARAM_COMMENT_SCORE));
+        if (score != null
+                && !CommonConstants.NULL_STRING.equals(score)
+                && !CommonConstants.NULL.equals(score))
+            gtCondition.put(ParamsConstants.PARAM_COMMENT_SCORE,score);
         // 模糊查询条件健值对
-        if (params.getFirst(ParamsConstants.PARAM_COMMENT_COMMENT) != null
-                && !CommonConstants.NULL_STRING.equals(params.getFirst(ParamsConstants.PARAM_COMMENT_COMMENT))
-                && !CommonConstants.NULL.equals(params.getFirst(ParamsConstants.PARAM_COMMENT_COMMENT)))
-            likeCondition.put(ParamsConstants.PARAM_COMMENT_COMMENT, params.getFirst(ParamsConstants.PARAM_COMMENT_COMMENT));
+        if (comment != null
+                && !CommonConstants.NULL_STRING.equals(comment)
+                && !CommonConstants.NULL.equals(comment))
+            likeCondition.put(ParamsConstants.PARAM_COMMENT_COMMENT, comment);
+        if (ktvId != null
+                && !CommonConstants.NULL_STRING.equals(ktvId)
+                && !CommonConstants.NULL.equals(ktvId))
+            equalCondition.put(ParamsConstants.PARAM_COMMENT_KTV_ID, ktvId);
 
         try {
-            commentList = commentService.getListForPage(Comment.class, offset, length, null, likeCondition, gtCondition);
+            commentList = commentService.getListForPage(Comment.class, offset, length, orderDesc, equalCondition, likeCondition, gtCondition);
         } catch (Exception e) {
             log.warn(e);
             return Response.ok(new ErrorMessage(ErrorCode.GET_COMMENT_LIST_ERR_CODE, ErrorCode.GET_COMMENT_LIST_ERR_MSG),MediaType.APPLICATION_JSON).status(500).build();
@@ -108,7 +112,7 @@ public class CommentRest {
             Map<String, Object> equalCondition = new HashMap<String, Object>();
             equalCondition.put(ParamsConstants.PARAM_COMMENT_KTV_ID, comment.getKTVId());
             float ktvScore = ktvService.countScore(commentService.getListEqual(equalCondition));
-            KTV ktv = ktvService.get(comment.getKTVId());
+            KTV ktv = ktvService.get(Integer.valueOf(comment.getKTVId()));
             ktv.setScore(decimalFormat.format(ktvScore));
             ktvService.update(ktv);
         } catch (Exception e) {
@@ -137,7 +141,7 @@ public class CommentRest {
     @GET
     @Path("/count")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getCommentCount( @QueryParam(ParamsConstants.PARAM_COMMENT_COMMENT) String comment) {
+    public Response getCommentCount(@QueryParam(ParamsConstants.PARAM_COMMENT_COMMENT) String comment, @QueryParam(ParamsConstants.PARAM_COMMENT_KTV_ID) String ktvId) {
         Map<String, Integer> countMap = new HashMap<String, Integer>();
         int commentCount = 0;
 
@@ -148,6 +152,10 @@ public class CommentRest {
                 && !CommonConstants.NULL_STRING.equals(comment)
                 && !CommonConstants.NULL.equals(comment))
             likeCondition.put(ParamsConstants.PARAM_COMMENT_COMMENT, comment);
+        if (ktvId != null
+                && !CommonConstants.NULL_STRING.equals(ktvId)
+                && !CommonConstants.NULL.equals(ktvId))
+            equalCondition.put(ParamsConstants.PARAM_COMMENT_KTV_ID, ktvId);
 
         try {
             commentCount = (int) commentService.getListCount(equalCondition, likeCondition);

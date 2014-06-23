@@ -15,10 +15,12 @@ public class Comment implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @Column(name = "ktv_id", nullable = true, columnDefinition = "int default 0")
-    private int KTVId;
-    @Column(name = "user_id", nullable = true, columnDefinition = "int default 0")
-    private int userId;
+    @Column(name = "ktv_id", nullable = true, columnDefinition = "varchar(16) default ''")
+    private String KTVId;
+    @Column(name = "user_id", nullable = true, columnDefinition = "varchar(16) default ''")
+    private String userId;
+    @Column(name = "user_name", nullable = true, columnDefinition = "varchar(16) default ''")
+    private String userName;
     @Column(name = "comment", nullable = true, columnDefinition = "varchar(20480) default ''")
     private String comment;
     @Column(name = "score", nullable = true, columnDefinition = "varchar(32) default 0.0")
@@ -41,9 +43,10 @@ public class Comment implements Serializable {
         this.soundEffectsScore = "0";
     }
 
-    public Comment(int KTVId, int userId, String comment,String score, String serviceScore, String environmentScore, String soundEffectsScore) {
+    public Comment(String KTVId, String userId,String userName, String comment,String score, String serviceScore, String environmentScore, String soundEffectsScore) {
         this.KTVId = KTVId;
         this.userId = userId;
+        this.userName = userName;
         this.comment = comment;
         this.score = score;
         this.serviceScore = serviceScore;
@@ -68,19 +71,19 @@ public class Comment implements Serializable {
         this.id = id;
     }
 
-    public int getKTVId() {
+    public String getKTVId() {
         return KTVId;
     }
 
-    public void setKTVId(int KTVId) {
+    public void setKTVId(String KTVId) {
         this.KTVId = KTVId;
     }
 
-    public int getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 
@@ -122,5 +125,13 @@ public class Comment implements Serializable {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 }
