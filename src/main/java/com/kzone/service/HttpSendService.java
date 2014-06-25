@@ -10,9 +10,9 @@ import java.io.IOException;
 public interface HttpSendService {
     public byte[] get(String url) throws IOException;
 
-    public byte[] post(String url, Object body);
+    public byte[] post(String url, Object body) throws IOException;
 
-    public byte[] put(String url, Object body);
+    public byte[] put(String url, Object body) throws IOException;
 
-    public byte[] delete(String url);
+    public byte[] delete(String url) throws IOException;
 }

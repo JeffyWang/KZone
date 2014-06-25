@@ -1,6 +1,7 @@
 package com.kzone.service.impl;
 
 import com.kzone.service.HttpsSendService;
+import org.springframework.stereotype.Service;
 
 import javax.net.ssl.*;
 import java.io.BufferedReader;
@@ -15,6 +16,7 @@ import java.security.KeyStore;
 /**
  * Created by Jeffy on 14-5-6.
  */
+@Service
 public class HttpsSendServiceImpl implements HttpsSendService {
     @Override
     public byte[] get(String url) throws IOException {
