@@ -5,6 +5,7 @@ import au.com.bytecode.opencsv.bean.ColumnPositionMappingStrategy;
 import au.com.bytecode.opencsv.bean.CsvToBean;
 import com.kzone.bean.KTV;
 import com.kzone.bo.KTVData;
+import com.kzone.constants.CommonConstants;
 import com.kzone.service.KTVService;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Component;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
@@ -21,6 +23,7 @@ import javax.ws.rs.core.Response;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,13 +38,13 @@ public class ImportDataRest {
     private KTVService ktvService;
 
     @POST
-    @Path("/ktv/data")
+    @Path("/ktv/data/{folder}")
 //    @Consumes({ MediaType.MULTIPART_FORM_DATA, MediaType.APPLICATION_JSON })
     @Produces(MediaType.APPLICATION_JSON)
-    public Response importKtvData(@Context HttpServletRequest request) {
+    public Response importKtvData(@Context HttpServletRequest request, @PathParam("folder") String folder) {
         List<KTV> ktvList = new ArrayList<KTV>();
         try {
-            ktvList = readCSV("a");
+            ktvList = readCSV(folder);
             for(KTV ktv : ktvList) {
                 ktvService.add(ktv);
             }
@@ -51,9 +54,12 @@ public class ImportDataRest {
         return Response.ok(ktvList, MediaType.APPLICATION_JSON).build();
     }
 
-    public List readCSV(String f) throws IOException {
-        String path = "C:\\Users\\Administrator\\Desktop\\510000";
-        File dir=new File(path);
+    public List readCSV(String folder) throws IOException {
+        String folderName = Thread.currentThread().getContextClassLoader().getResource("file").getPath() + "/" + folder;
+
+        System.out.println(folderName);
+
+        File dir=new File(folderName);
         File[] files = dir.listFiles();
         List<KTV> dataList = new ArrayList<KTV>();
         String provinceId = dir.getName();
@@ -73,7 +79,8 @@ public class ImportDataRest {
             data = csv.parse(strat, reader);
             for(KTVData ktvData : data) {
                 String districtId = provinceId + "-" + cityId + "-" + ktvData.getArea();
-                ktvList.add(new KTV(districtId, ktvData.getName(), ktvData.getAddress(), ktvData.getPhoneNumber()));
+                if(ktvData.getName() != null || !ktvData.getName().equals(""))
+                    ktvList.add(new KTV(districtId, ktvData.getName(), ktvData.getAddress(), ktvData.getPhoneNumber()));
             }
 
             dataList.addAll(ktvList);
@@ -102,6 +109,6 @@ public class ImportDataRest {
 //        CsvToBean csv = new CsvToBean();
 //        List list = csv.parse(strat, reader);
 
-//        }
+//        };
     }
 }

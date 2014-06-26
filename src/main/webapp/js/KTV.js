@@ -42,7 +42,7 @@ var initPageData = function() {
                 ktvString += "<tr><td>" +ktv.id +  "</td><td><a data-toggle='modal' data-target='#ktvInfo' class='ktvInfo' rel='" + ktv.id + "'>" +ktv.name.substr(0,20) +  "</a></td><td>" +ktv.phoneNumber + "</td><td>" +ktv.address.substr(0,10) + "</td><td>" +ktv.score +
                     "</td><td>" +createTime + "</td><td>" +updateTime +
                     "</td><td><button type='button' class='btn btn-default btn-sm remove'rel='" + ktv.id + "'><span class='glyphicon glyphicon-remove'></span></button>" +
-                    "<button type='button' class='btn btn-default btn-sm refresh'><span class='glyphicon glyphicon-refresh'></span></button>" +
+                    "<button type='button' class='btn btn-default btn-sm refresh'  data-toggle='modal' data-target='#updateKtv'><span class='glyphicon glyphicon-refresh'></span></button>" +
                     "<button type='button' data-toggle='modal' data-target='#upload' class='btn btn-default btn-sm picture' rel='" + ktv.id + "'><span class='glyphicon glyphicon-picture'></span></button></td></tr>";
             });
             $("#ktv").append(ktvString);
