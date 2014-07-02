@@ -15,4 +15,7 @@ public interface CommonConstants {
     final static String PICTURE_TYPE_KTV = "ktv";
     final static String PICTURE_TYPE_INFORMATION = "information";
     final static String PICTURE_TYPE_GAME = "game";
+    final static String PICTURE_URL = "picture_url";
+
+    final static String UPYUN_URI = ".b0.upaiyun.com";
 }

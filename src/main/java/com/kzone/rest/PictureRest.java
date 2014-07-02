@@ -6,12 +6,14 @@ import com.kzone.bean.KTV;
 import com.kzone.bo.ErrorMessage;
 import com.kzone.constants.CommonConstants;
 import com.kzone.constants.ErrorCode;
+import com.kzone.constants.HTTPConstants;
 import com.kzone.constants.ParamsConstants;
+import com.kzone.service.FileService;
 import com.kzone.service.GameService;
 import com.kzone.service.InformationService;
 import com.kzone.service.KTVService;
-import com.kzone.service.PictureService;
 import com.kzone.util.Pinyin4jUtil;
+import com.upyun.service.PicBucketService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -25,8 +27,12 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * Created by Jeffy on 2014/5/19 0019.
@@ -36,22 +42,25 @@ import java.util.Map;
 public class PictureRest {
     Logger log = Logger.getLogger(PictureRest.class);
     @Autowired
-    private PictureService pictureService;
-    @Autowired
     private KTVService ktvService;
     @Autowired
     private InformationService informationService;
     @Autowired
     private GameService gameService;
+    @Autowired
+    private FileService fileService;
+    @Autowired
+    private PicBucketService picBucketService;
 
     @POST
-    @Path("/ktv/{ktvId}")
+    @Path("/ktv/{areaId}/{ktvId}")
     @Consumes({ MediaType.MULTIPART_FORM_DATA, MediaType.APPLICATION_JSON })
     @Produces(MediaType.APPLICATION_JSON)
-    public Response addKTVPicture(@Context HttpServletRequest request, @PathParam(ParamsConstants.PARAM_KTV_ID) int ktvId) {
-        String picture = null;
+    public Response addKTVPicture(@Context HttpServletRequest request,@PathParam(ParamsConstants.DISTRICT_AREA_ID) int areaId, @PathParam(ParamsConstants.PARAM_KTV_ID) int ktvId) {
+        String picture = "";
         KTV ktv = null;
         String pictureName = "";
+        String uploadPicPath = HTTPConstants.HTTP_PATH_SEPARATOR + CommonConstants.PICTURE_TYPE_KTV + HTTPConstants.HTTP_PATH_SEPARATOR + areaId + HTTPConstants.HTTP_PATH_SEPARATOR + ktvId + HTTPConstants.HTTP_PATH_SEPARATOR + System.currentTimeMillis();
 
         MultipartResolver resolver = new CommonsMultipartResolver(request.getSession().getServletContext());
         MultipartHttpServletRequest multipartRequest = resolver.resolveMultipart(request);
@@ -59,62 +68,42 @@ public class PictureRest {
 
         try {
             ktv =  ktvService.get(ktvId);
-            String tmp = "";
-            tmp = Pinyin4jUtil.getPinyinJianPin(ktv.getName().trim().replaceAll("[0-9]","")).split(",")[0];
-            pictureName = tmp + System.currentTimeMillis();
+            pictureName = String.valueOf(ktvId);
             InputStream input = file.getInputStream();
-            pictureService.addKTVPicture(input, pictureName, CommonConstants.CONTENT_TYPE, CommonConstants.PICTURE_TYPE_KTV, String.valueOf(ktvId));
-            picture = pictureService.addKtvPictureName(ktv.getPictures(), pictureName, ktvId);
+            String tmpPicturePath = fileService.addFile(input, pictureName, CommonConstants.CONTENT_TYPE);
+            log.debug("tmp picture path : " + tmpPicturePath);
+
+            String picturenUrl = picBucketService.addSmallPicture(tmpPicturePath, uploadPicPath);
+            picBucketService.addMiddlePicture(tmpPicturePath, uploadPicPath);
+            picBucketService.addBigPicture(tmpPicturePath, uploadPicPath);
+
+            if(ktv.getPictures() != null) {
+                picture = ktv.getPictures() + "," + picturenUrl;
+            } else {
+                picture = picturenUrl;
+            }
+
             ktv.setPictures(picture);
             ktvService.update(ktv);
 
             input.close();
         } catch (Exception e) {
             e.printStackTrace();
-            pictureService.deletePicture(pictureName + "_0");
-            pictureService.deletePicture(pictureName + "_1");
-            pictureService.deletePicture(pictureName + "_2");
             return Response.ok(new ErrorMessage(ErrorCode.ADD_PICTURE_ERR_CODE, ErrorCode.ADD_PICTURE_ERR_MSG), MediaType.APPLICATION_JSON).build();
+        } finally {
+            fileService.deleteFile(pictureName,  CommonConstants.CONTENT_TYPE);
         }
 
         return Response.ok(ktv, MediaType.APPLICATION_JSON).build();
     }
 
-    @GET
-    @Path("/{type}/{id}/{name}")
-    @Produces(MediaType.TEXT_PLAIN)
-    public InputStream getKTVPictures (@PathParam(ParamsConstants.PARAM_TYPE) String type,@PathParam(ParamsConstants.PARAM_NAME) String name, @PathParam(ParamsConstants.PARAM_ID) int id) {
-        InputStream inputStream = null;
-
-        try {
-            inputStream = pictureService.getPicture(type, name, id).getInputStream();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return inputStream;
-    }
-
-    @DELETE
-    @Path("/{name}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response deletePictures (@PathParam(ParamsConstants.PARAM_NAME) String name) {
-        try {
-            log.debug("delete a picture, the picture's name is [" + name + "]");
-            pictureService.deletePicture(name);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return Response.ok(new com.kzone.bo.Response(), MediaType.APPLICATION_JSON).build();
-    }
 
     @DELETE
     @Path("/{type}/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response deletePictures (@PathParam(ParamsConstants.PARAM_TYPE) String type, @PathParam(ParamsConstants.PARAM_ID) int id) {
         try {
-            pictureService.deletePicture(type, id);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -127,31 +116,34 @@ public class PictureRest {
     @Consumes({ MediaType.MULTIPART_FORM_DATA, MediaType.APPLICATION_JSON })
     @Produces(MediaType.APPLICATION_JSON)
     public Response addInformationPicture(@Context HttpServletRequest request, @PathParam(ParamsConstants.PARAM_INFORMATION_ID) int informationId) {
-        Information information = null;
+        String picture = "";
         String pictureName = "";
-        Map pictureUrl = null;
+        String uploadPicPath = HTTPConstants.HTTP_PATH_SEPARATOR + CommonConstants.PICTURE_TYPE_INFORMATION + HTTPConstants.HTTP_PATH_SEPARATOR + informationId + HTTPConstants.HTTP_PATH_SEPARATOR + System.currentTimeMillis();
+        Map<String, String> pictureResult = new HashMap<String, String>();
 
         MultipartResolver resolver = new CommonsMultipartResolver(request.getSession().getServletContext());
         MultipartHttpServletRequest multipartRequest = resolver.resolveMultipart(request);
         MultipartFile file = multipartRequest.getFile("Filedata");
 
         try {
-            information =  informationService.get(informationId);
-            String tmp = "";
-            tmp = Pinyin4jUtil.getPinyinJianPin(information.getTitle().trim().replaceAll("[0-9]","")).split(",")[0];
-            pictureName = tmp + System.currentTimeMillis();
+            pictureName = String.valueOf(informationId);
             InputStream input = file.getInputStream();
-            pictureUrl = pictureService.addInformationPicture(input, pictureName, CommonConstants.CONTENT_TYPE, CommonConstants.PICTURE_TYPE_INFORMATION, String.valueOf(informationId));
+            String tmpPicturePath = fileService.addFile(input, pictureName, CommonConstants.CONTENT_TYPE);
+            log.debug("tmp picture path : " + tmpPicturePath);
+
+            String picturenUrl = picBucketService.addSmallPicture(tmpPicturePath, uploadPicPath);
+            picBucketService.addMiddlePicture(tmpPicturePath, uploadPicPath);
+            picBucketService.addBigPicture(tmpPicturePath, uploadPicPath);
+            pictureResult.put(CommonConstants.PICTURE_URL, picturenUrl);
             input.close();
         } catch (Exception e) {
             e.printStackTrace();
-            pictureService.deletePicture(pictureName + "_0");
-            pictureService.deletePicture(pictureName + "_1");
-            pictureService.deletePicture(pictureName + "_2");
             return Response.ok(new ErrorMessage(ErrorCode.ADD_PICTURE_ERR_CODE, ErrorCode.ADD_PICTURE_ERR_MSG), MediaType.APPLICATION_JSON).build();
+        } finally {
+            fileService.deleteFile(pictureName,  CommonConstants.CONTENT_TYPE);
         }
 
-        return Response.ok(pictureUrl, MediaType.APPLICATION_JSON).build();
+        return Response.ok(pictureResult, MediaType.APPLICATION_JSON).build();
     }
 
     @POST
@@ -159,30 +151,32 @@ public class PictureRest {
     @Consumes({ MediaType.MULTIPART_FORM_DATA, MediaType.APPLICATION_JSON })
     @Produces(MediaType.APPLICATION_JSON)
     public Response addGamePicture(@Context HttpServletRequest request, @PathParam(ParamsConstants.PARAM_GAME_ID) int gameId) {
-        Game game = null;
+        String picture = "";
         String pictureName = "";
-        Map pictureUrl = null;
+        String uploadPicPath = HTTPConstants.HTTP_PATH_SEPARATOR + CommonConstants.PICTURE_TYPE_GAME + HTTPConstants.HTTP_PATH_SEPARATOR + gameId + HTTPConstants.HTTP_PATH_SEPARATOR + System.currentTimeMillis();
+        Map<String, String> pictureResult = new HashMap<String, String>();
 
         MultipartResolver resolver = new CommonsMultipartResolver(request.getSession().getServletContext());
         MultipartHttpServletRequest multipartRequest = resolver.resolveMultipart(request);
         MultipartFile file = multipartRequest.getFile("Filedata");
 
         try {
-            game =  gameService.get(gameId);
-            String tmp = "";
-            tmp = Pinyin4jUtil.getPinyinJianPin(game.getName().trim().replaceAll("[0-9]","")).split(",")[0];
-            pictureName = tmp + System.currentTimeMillis();
             InputStream input = file.getInputStream();
-            pictureUrl = pictureService.addGamePicture(input, pictureName, CommonConstants.CONTENT_TYPE, CommonConstants.PICTURE_TYPE_GAME, String.valueOf(gameId));
+            String tmpPicturePath = fileService.addFile(input, pictureName, CommonConstants.CONTENT_TYPE);
+            log.debug("tmp picture path : " + tmpPicturePath);
+
+            String picturenUrl = picBucketService.addSmallPicture(tmpPicturePath, uploadPicPath);
+            picBucketService.addMiddlePicture(tmpPicturePath, uploadPicPath);
+            picBucketService.addBigPicture(tmpPicturePath, uploadPicPath);
+            pictureResult.put(CommonConstants.PICTURE_URL, picturenUrl);
             input.close();
         } catch (Exception e) {
             e.printStackTrace();
-            pictureService.deletePicture(pictureName + "_0");
-            pictureService.deletePicture(pictureName + "_1");
-            pictureService.deletePicture(pictureName + "_2");
             return Response.ok(new ErrorMessage(ErrorCode.ADD_PICTURE_ERR_CODE, ErrorCode.ADD_PICTURE_ERR_MSG), MediaType.APPLICATION_JSON).build();
+        } finally {
+            fileService.deleteFile(pictureName, CommonConstants.CONTENT_TYPE);
         }
 
-        return Response.ok(pictureUrl, MediaType.APPLICATION_JSON).build();
+        return Response.ok(pictureResult, MediaType.APPLICATION_JSON).build();
     }
 }

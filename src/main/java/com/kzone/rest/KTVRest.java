@@ -6,7 +6,6 @@ import com.kzone.constants.CommonConstants;
 import com.kzone.constants.ErrorCode;
 import com.kzone.constants.ParamsConstants;
 import com.kzone.service.KTVService;
-import com.kzone.service.PictureService;
 import com.kzone.util.EncodingUtil;
 import com.kzone.util.StringUtil;
 import net.sf.json.JSONObject;
@@ -33,8 +32,6 @@ public class KTVRest {
     Logger log = Logger.getLogger(KTVRest.class);
     @Autowired
     private KTVService ktvService;
-    @Autowired
-    private PictureService pictureService;
 
     @GET
     @Path("/info/{id}")
@@ -200,7 +197,7 @@ public class KTVRest {
             System.arraycopy(bigPictures, 0, pictureName, middlePictures.length + smallPictures.length, bigPictures.length);
 
             for(String s : pictureName) {
-                pictureService.deletePicture(s);
+//                pictureService.deletePicture(s);
             }
 
         } catch (Exception e) {

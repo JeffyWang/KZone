@@ -12,8 +12,6 @@
     http://cxf.apache.org/jaxrs
     http://cxf.apache.org/schemas/jaxrs.xsd">
     <import resource="spring-mysql-dao.xml"/>
-    <import resource="spring-mongo-dao.xml"/>
-    <import resource="spring-redis.xml"/>
     <import resource="classpath*:META-INF/cxf/cxf.xml" />
     <import resource="classpath*:META-INF/cxf/cxf-servlet.xml" />
     <import resource="classpath:META-INF/cxf/cxf-extension-jaxrs-binding.xml"/>
@@ -23,7 +21,7 @@
     <!-- 注解读取配置文件 -->
     <util:properties id="kzoneConfig" location="classpath:kzone-config.properties" />
 
-    <context:component-scan base-package="com.kzone" />
+    <context:component-scan base-package="com" />
 
     <jaxrs:server id="services" address="/">
         <jaxrs:serviceBeans>

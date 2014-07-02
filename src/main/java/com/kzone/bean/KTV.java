@@ -45,7 +45,6 @@ public class KTV implements Serializable {
     public KTV() {
         this.createTime = new Date();
         this.updateTime = new Date();
-        this.pictures = "{\"bigPictures\":\"\",\"middlePictures\":\"\",\"smallPictures\":\"\"}";
         this.score = "0";
     }
 
@@ -68,7 +67,6 @@ public class KTV implements Serializable {
         this.name = name;
         this.address = address;
         this.phoneNumber = phoneNumber;
-        this.pictures = "{\"bigPictures\":\"\",\"middlePictures\":\"\",\"smallPictures\":\"\"}";
         this.createTime = new Date();
         this.updateTime = new Date();
     }

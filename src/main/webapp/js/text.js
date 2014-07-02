@@ -49,8 +49,7 @@ var uploadImg = function() {
 
             success: function(data) {
                 data = jQuery.parseJSON(jQuery(data).text());
-                var pictureUrl = data.pictureUrl;
-                console.log(pictureUrl)
+                var pictureUrl = data.picture_url;
                 var img = '<img class="img pic" src="' + pictureUrl + '">'
                 $('#editor').append(img);
             },

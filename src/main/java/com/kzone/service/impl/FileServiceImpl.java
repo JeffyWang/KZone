@@ -1,26 +1,28 @@
 package com.kzone.service.impl;
 
 import com.kzone.service.FileService;
-import com.mongodb.gridfs.GridFSDBFile;
+import com.kzone.util.FileUtil;
+import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
 
 /**
  * Created by jeffy on 2014/6/8 0008.
  */
+@Service
 public class FileServiceImpl implements FileService {
     @Override
-    public void addFile(InputStream inputStream, String pictureName, String contentType, String type, String id) throws Exception {
-
+    public String addFile(InputStream inputStream, String fileName, String contentType) throws Exception {
+        String filePath = Thread.currentThread().getContextClassLoader().getResource("picture").getPath() + fileName + "." + contentType;
+        boolean isUpload = FileUtil.upload(inputStream, filePath);
+        if(!isUpload)
+            return null;
+        return filePath;
     }
 
     @Override
-    public GridFSDBFile getFile(String name, int KTVId) {
-        return null;
-    }
-
-    @Override
-    public void deleteFile(String name) {
-
+    public void deleteFile(String fileName, String contentType) {
+        String filePath = Thread.currentThread().getContextClassLoader().getResource("picture").getPath() + fileName + "." + contentType;
+        boolean isDeleted = FileUtil.delete(filePath);
     }
 }

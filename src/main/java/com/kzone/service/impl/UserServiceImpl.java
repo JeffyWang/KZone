@@ -3,7 +3,6 @@ package com.kzone.service.impl;
 import com.kzone.bean.User;
 import com.kzone.constants.MongoConstants;
 import com.kzone.constants.ParamsConstants;
-import com.kzone.dao.MongoDao;
 import com.kzone.dao.UserDao;
 import com.kzone.service.UserService;
 import com.kzone.util.MD5Util;
@@ -23,8 +22,6 @@ public class UserServiceImpl extends CommonServiceImpl<User> implements UserServ
     Logger log = Logger.getLogger(UserServiceImpl.class);
     @Autowired
     private UserDao userDao;
-    @Autowired
-    private MongoDao mongoDao;
 
     @Override
     public User getUser(int id) throws Exception {
@@ -62,7 +59,6 @@ public class UserServiceImpl extends CommonServiceImpl<User> implements UserServ
     @Override
     public User addUser(User user) throws Exception {
         User u = userDao.insert(user);
-        mongoDao.save(user, MongoConstants.MONGO_COLLECTION_USER);
         return u;
     }
 

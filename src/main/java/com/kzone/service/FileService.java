@@ -8,9 +8,7 @@ import java.io.InputStream;
  * Created by jeffy on 2014/6/8 0008.
  */
 public interface FileService {
-    public void addFile(InputStream inputStream, String pictureName, String contentType, String type, String id) throws Exception;
+    public String addFile(InputStream inputStream, String fileName, String contentType) throws Exception;
 
-    public GridFSDBFile getFile(String name, int KTVId);
-
-    public void deleteFile(String name);
+    public void deleteFile(String fileName, String contentType);
 }
