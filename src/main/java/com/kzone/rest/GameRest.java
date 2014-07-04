@@ -34,7 +34,7 @@ public class GameRest {
     @GET
     @Path("/info/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getInformation(@PathParam(ParamsConstants.PARAM_ID) int id) {
+    public Response getGame(@PathParam(ParamsConstants.PARAM_ID) int id) {
         Game game = null;
 
         try {
@@ -50,7 +50,7 @@ public class GameRest {
     @GET
     @Path("/info")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getInformationsPage(@QueryParam(ParamsConstants.PAGE_PARAMS_OFFSET) int offset, @QueryParam(ParamsConstants.PAGE_PARAMS_LENGTH) int length,
+    public Response getGamesPage(@QueryParam(ParamsConstants.PAGE_PARAMS_OFFSET) int offset, @QueryParam(ParamsConstants.PAGE_PARAMS_LENGTH) int length,
                                         @QueryParam(ParamsConstants.PAGE_PARAMS_ORDER_DESC) String orderDesc,@QueryParam(ParamsConstants.PARAM_GAME_NAME) String name) {
         List<Game> gamePageList = null;
 
@@ -75,7 +75,7 @@ public class GameRest {
     @PUT
     @Path("/info")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response addInformation(@RequestBody String body) {
+    public Response updateGame(@RequestBody String body) {
         Game game = null;
         String encode = EncodingUtil.getEncoding(body);
 
@@ -96,7 +96,7 @@ public class GameRest {
     @POST
     @Path("/info")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response newInformation(@RequestBody String body) {
+    public Response addGame(@RequestBody String body) {
         Game game = new Game("game"," ");
 
         try {
@@ -112,7 +112,7 @@ public class GameRest {
     @DELETE
     @Path("/info/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response deleteInformation(@PathParam("id") int id) {
+    public Response deleteGame(@PathParam("id") int id) {
         Game game = null;
 
         try {
@@ -129,7 +129,7 @@ public class GameRest {
     @GET
     @Path("/count")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getInformationCount( @QueryParam(ParamsConstants.PARAM_GAME_NAME) String name) {
+    public Response getGameCount( @QueryParam(ParamsConstants.PARAM_GAME_NAME) String name) {
         Map<String, Integer> countMap = new HashMap<String, Integer>();
         int gameCount = 0;
 

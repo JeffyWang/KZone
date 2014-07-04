@@ -26,4 +26,10 @@ public interface DistrictService {
     public List<Area> getAreaList(String cityId) throws Exception;
 
     public Area getArea(String areaId) throws Exception;
+
+    public Area getAreaId(String areaName) throws Exception;
+
+    public City getCityId(String cityName) throws Exception;
+
+    public Province getProvinceId(String provinceName) throws Exception;
 }

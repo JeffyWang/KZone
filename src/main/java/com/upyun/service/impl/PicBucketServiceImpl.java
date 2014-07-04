@@ -12,6 +12,9 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Created by Jeffy on 2014/7/2 0002.
+ */
 @Service
 public class PicBucketServiceImpl implements PicBucketService {
 
@@ -25,20 +28,14 @@ public class PicBucketServiceImpl implements PicBucketService {
     private String bigPicture = "b";
     /** 绑定的域名 */
     private final String URL = HTTPConstants.HTTP_PROTOCAL_PATH + bucketName + CommonConstants.UPYUN_URI;
+    UpYun upyun = null;
 
-    @Override
-    public boolean isExit(String picturePath) {
-        File pictureFile = new File(picturePath);
-
-        if(!pictureFile.isFile()) {
-            return false;
-        }
-        return true;
+    public PicBucketServiceImpl() {
+        upyun = new UpYun(bucketName, userName, userPassword);
     }
 
     @Override
     public String addSmallPicture(String picturePath, String uploadPath) throws IOException {
-        UpYun upyun = new UpYun(bucketName, userName, userPassword);
         upyun.setDebug(isDebug);
         // 本地待上传的图片文件
         File picture = new File(picturePath);
@@ -64,7 +61,6 @@ public class PicBucketServiceImpl implements PicBucketService {
 
     @Override
     public String addMiddlePicture(String picturePath, String uploadPath) throws IOException {
-        UpYun upyun = new UpYun(bucketName, userName, userPassword);
         upyun.setDebug(isDebug);
         // 本地待上传的图片文件
         File picture = new File(picturePath);
@@ -90,7 +86,6 @@ public class PicBucketServiceImpl implements PicBucketService {
 
     @Override
     public String addBigPicture(String picturePath, String uploadPath) throws IOException {
-        UpYun upyun = new UpYun(bucketName, userName, userPassword);
         upyun.setDebug(isDebug);
         // 本地待上传的图片文件
         File picture = new File(picturePath);

@@ -13,6 +13,7 @@ import com.kzone.service.GameService;
 import com.kzone.service.InformationService;
 import com.kzone.service.KTVService;
 import com.kzone.util.Pinyin4jUtil;
+import com.upyun.service.FileBucketService;
 import com.upyun.service.PicBucketService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,7 @@ import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -51,6 +53,8 @@ public class PictureRest {
     private FileService fileService;
     @Autowired
     private PicBucketService picBucketService;
+    @Autowired
+    private FileBucketService fileBucketService;
 
     @POST
     @Path("/ktv/{areaId}/{ktvId}")
@@ -61,7 +65,7 @@ public class PictureRest {
         KTV ktv = null;
         String pictureName = "";
         String uploadPicPath = HTTPConstants.HTTP_PATH_SEPARATOR + CommonConstants.PICTURE_TYPE_KTV + HTTPConstants.HTTP_PATH_SEPARATOR + areaId + HTTPConstants.HTTP_PATH_SEPARATOR + ktvId + HTTPConstants.HTTP_PATH_SEPARATOR + System.currentTimeMillis();
-
+        System.out.println(uploadPicPath);
         MultipartResolver resolver = new CommonsMultipartResolver(request.getSession().getServletContext());
         MultipartHttpServletRequest multipartRequest = resolver.resolveMultipart(request);
         MultipartFile file = multipartRequest.getFile("Filedata");
@@ -95,20 +99,6 @@ public class PictureRest {
         }
 
         return Response.ok(ktv, MediaType.APPLICATION_JSON).build();
-    }
-
-
-    @DELETE
-    @Path("/{type}/{id}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response deletePictures (@PathParam(ParamsConstants.PARAM_TYPE) String type, @PathParam(ParamsConstants.PARAM_ID) int id) {
-        try {
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return Response.ok(new com.kzone.bo.Response(), MediaType.APPLICATION_JSON).build();
     }
 
     @POST
@@ -178,5 +168,57 @@ public class PictureRest {
         }
 
         return Response.ok(pictureResult, MediaType.APPLICATION_JSON).build();
+    }
+
+    @DELETE
+    @Path("/{type}/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response deletePictures(@PathParam(ParamsConstants.PARAM_TYPE) String type, @PathParam(ParamsConstants.PARAM_ID) int id) {
+        try {
+            String dirPath = HTTPConstants.HTTP_PATH_SEPARATOR + type + HTTPConstants.HTTP_PATH_SEPARATOR + id;
+            List<String> fileNameList = fileBucketService.readDir(dirPath);
+            log.debug("delete dir :" + dirPath);
+            if(fileNameList.size() == 0) {
+                fileBucketService.deleteDir(dirPath);
+            } else {
+                for(String fileName : fileNameList) {
+                    String filePath = dirPath + HTTPConstants.HTTP_PATH_SEPARATOR + fileName;
+                    log.debug("delete file : " + filePath);
+                    fileBucketService.deleteFile(filePath);
+                }
+                fileBucketService.deleteDir(dirPath);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.ok(new ErrorMessage(ErrorCode.DELETE_PICTURE_ERR_CODE, ErrorCode.DELETE_PICTURE_ERR_MSG), MediaType.APPLICATION_JSON).build();
+        }
+
+        return Response.ok(new com.kzone.bo.Response(), MediaType.APPLICATION_JSON).build();
+    }
+
+    @DELETE
+    @Path("/ktv/{areaId}/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response deleteKTVPictures (@PathParam(ParamsConstants.DISTRICT_AREA_ID) String areaId, @PathParam(ParamsConstants.PARAM_ID) int id) {
+        try {
+            String dirPath = HTTPConstants.HTTP_PATH_SEPARATOR + CommonConstants.PICTURE_TYPE_KTV + HTTPConstants.HTTP_PATH_SEPARATOR + areaId + HTTPConstants.HTTP_PATH_SEPARATOR + id;
+            List<String> fileNameList = fileBucketService.readDir(dirPath);
+            log.debug("delete dir :" + dirPath);
+            if(fileNameList.size() == 0) {
+                fileBucketService.deleteDir(dirPath);
+            } else {
+                for(String fileName : fileNameList) {
+                    String filePath = dirPath + HTTPConstants.HTTP_PATH_SEPARATOR + fileName;
+                    log.debug("delete file : " + filePath);
+                    fileBucketService.deleteFile(filePath);
+                }
+                fileBucketService.deleteDir(dirPath);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.ok(new ErrorMessage(ErrorCode.DELETE_PICTURE_ERR_CODE, ErrorCode.DELETE_PICTURE_ERR_MSG), MediaType.APPLICATION_JSON).build();
+        }
+
+        return Response.ok(new com.kzone.bo.Response(), MediaType.APPLICATION_JSON).build();
     }
 }

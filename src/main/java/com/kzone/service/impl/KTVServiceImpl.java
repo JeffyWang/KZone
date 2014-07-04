@@ -2,7 +2,6 @@ package com.kzone.service.impl;
 
 import com.kzone.bean.Comment;
 import com.kzone.bean.KTV;
-import com.kzone.dao.MongoDao;
 import com.kzone.service.KTVService;
 import com.mongodb.gridfs.GridFSDBFile;
 import org.springframework.beans.factory.annotation.Autowired;

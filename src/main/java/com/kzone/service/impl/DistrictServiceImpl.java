@@ -81,4 +81,25 @@ public class DistrictServiceImpl implements DistrictService {
 
         return areaDao.get(equalCondition);
     }
+
+    @Override
+    public Area getAreaId(String areaName) throws Exception {
+        Map<String, Object> equalCondition = new HashMap<String, Object>();
+        equalCondition.put(ParamsConstants.DISTRICT_AREA_NAME, areaName);
+        return areaDao.get(equalCondition);
+    }
+
+    @Override
+    public City getCityId(String cityName) throws Exception {
+        Map<String, Object> equalCondition = new HashMap<String, Object>();
+        equalCondition.put(ParamsConstants.DISTRICT_CITY_NAME, cityName);
+        return cityDao.get(equalCondition);
+    }
+
+    @Override
+    public Province getProvinceId(String provinceName) throws Exception {
+        Map<String, Object> equalCondition = new HashMap<String, Object>();
+        equalCondition.put(ParamsConstants.DISTRICT_PROVINCE_NAME, provinceName);
+        return provinceDao.get(equalCondition);
+    }
 }

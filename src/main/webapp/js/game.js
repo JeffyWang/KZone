@@ -66,17 +66,17 @@ var initPageData = function() {
             console.log(data)
             $.each(data, function(gameIndex, game) {
                 var picUrl = $("<div>" + game.game + "</div>").find(".pic").attr("src");
-                informationString += '<div class="col-lg-4 game"><img class="img-circle" src="' + picUrl + '" alt="Generic placeholder image" style="width: 140px; height: 140px;"><h2 class="name">' + game.name + '</h2><p class="introduce">' + game.introduction + '</p><p><a class="btn btn-default shows" data-toggle="modal"  data-target="#gameBody" rel="' + game.id + '" role="button">View details</a></p></div>'
+                informationString += '<div class="col-lg-4 game"><img class="img-circle" src="' + picUrl + '" alt="Generic placeholder image" style="width: 140px; height: 140px;"><h2 class="name">' + game.name + '</h2><p class="introduce">' + game.introduction + '</p><p><a class="btn btn-default shows" data-toggle="modal"  data-target="#gameBody" rel="' + game.id + '" role="button">View details</a><button type="button" rel="' + game.id + '" class="btn btn-primary deleteGame">Delete</button></p></div>'
             });
             $("#games").append(informationString);
 
             $(".shows").on("click", function() {
                 var gameId = $(this).attr("rel");
-                console.log(gameId + " gameId")
+                var url = _localhostPath + '/rest/game/info/' + gameId;
+
                 $.ajax({
-                    url: _localhostPath + '/rest/game/info/' + gameId,
+                    url: url,
                     type: 'GET',
-                    data:data,
                     contentType:'application/json;charset=UTF-8',
                     success: function(data){
                         console.log(data)
@@ -92,6 +92,14 @@ var initPageData = function() {
                     }
                 });
             });
+
+            $(".deleteGame").on("click", function() {
+                var id = $(this).attr("rel");
+                console.log(id)
+                deleteGame(id);
+                deleteImg(id);
+//                window.location.reload();
+            })
         }
     })
 }
@@ -117,8 +125,8 @@ $("#add").on("click", function() {
 $("#close").on("click", function() {
     var id = $("#gameId").attr("rel");
     deleteGame(id);
-    deleteImg();
-    window.location.reload();
+    deleteImg(id);
+
 })
 
 var submit = function() {
@@ -160,6 +168,7 @@ var deleteGame = function(id) {
         contentType:'application/json;charset=UTF-8',
         success: function(data){
             console.log(data)
+            window.location.reload();
         },
         error : function(XMLHttpRequest, textStatus, errorThrown) {
             console.log(errorThrown);
@@ -169,15 +178,9 @@ var deleteGame = function(id) {
     });
 }
 
-var deleteImg = function() {
-    var img = $("#game").contents().find(".pic");
-
-    for(var i = 0; i < img.length; i ++) {
-        var imgUrl = img[i].src
-        var imgName = imgUrl.split("/");
-        var name = imgName[imgName.length - 1];
+var deleteImg = function(id) {
         $.ajax({
-            url: _localhostPath + '/rest/picture/' + name,
+            url: _localhostPath + '/rest/picture/game/' + id,
             type: 'DELETE',
             contentType:'application/json;charset=UTF-8',
             success: function(data){
@@ -190,5 +193,4 @@ var deleteImg = function() {
                 console.log(XMLHttpRequest);
             }
         });
-    }
 }

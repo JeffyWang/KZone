@@ -65,16 +65,16 @@ var initPageData = function() {
         success: function (data) {
             $.each(data, function(informationIndex, information) {
                 var picUrl = $("<div>" + information.article + "</div>").find(".pic").attr("src");
-                informationString += '<div class="well well-lg show" data-toggle="modal" data-target="#article" rel="' + information.id + '"><div class="media"><a class="pull-left" href="#"><img class="media-object" src="' + picUrl + '" alt="..."></a><div class="media-body"><h4 class="media-heading">'+ information.title + '</h4>'+ information.introduction + '</div></div></div>';
+                informationString += '<div class="well well-lg show" data-toggle="modal" data-target="#article" rel="' + information.id + '"><span class="glyphicon glyphicon-remove removeInfo" rel="' + information.id + '" style="float: right"></span><div class="media"><a class="pull-left" href="#"><img class="media-object" src="' + picUrl + '" alt="..."></a><div class="media-body"><h4 class="media-heading">'+ information.title + '</h4>'+ information.introduction + '</div></div></div>';
             });
             $("#information").append(informationString);
 
             $(".show").on("click", function() {
+
                 var informationId = $(this).attr("rel");
                 $.ajax({
                     url: _localhostPath + '/rest/information/info/' + informationId,
                     type: 'GET',
-                    data:data,
                     contentType:'application/json;charset=UTF-8',
                     success: function(data){
                         console.log(data)
@@ -82,6 +82,7 @@ var initPageData = function() {
                         $("#art").html("");
                         $("#tit").append(data.title);
                         $("#art").append(data.article);
+
                     },
                     error : function(XMLHttpRequest, textStatus, errorThrown) {
                         console.log(errorThrown);
@@ -89,7 +90,16 @@ var initPageData = function() {
                         console.log(XMLHttpRequest);
                     }
                 });
+
             });
+
+            $(".removeInfo").on("click", function(event) {
+                event.stopPropagation();
+                var id = $(this).attr("rel");
+                deleteInformation(id);
+                deleteImg(id);
+//                window.location.reload();
+            })
         }
     })
 }
@@ -114,8 +124,8 @@ $("#add").on("click", function() {
 $("#close").on("click", function() {
     var id = $("#infoId").attr("rel");
     deleteInformation(id);
-    deleteImg();
-    window.location.reload();
+    deleteImg(id);
+//    window.location.reload();
 })
 
 var submit = function() {
@@ -166,20 +176,14 @@ var deleteInformation = function(id) {
     });
 }
 
-var deleteImg = function() {
-    var img = $("#info").contents().find(".pic");
-
-    for(var i = 0; i < img.length; i ++) {
-        var imgUrl = img[i].src
-        var imgName = imgUrl.split("/");
-        var name = imgName[imgName.length - 1];
+var deleteImg = function(id) {
         $.ajax({
-            url: _localhostPath + '/rest/picture/' + name,
+            url: _localhostPath + '/rest/picture/information/' + id,
             type: 'DELETE',
             contentType:'application/json;charset=UTF-8',
             success: function(data){
                 console.log(data)
-
+                window.location.reload();
             },
             error : function(XMLHttpRequest, textStatus, errorThrown) {
                 console.log(errorThrown);
@@ -187,5 +191,4 @@ var deleteImg = function() {
                 console.log(XMLHttpRequest);
             }
         });
-    }
 }

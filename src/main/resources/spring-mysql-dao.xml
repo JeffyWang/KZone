@@ -39,6 +39,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
                 <entry key="Area" value-ref="areaDao"/>
                 <entry key="Common" value-ref="commonDao"/>
                 <entry key="Game" value-ref="gameDao"/>
+                <entry key="DpKTV" value-ref="dpKTVDao"/>
             </map>
         </constructor-arg>
     </bean>
@@ -117,6 +118,11 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
         </property>
     </bean>
     <bean id="initializeDao" class="com.kzone.dao.impl.InitializeDaoImpl">
+        <property name="sessionFactory">
+            <ref bean="sessionFactory" />
+        </property>
+    </bean>
+    <bean id="dpKTVDao" class="com.kzone.dao.impl.DpKTVDaoImpl">
         <property name="sessionFactory">
             <ref bean="sessionFactory" />
         </property>

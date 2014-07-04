@@ -33,8 +33,14 @@ public class KTV implements Serializable {
     private String  price;
     @Column(name = "pictures", nullable = true, columnDefinition = "text")
     private String pictures;
-    @Column(name = "geographic_information", nullable = true, columnDefinition = "varchar(32) default ''")
-    private String geographicInformation;
+    @Column(name = "business_id", nullable = true, columnDefinition = "varchar(32) default ''")
+    private String businessId;
+    @Column(name = "business_area", nullable = true, columnDefinition = "varchar(32) default ''")
+    private String businessArea;
+    @Column(name = "longitude", nullable = true, columnDefinition = "varchar(32) default ''")
+    private String longitude;
+    @Column(name = "latitude", nullable = true, columnDefinition = "varchar(32) default ''")
+    private String latitude;
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "create_time")
     private Date createTime;
@@ -48,7 +54,7 @@ public class KTV implements Serializable {
         this.score = "0";
     }
 
-    public KTV(String districtId, String name, String address, String phoneNumber, String introduction, int averagePrice, String score, String pictures, String geographicInformation) {
+    public KTV(String districtId, String name, String address, String phoneNumber, String introduction, int averagePrice, String score, String pictures) {
         this.districtId = districtId;
         this.name = name;
         this.address = address;
@@ -57,7 +63,6 @@ public class KTV implements Serializable {
         this.averagePrice = averagePrice;
         this.score = score;
         this.pictures = pictures;
-        this.geographicInformation = geographicInformation;
         this.createTime = new Date();
         this.updateTime = new Date();
     }
@@ -69,6 +74,22 @@ public class KTV implements Serializable {
         this.phoneNumber = phoneNumber;
         this.createTime = new Date();
         this.updateTime = new Date();
+    }
+
+    public String getBusinessId() {
+        return businessId;
+    }
+
+    public void setBusinessId(String businessId) {
+        this.businessId = businessId;
+    }
+
+    public String getBusinessArea() {
+        return businessArea;
+    }
+
+    public void setBusinessArea(String businessArea) {
+        this.businessArea = businessArea;
     }
 
     public int getId() {
@@ -143,12 +164,20 @@ public class KTV implements Serializable {
         this.pictures = pictures;
     }
 
-    public String getGeographicInformation() {
-        return geographicInformation;
+    public String getLongitude() {
+        return longitude;
     }
 
-    public void setGeographicInformation(String geographicInformation) {
-        this.geographicInformation = geographicInformation;
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
+    }
+
+    public String getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
     }
 
     public Date getCreateTime() {

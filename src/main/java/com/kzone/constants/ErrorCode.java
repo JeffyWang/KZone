@@ -68,6 +68,8 @@ public interface ErrorCode {
 
     public static String ADD_PICTURE_ERR_CODE = "KP001";
     public static String ADD_PICTURE_ERR_MSG = "Add a picture error : ";
+    public static String DELETE_PICTURE_ERR_CODE = "KP002";
+    public static String DELETE_PICTURE_ERR_MSG = "Delete a picture error : ";
 
     final static String ADD_STATISTICS_ERR_CODE = "KS001";
     final static String ADD_STATISTICS_ERR_MSG = "Add statistics error : ";

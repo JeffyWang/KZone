@@ -49,5 +49,8 @@ public interface ParamsConstants {
     final static String DISTRICT_PROVINCE_ID = "provinceId";
     final static String DISTRICT_CITY_ID = "cityId";
     final static String DISTRICT_AREA_ID = "areaId";
+    final static String DISTRICT_PROVINCE_NAME = "provinceName";
+    final static String DISTRICT_CITY_NAME = "cityName";
+    final static String DISTRICT_AREA_NAME = "areaName";
 
 }

@@ -27,6 +27,7 @@ $(document).ready(function(){
 var initPageData = function() {
     var ktvString  = "";
     var ktvId = 0;
+    var areaId = 0;
     var url = _localhostPath + "/rest/ktv/info?offset=" + _dataOffset + "&length=" + _pageDataCount + "&orderDesc=" + "id" + "&name=" + _likeKTVName + "&address=" + _likeKTVAddress + "&districtId=" + _districtCode;
 
     $.ajax({
@@ -41,9 +42,9 @@ var initPageData = function() {
                 var updateTime = date(ktv.updateTime);
                 ktvString += "<tr><td>" +ktv.id +  "</td><td><a data-toggle='modal' data-target='#ktvInfo' class='ktvInfo' rel='" + ktv.id + "'>" +ktv.name.substr(0,20) +  "</a></td><td>" +ktv.phoneNumber + "</td><td>" +ktv.address.substr(0,10) + "</td><td>" +ktv.score +
                     "</td><td>" +createTime + "</td><td>" +updateTime +
-                    "</td><td><button type='button' class='btn btn-default btn-sm remove'rel='" + ktv.id + "'><span class='glyphicon glyphicon-remove'></span></button>" +
+                    "</td><td><button type='button' class='btn btn-default btn-sm remove'rel='" + ktv.id + "' text='" + ktv.districtId +"'><span class='glyphicon glyphicon-remove'></span></button>" +
                     "<button type='button' class='btn btn-default btn-sm refresh'  data-toggle='modal' data-target='#updateKtv'><span class='glyphicon glyphicon-refresh'></span></button>" +
-                    "<button type='button' data-toggle='modal' data-target='#upload' class='btn btn-default btn-sm picture' rel='" + ktv.id + "'><span class='glyphicon glyphicon-picture'></span></button></td></tr>";
+                    "<button type='button' data-toggle='modal' data-target='#upload' class='btn btn-default btn-sm picture' text='" + ktv.districtId +"' rel='" + ktv.id + "'><span class='glyphicon glyphicon-picture'></span></button></td></tr>";
             });
             $("#ktv").append(ktvString);
 
@@ -62,7 +63,8 @@ var initPageData = function() {
 
             $(".remove").bind("click", function() {
                 ktvId = $(this).attr("rel");
-                removeKtv(ktvId);
+                areaId = $(this).attr("text").split("-")[2];
+                removeKtv(ktvId, areaId);
             });
 
             $(".refresh").bind("click", function() {
@@ -70,15 +72,15 @@ var initPageData = function() {
             });
 
             $(".picture").bind("click", function() {
-                var ktvId = $(this).attr("rel");
-
+                ktvId = $(this).attr("rel");
+                areaId = $(this).attr("text").split("-")[2];
                 $("#removePicture").on("click", function() {
-                    removePicture(ktvId);
+                    removePicture(ktvId,areaId);
                 });
 
                 $('#file_upload').uploadify({
                     "swf" : "../js/uploadify.swf",
-                    "uploader" : _localhostPath + "/rest/picture/ktv/" + ktvId
+                    "uploader" : _localhostPath + "/rest/picture/ktv/"+ areaId + "/" + ktvId
                 });
             });
 
@@ -243,8 +245,8 @@ $("#ktvAddress").on("click", function(){
 });
 
 /////////////////////////////////////////////////////-----function
-var removeKtv = function(ktvId) {
-    removePicture(ktvId);
+var removeKtv = function(ktvId, areaId) {
+    removePicture(ktvId,areaId);
     $.ajax({
         url: _localhostPath + '/rest/ktv/info/' + ktvId,
         type: 'DELETE',
@@ -259,9 +261,9 @@ var removeKtv = function(ktvId) {
     });
 };
 
-var removePicture = function(ktvId) {
+var removePicture = function(ktvId,areaId) {
     $.ajax({
-        url: _localhostPath + '/rest/ktv/picture/' + ktvId,
+        url: _localhostPath + '/rest/picture/ktv/'+ areaId + "/" + ktvId,
         type: 'DELETE',
         contentType:'application/json;charset=UTF-8',
         timeout: 1000,
@@ -331,12 +333,12 @@ var getArea = function(cityId) {
 
 var showKTVInfo = function(data) {
     var pictureName = data.pictures;
-    var pictureJson = JSON.parse(pictureName);
-    var picture = pictureJson.bigPictures.split(",");
+    console.log(data)
+    var picture = pictureName.split(",");
     var pictureItem = "";
     var picturePoint = "";
 
-    for(var i = 0; i < picture.length - 1; i ++) {
+    for(var i = 0; i < picture.length; i ++) {
         var pictureUrl = picture[i];
         if(i == 0) {
             pictureItem += '<div class="item active"><img class="img" src="' + pictureUrl + '"><div class="carousel-caption"></div></div>'

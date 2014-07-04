@@ -42,6 +42,10 @@ $(".pictureBtn").on("click", function() {
 var uploadImg = function() {
     var id = $("#Filedata").attr("rel");
     console.log(_pictureType)
+    console.log("before")
+    var img = '<img id="pic' + id + '" class="img pic" src="../img/load.gif">'
+    $('#editor').append(img);
+
     $.ajaxFileUpload(
         {
             url: _localhostPath + "/rest/picture/" + _pictureType + "/" + id,
@@ -50,8 +54,7 @@ var uploadImg = function() {
             success: function(data) {
                 data = jQuery.parseJSON(jQuery(data).text());
                 var pictureUrl = data.picture_url;
-                var img = '<img class="img pic" src="' + pictureUrl + '">'
-                $('#editor').append(img);
+                $('#pic' + id).attr("src", pictureUrl);
             },
             error: function(data, status, e) {
                 data = jQuery.parseJSON(jQuery(data).text());
