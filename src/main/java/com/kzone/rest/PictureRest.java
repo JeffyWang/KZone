@@ -108,6 +108,7 @@ public class PictureRest {
     @Produces(MediaType.APPLICATION_JSON)
     public Response addInformationPicture(@Context HttpServletRequest request, @PathParam(ParamsConstants.PARAM_INFORMATION_ID) int informationId) {
         String picture = "";
+        Information information = null;
         String pictureName = "";
         String uploadPicPath = HTTPConstants.HTTP_PATH_SEPARATOR + CommonConstants.PICTURE_TYPE_INFORMATION + HTTPConstants.HTTP_PATH_SEPARATOR + informationId + HTTPConstants.HTTP_PATH_SEPARATOR + System.currentTimeMillis();
         Map<String, String> pictureResult = new HashMap<String, String>();
@@ -117,6 +118,7 @@ public class PictureRest {
         MultipartFile file = multipartRequest.getFile("Filedata");
 
         try {
+            information = informationService.get(informationId);
             pictureName = String.valueOf(informationId);
             InputStream input = file.getInputStream();
             String tmpPicturePath = fileService.addFile(input, pictureName, CommonConstants.CONTENT_TYPE);
@@ -127,6 +129,11 @@ public class PictureRest {
             picBucketService.addMiddlePicture(tmpPicturePath, uploadPicPath);
             picBucketService.addBigPicture(tmpPicturePath, uploadPicPath);
             pictureResult.put(CommonConstants.PICTURE_URL, pictureUrl);
+
+            picture = pictureUrl;
+            information.setPicture(picture);
+            informationService.update(information);
+
             input.close();
         } catch (Exception e) {
             e.printStackTrace();
@@ -144,6 +151,7 @@ public class PictureRest {
     @Produces(MediaType.APPLICATION_JSON)
     public Response addGamePicture(@Context HttpServletRequest request, @PathParam(ParamsConstants.PARAM_GAME_ID) int gameId) {
         String picture = "";
+        Game game = null;
         String pictureName = "";
         String uploadPicPath = HTTPConstants.HTTP_PATH_SEPARATOR + CommonConstants.PICTURE_TYPE_GAME + HTTPConstants.HTTP_PATH_SEPARATOR + gameId + HTTPConstants.HTTP_PATH_SEPARATOR + System.currentTimeMillis();
         Map<String, String> pictureResult = new HashMap<String, String>();
@@ -153,6 +161,7 @@ public class PictureRest {
         MultipartFile file = multipartRequest.getFile("Filedata");
 
         try {
+            game = gameService.get(gameId);
             InputStream input = file.getInputStream();
             String tmpPicturePath = fileService.addFile(input, pictureName, CommonConstants.CONTENT_TYPE);
             log.debug("tmp picture path : " + tmpPicturePath);
@@ -162,6 +171,11 @@ public class PictureRest {
             picBucketService.addMiddlePicture(tmpPicturePath, uploadPicPath);
             picBucketService.addBigPicture(tmpPicturePath, uploadPicPath);
             pictureResult.put(CommonConstants.PICTURE_URL, pictureUrl);
+
+            picture = pictureUrl;
+            game.setPicture(picture);
+            gameService.update(game);
+
             input.close();
         } catch (Exception e) {
             e.printStackTrace();

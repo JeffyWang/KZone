@@ -97,6 +97,7 @@ public class InformationRest {
             information = StringUtil.jsonStringToObject(body, Information.class);
             String article = StringUtil.stringToHtml(information.getTitle(), information.getArticle());
             information.setArticle(article);
+            System.out.println(information.getIntroduction());
             informationService.update(information);
         } catch (Exception e) {
             log.warn(e);

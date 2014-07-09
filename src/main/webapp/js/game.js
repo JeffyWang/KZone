@@ -65,7 +65,8 @@ var initPageData = function() {
         success: function (data) {
             console.log(data)
             $.each(data, function(gameIndex, game) {
-                var picUrl = $("<div>" + game.game + "</div>").find(".pic").attr("src");
+//                var picUrl = $("<div>" + game.game + "</div>").find(".pic").attr("src");
+                var picUrl = game.picture;
                 informationString += '<div class="col-lg-4 game"><img class="img-circle" src="' + picUrl + '" alt="Generic placeholder image" style="width: 140px; height: 140px;"><h2 class="name">' + game.name + '</h2><p class="introduce">' + game.introduction + '</p><p><a class="btn btn-default shows" data-toggle="modal"  data-target="#gameBody" rel="' + game.id + '" role="button">View details</a><button type="button" rel="' + game.id + '" class="btn btn-primary deleteGame">Delete</button></p></div>'
             });
             $("#games").append(informationString);
@@ -79,7 +80,6 @@ var initPageData = function() {
                     type: 'GET',
                     contentType:'application/json;charset=UTF-8',
                     success: function(data){
-                        console.log(data)
                         $("#nam").html("");
                         $("#gam").html("");
                         $("#nam").append(data.name);
@@ -134,8 +134,8 @@ var submit = function() {
     var name = $("#name").val();
     var introduction = $("#game").contents().find("#editor").text().replace(/(\n)+|(\r\n)+/g, "");
     var game = encodeURIComponent($("#game").contents().find("#editor").html());
-    var data = '{"id":' + id + ',"name":"' + name + '", "introduction":"' + introduction + '", "game":"' + game + '"}';
-    console.log(data)
+    var picture = $("#info").contents().find("#pic" + id).attr("src");
+    var data = '{"id":' + id + ',"name":"' + name + '", "introduction":"' + introduction + '", "game":"' + game + '","picture":"'+ picture + '"}';
 
     $.ajax({
         url: _localhostPath + '/rest/game/info',
@@ -143,7 +143,6 @@ var submit = function() {
         data:data,
         contentType:'application/json;charset=UTF-8',
         success: function(data){
-            console.log(data)
             window.location.reload();
         },
         error : function(XMLHttpRequest, textStatus, errorThrown) {

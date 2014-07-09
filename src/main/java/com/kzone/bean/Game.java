@@ -21,8 +21,8 @@ public class Game implements Serializable {
     private String game;
     @Column(name = "introduction", nullable = true, columnDefinition = "text")
     private String introduction;
-    @Column(name = "link", nullable = true, columnDefinition = "varchar(256) default ''")
-    private String link;
+    @Column(name = "picture", nullable = true, columnDefinition = "varchar(256) default ''")
+    private String picture;
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "create_time")
     private Date createTime;
@@ -72,12 +72,12 @@ public class Game implements Serializable {
         this.introduction = introduction;
     }
 
-    public String getLink() {
-        return link;
+    public String getPicture() {
+        return picture;
     }
 
-    public void setLink(String link) {
-        this.link = link;
+    public void setPicture(String picture) {
+        this.picture = picture;
     }
 
     public Date getCreateTime() {
@@ -103,7 +103,7 @@ public class Game implements Serializable {
                 ", name='" + name + '\'' +
                 ", game='" + game + '\'' +
                 ", introduction='" + introduction + '\'' +
-                ", link='" + link + '\'' +
+                ", picture='" + picture + '\'' +
                 ", createTime=" + createTime +
                 ", updateTime=" + updateTime +
                 '}';

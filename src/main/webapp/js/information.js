@@ -64,7 +64,8 @@ var initPageData = function() {
         contentType: 'application/json;charset=utf-8',
         success: function (data) {
             $.each(data, function(informationIndex, information) {
-                var picUrl = $("<div>" + information.article + "</div>").find(".pic").attr("src");
+//                var picUrl = $("<div>" + information.article + "</div>").find(".pic").attr("src");
+                var picUrl = information.picture;
                 informationString += '<div class="well well-lg show" data-toggle="modal" data-target="#article" rel="' + information.id + '"><span class="glyphicon glyphicon-remove removeInfo" rel="' + information.id + '" style="float: right"></span><div class="media"><a class="pull-left" href="#"><img class="media-object" src="' + picUrl + '" alt="..."></a><div class="media-body"><h4 class="media-heading">'+ information.title + '</h4>'+ information.introduction + '</div></div></div>';
             });
             $("#information").append(informationString);
@@ -133,16 +134,16 @@ var submit = function() {
     var title = $("#title").val();
     var introduction = $("#info").contents().find("#editor").text().replace(/(\n)+|(\r\n)+/g, "");
     var article = encodeURIComponent($("#info").contents().find("#editor").html());
-    var data = '{"id":' + id + ',"title":"' + title + '", "introduction":"' + introduction + '", "article":"' + article + '"}';
+    var picture = $("#info").contents().find("#pic" + id).attr("src");
+    var data = '{"id":' + id + ',"title":"' + title + '", "introduction":"' + introduction + '", "article":"' + article + '","picture":"'+ picture + '"}';
+    console.log(introduction)
     console.log(data)
-
     $.ajax({
         url: _localhostPath + '/rest/information/info',
         type: 'PUT',
         data:data,
         contentType:'application/json;charset=UTF-8',
         success: function(data){
-            console.log(data)
             window.location.reload();
         },
         error : function(XMLHttpRequest, textStatus, errorThrown) {

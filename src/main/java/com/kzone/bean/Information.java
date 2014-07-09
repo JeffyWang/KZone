@@ -21,8 +21,8 @@ public class Information implements Serializable {
     private String article;
     @Column(name = "introduction", nullable = true, columnDefinition = "text")
     private String introduction;
-    @Column(name = "link", nullable = true, columnDefinition = "varchar(256) default ''")
-    private String link;
+    @Column(name = "picture", nullable = true, columnDefinition = "varchar(256) default ''")
+    private String picture;
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "create_time")
     private Date createTime;
@@ -35,10 +35,10 @@ public class Information implements Serializable {
         this.updateTime = new Date();
     }
 
-    public Information(String title, String article, String link) {
+    public Information(String title, String article, String picture) {
         this.title = title;
         this.article = article;
-        this.link = link;
+        this.picture = picture;
         this.createTime = new Date();
         this.updateTime = new Date();
     }
@@ -67,12 +67,12 @@ public class Information implements Serializable {
         this.article = article;
     }
 
-    public String getLink() {
-        return link;
+    public String getPicture() {
+        return picture;
     }
 
-    public void setLink(String link) {
-        this.link = link;
+    public void setPicture(String picture) {
+        this.picture = picture;
     }
 
     public Date getCreateTime() {
@@ -106,7 +106,7 @@ public class Information implements Serializable {
                 ", title='" + title + '\'' +
                 ", article='" + article + '\'' +
                 ", introduction='" + introduction + '\'' +
-                ", link='" + link + '\'' +
+                ", picture='" + picture + '\'' +
                 ", createTime=" + createTime +
                 ", updateTime=" + updateTime +
                 '}';
