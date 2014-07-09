@@ -2,6 +2,7 @@ package com.upyun.service.impl;
 
 import com.upyun.service.FileBucketService;
 import com.upyun.util.UpYun;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -15,6 +16,7 @@ import java.util.List;
 @Service
 public class FileBucketServiceImpl implements FileBucketService {
     // 运行前先设置好以下三个参数
+    Logger log = Logger.getLogger(FileBucketServiceImpl.class);
     private String bucketName = "kzone";
     private String userName = "wjfdwr";
     private String userPassword = "wjfwjf456789";
@@ -41,7 +43,7 @@ public class FileBucketServiceImpl implements FileBucketService {
         List<UpYun.FolderItem> items = upyun.readDir(dirPath);
 
         if (null == items) {
-            System.out.println("'" + dirPath + "'目录下没有文件。");
+            log.debug("'" + dirPath + "' the dir is null。");
         } else {
             for (int i = 0; i < items.size(); i++) {
                 fileNameList.add(items.get(i).name);

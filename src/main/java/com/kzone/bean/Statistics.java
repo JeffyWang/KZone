@@ -103,4 +103,18 @@ public class Statistics implements Serializable {
     public void setToken(String token) {
         this.token = token;
     }
+
+    @Override
+    public String toString() {
+        return "Statistics{" +
+                "id=" + id +
+                ", userId=" + userId +
+                ", osType='" + osType + '\'' +
+                ", osVersion='" + osVersion + '\'' +
+                ", appVersion='" + appVersion + '\'' +
+                ", appName='" + appName + '\'' +
+                ", token='" + token + '\'' +
+                ", createTime=" + createTime +
+                '}';
+    }
 }

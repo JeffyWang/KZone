@@ -45,6 +45,7 @@ public class UserRest {
             return Response.ok(new ErrorMessage(ErrorCode.GET_USER_ERR_CODE, ErrorCode.GET_USER_ERR_MSG),MediaType.APPLICATION_JSON).build();
         }
 
+        log.debug("Get a " + user.toString());
         return Response.ok(user, MediaType.APPLICATION_JSON).build();
     }
 
@@ -61,6 +62,7 @@ public class UserRest {
             return Response.ok(new ErrorMessage(ErrorCode.GET_USER_LIST_ERR_CODE, ErrorCode.GET_USER_LIST_ERR_MSG),MediaType.APPLICATION_JSON).build();
         }
 
+        log.debug("Get user list success.");
         return Response.ok(userList, MediaType.APPLICATION_JSON).build();
     }
 
@@ -95,6 +97,7 @@ public class UserRest {
             return Response.ok(new ErrorMessage(ErrorCode.GET_USER_LIST_ERR_CODE, ErrorCode.GET_USER_LIST_ERR_MSG),MediaType.APPLICATION_JSON).build();
         }
 
+        log.debug("Get users pages success");
         return Response.ok(usersPage, MediaType.APPLICATION_JSON).build();
     }
 
@@ -115,6 +118,7 @@ public class UserRest {
             return Response.ok(new ErrorMessage(ErrorCode.ADD_USER_ERR_CODE, ErrorCode.ADD_USER_ERR_MSG),MediaType.APPLICATION_JSON).build();
         }
 
+        log.debug("Add a " + user.toString());
         return Response.ok(user, MediaType.APPLICATION_JSON).build();
     }
 

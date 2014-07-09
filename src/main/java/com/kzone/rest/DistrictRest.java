@@ -42,6 +42,7 @@ public class DistrictRest {
             return Response.ok(new ErrorMessage(ErrorCode.GET_DISTRICT_ERR_CODE, ErrorCode.GET_DISTRICT_ERR_MSG),MediaType.APPLICATION_JSON).status(500).build();
         }
 
+        log.debug("Get province list success.");
         return Response.ok(provinceList, MediaType.APPLICATION_JSON).build();
     }
 
@@ -58,6 +59,7 @@ public class DistrictRest {
             return Response.ok(new ErrorMessage(ErrorCode.GET_DISTRICT_ERR_CODE, ErrorCode.GET_DISTRICT_ERR_MSG),MediaType.APPLICATION_JSON).status(500).build();
         }
 
+        log.debug("Get a " + province.toString());
         return Response.ok(province, MediaType.APPLICATION_JSON).build();
     }
 
@@ -74,6 +76,7 @@ public class DistrictRest {
             return Response.ok(new ErrorMessage(ErrorCode.GET_DISTRICT_ERR_CODE, ErrorCode.GET_DISTRICT_ERR_MSG),MediaType.APPLICATION_JSON).status(500).build();
         }
 
+        log.debug("Get city list success.");
         return Response.ok(cityList, MediaType.APPLICATION_JSON).build();
     }
 
@@ -90,6 +93,7 @@ public class DistrictRest {
             return Response.ok(new ErrorMessage(ErrorCode.GET_DISTRICT_ERR_CODE, ErrorCode.GET_DISTRICT_ERR_MSG),MediaType.APPLICATION_JSON).status(500).build();
         }
 
+        log.debug("Get a " + city.toString());
         return Response.ok(city, MediaType.APPLICATION_JSON).build();
     }
 
@@ -106,6 +110,7 @@ public class DistrictRest {
             return Response.ok(new ErrorMessage(ErrorCode.GET_DISTRICT_ERR_CODE, ErrorCode.GET_DISTRICT_ERR_MSG),MediaType.APPLICATION_JSON).status(500).build();
         }
 
+        log.debug("Get the city of the province success, the province id is {" + provinceId + "}");
         return Response.ok(cityList, MediaType.APPLICATION_JSON).build();
     }
 
@@ -122,6 +127,7 @@ public class DistrictRest {
             return Response.ok(new ErrorMessage(ErrorCode.GET_DISTRICT_ERR_CODE, ErrorCode.GET_DISTRICT_ERR_MSG),MediaType.APPLICATION_JSON).status(500).build();
         }
 
+        log.debug("Get area list success.");
         return Response.ok(areaList, MediaType.APPLICATION_JSON).build();
     }
 
@@ -138,6 +144,7 @@ public class DistrictRest {
             return Response.ok(new ErrorMessage(ErrorCode.GET_DISTRICT_ERR_CODE, ErrorCode.GET_DISTRICT_ERR_MSG),MediaType.APPLICATION_JSON).status(500).build();
         }
 
+        log.debug("Get a " + area.toString());
         return Response.ok(area, MediaType.APPLICATION_JSON).build();
     }
 
@@ -154,6 +161,7 @@ public class DistrictRest {
             return Response.ok(new ErrorMessage(ErrorCode.GET_DISTRICT_ERR_CODE, ErrorCode.GET_DISTRICT_ERR_MSG),MediaType.APPLICATION_JSON).status(500).build();
         }
 
+        log.debug("Get the area of the city success, the city id is {" + cityId + "}");
         return Response.ok(areaList, MediaType.APPLICATION_JSON).build();
     }
 }

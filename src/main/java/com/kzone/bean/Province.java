@@ -42,4 +42,13 @@ public class Province implements Serializable {
     public void setProvinceName(String provinceName) {
         this.provinceName = provinceName;
     }
+
+    @Override
+    public String toString() {
+        return "Province{" +
+                "id=" + id +
+                ", provinceId='" + provinceId + '\'' +
+                ", provinceName='" + provinceName + '\'' +
+                '}';
+    }
 }

@@ -203,4 +203,26 @@ public class KTV implements Serializable {
     public void setPrice(String price) {
         this.price = price;
     }
+
+    @Override
+    public String toString() {
+        return "KTV{" +
+                "id=" + id +
+                ", districtId='" + districtId + '\'' +
+                ", name='" + name + '\'' +
+                ", address='" + address + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", introduction='" + introduction + '\'' +
+                ", averagePrice=" + averagePrice +
+                ", score='" + score + '\'' +
+                ", price='" + price + '\'' +
+                ", pictures='" + pictures + '\'' +
+                ", businessId='" + businessId + '\'' +
+                ", businessArea='" + businessArea + '\'' +
+                ", longitude='" + longitude + '\'' +
+                ", latitude='" + latitude + '\'' +
+                ", createTime=" + createTime +
+                ", updateTime=" + updateTime +
+                '}';
+    }
 }

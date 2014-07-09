@@ -46,6 +46,7 @@ public class CommentRest {
             return Response.ok(new ErrorMessage(ErrorCode.GET_COMMENT_ERR_CODE, ErrorCode.GET_COMMENT_ERR_MSG),MediaType.APPLICATION_JSON).status(500).build();
         }
 
+        log.debug("Get a " + comment.toString());
         return Response.ok(comment, MediaType.APPLICATION_JSON).build();
     }
 
@@ -82,6 +83,7 @@ public class CommentRest {
             return Response.ok(new ErrorMessage(ErrorCode.GET_COMMENT_LIST_ERR_CODE, ErrorCode.GET_COMMENT_LIST_ERR_MSG),MediaType.APPLICATION_JSON).status(500).build();
         }
 
+        log.debug("Get comments pages success.");
         return Response.ok(commentList, MediaType.APPLICATION_JSON).build();
     }
 
@@ -119,6 +121,7 @@ public class CommentRest {
             log.warn("count ktc score error : " + e);
         }
 
+        log.debug("Add a new " + comment.toString());
         return Response.ok(comment, MediaType.APPLICATION_JSON).build();
     }
 
@@ -135,6 +138,7 @@ public class CommentRest {
             return Response.ok(new ErrorMessage(ErrorCode.COUNT_COMMENT_ERR_CODE, ErrorCode.COUNT_COMMENT_ERR_MSG),MediaType.APPLICATION_JSON).status(500).build();
         }
 
+        log.debug("Delete a " + comment.toString());
         return Response.ok(comment, MediaType.APPLICATION_JSON).build();
     }
 
@@ -165,6 +169,7 @@ public class CommentRest {
         }
 
         countMap.put(ParamsConstants.PAGE_DATA_COUNT, commentCount);
+        log.debug("Get the comments' count is {" + commentCount + "}");
         return Response.ok(countMap, MediaType.APPLICATION_JSON).build();
     }
 }

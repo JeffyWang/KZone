@@ -44,6 +44,7 @@ public class GameRest {
             return Response.ok(new ErrorMessage(ErrorCode.GET_GAME_ERR_CODE, ErrorCode.GET_GAME_ERR_MSG),MediaType.APPLICATION_JSON).status(500).build();
         }
 
+        log.debug("Get a " + game.toString());
         return Response.ok(game, MediaType.APPLICATION_JSON).build();
     }
 
@@ -69,6 +70,7 @@ public class GameRest {
             return Response.ok(new ErrorMessage(ErrorCode.GET_GAME_LIST_ERR_CODE, ErrorCode.GET_GAME_LIST_ERR_MSG),MediaType.APPLICATION_JSON).status(500).build();
         }
 
+        log.debug("Get games pages success.");
         return Response.ok(gamePageList, MediaType.APPLICATION_JSON).build();
     }
 
@@ -90,6 +92,7 @@ public class GameRest {
             return Response.ok(new ErrorMessage(ErrorCode.ADD_GAME_ERR_CODE, ErrorCode.ADD_GAME_ERR_MSG),MediaType.APPLICATION_JSON).status(500).build();
         }
 
+        log.debug("Update a " + game.toString());
         return Response.ok(game, MediaType.APPLICATION_JSON).build();
     }
 
@@ -106,6 +109,7 @@ public class GameRest {
             return Response.ok(new ErrorMessage(ErrorCode.ADD_GAME_ERR_CODE, ErrorCode.ADD_GAME_ERR_MSG),MediaType.APPLICATION_JSON).status(500).build();
         }
 
+        log.debug("Add a " + game.toString());
         return Response.ok(game, MediaType.APPLICATION_JSON).build();
     }
 
@@ -123,6 +127,7 @@ public class GameRest {
             return Response.ok(new ErrorMessage(ErrorCode.DELETE_GAME_ERR_CODE, ErrorCode.DELETE_GAME_ERR_MSG),MediaType.APPLICATION_JSON).status(500).build();
         }
 
+        log.debug("Delete a " + game.toString());
         return Response.ok(game, MediaType.APPLICATION_JSON).build();
     }
 
@@ -149,6 +154,7 @@ public class GameRest {
         }
 
         countMap.put(ParamsConstants.PAGE_DATA_COUNT, gameCount);
+        log.debug("Get the games' count is {" + gameCount + "}");
         return Response.ok(countMap, MediaType.APPLICATION_JSON).build();
     }
 }

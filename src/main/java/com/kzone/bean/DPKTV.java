@@ -111,4 +111,20 @@ public class DpKTV implements Serializable {
     public void setDatapoi(String datapoi) {
         this.datapoi = datapoi;
     }
+
+    @Override
+    public String toString() {
+        return "DpKTV{" +
+                "id=" + id +
+                ", price='" + price + '\'' +
+                ", businessid='" + businessid + '\'' +
+                ", shopname='" + shopname + '\'' +
+                ", region='" + region + '\'' +
+                ", shopadd='" + shopadd + '\'' +
+                ", bookingtel='" + bookingtel + '\'' +
+                ", cityid='" + cityid + '\'' +
+                ", businessarea='" + businessarea + '\'' +
+                ", datapoi='" + datapoi + '\'' +
+                '}';
+    }
 }

@@ -134,4 +134,20 @@ public class Comment implements Serializable {
     public void setUserName(String userName) {
         this.userName = userName;
     }
+
+    @Override
+    public String toString() {
+        return "Comment{" +
+                "id=" + id +
+                ", KTVId='" + KTVId + '\'' +
+                ", userId='" + userId + '\'' +
+                ", userName='" + userName + '\'' +
+                ", comment='" + comment + '\'' +
+                ", score='" + score + '\'' +
+                ", serviceScore='" + serviceScore + '\'' +
+                ", environmentScore='" + environmentScore + '\'' +
+                ", soundEffectsScore='" + soundEffectsScore + '\'' +
+                ", createTime=" + createTime +
+                '}';
+    }
 }

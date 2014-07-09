@@ -43,6 +43,7 @@ public class StatisticsRest {
             return Response.ok(new ErrorMessage(ErrorCode.GET_STATISTICS_ERR_CODE, ErrorCode.GET_STATISTICS_ERR_MSG),MediaType.APPLICATION_JSON).status(500).build();
         }
 
+        log.debug("Get a " + statistics.toString());
         return Response.ok(statistics, MediaType.APPLICATION_JSON).build();
     }
 
@@ -59,6 +60,7 @@ public class StatisticsRest {
             return Response.ok(new ErrorMessage(ErrorCode.GET_STATISTICS_LIST_ERR_CODE, ErrorCode.GET_STATISTICS_LIST_ERR_MSG),MediaType.APPLICATION_JSON).status(500).build();
         }
 
+        log.debug("Get statistics list success.");
         return Response.ok(statisticsList, MediaType.APPLICATION_JSON).build();
     }
 
@@ -85,6 +87,8 @@ public class StatisticsRest {
             return Response.ok(new ErrorMessage(ErrorCode.ADD_STATISTICS_ERR_CODE, ErrorCode.ADD_STATISTICS_ERR_MSG),MediaType.APPLICATION_JSON).status(500).build();
 
         }
+
+        log.debug("Add a " + statistics.toString());
         return Response.ok(statistics, MediaType.APPLICATION_JSON).build();
     }
 

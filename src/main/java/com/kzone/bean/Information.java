@@ -98,4 +98,17 @@ public class Information implements Serializable {
     public void setIntroduction(String introduction) {
         this.introduction = introduction;
     }
+
+    @Override
+    public String toString() {
+        return "Information{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", article='" + article + '\'' +
+                ", introduction='" + introduction + '\'' +
+                ", link='" + link + '\'' +
+                ", createTime=" + createTime +
+                ", updateTime=" + updateTime +
+                '}';
+    }
 }

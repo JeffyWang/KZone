@@ -46,6 +46,7 @@ public class KTVRest {
             return Response.ok(new ErrorMessage(ErrorCode.GET_KTV_ERR_CODE, ErrorCode.GET_KTV_ERR_MSG),MediaType.APPLICATION_JSON).status(500).build();
         }
 
+        log.debug("Get a " + ktv.toString());
         return Response.ok(ktv,MediaType.APPLICATION_JSON).build();
     }
 
@@ -81,6 +82,7 @@ public class KTVRest {
             return Response.ok(new ErrorMessage(ErrorCode.GET_KTV_LIST_ERR_CODE, ErrorCode.GET_KTV_LIST_ERR_MSG),MediaType.APPLICATION_JSON).status(500).build();
         }
 
+        log.debug("Get KTVs pages success.");
         return Response.ok(ktvPageList, MediaType.APPLICATION_JSON).build();
     }
 
@@ -100,6 +102,7 @@ public class KTVRest {
             return Response.ok(new ErrorMessage(ErrorCode.ADD_KTV_ERR_CODE, ErrorCode.ADD_KTV_ERR_MSG),MediaType.APPLICATION_JSON).status(500).build();
         }
 
+        log.debug("Add a " + ktv.toString());
         return Response.ok(ktv, MediaType.APPLICATION_JSON).build();
     }
 
@@ -117,6 +120,7 @@ public class KTVRest {
             return Response.ok(new ErrorMessage(ErrorCode.DELETE_KTV_ERR_CODE, ErrorCode.DELETE_KTV_ERR_MSG),MediaType.APPLICATION_JSON).status(500).build();
         }
 
+        log.debug("Delete a " + ktv.toString());
         return Response.ok(ktv, MediaType.APPLICATION_JSON).build();
     }
 
@@ -136,6 +140,7 @@ public class KTVRest {
             return Response.ok(new ErrorMessage(ErrorCode.UPDATE_KTV_ERR_CODE, ErrorCode.UPDATE_KTV_ERR_MSG),MediaType.APPLICATION_JSON).status(500).build();
         }
 
+        log.debug("Update a " + ktv.toString());
         return Response.ok(ktv, MediaType.APPLICATION_JSON).build();
     }
 
@@ -172,6 +177,7 @@ public class KTVRest {
         }
 
         countMap.put(ParamsConstants.PAGE_DATA_COUNT, ktvCount);
+        log.debug("Get KTVs count is {" + ktvCount + "}");
         return Response.ok(countMap, MediaType.APPLICATION_JSON).build();
     }
 

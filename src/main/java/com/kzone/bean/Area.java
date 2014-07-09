@@ -52,4 +52,14 @@ public class Area implements Serializable {
     public void setAreaName(String areaName) {
         this.areaName = areaName;
     }
+
+    @Override
+    public String toString() {
+        return "Area{" +
+                "id=" + id +
+                ", areaId='" + areaId + '\'' +
+                ", areaName='" + areaName + '\'' +
+                ", reference='" + reference + '\'' +
+                '}';
+    }
 }

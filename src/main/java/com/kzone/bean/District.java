@@ -95,4 +95,17 @@ public class District implements Serializable {
     public void setDistrictCode(String districtCode) {
         this.districtCode = districtCode;
     }
+
+    @Override
+    public String toString() {
+        return "District{" +
+                "id=" + id +
+                ", province='" + province + '\'' +
+                ", provinceCode='" + provinceCode + '\'' +
+                ", municipality='" + municipality + '\'' +
+                ", municipalityCode='" + municipalityCode + '\'' +
+                ", district='" + district + '\'' +
+                ", districtCode='" + districtCode + '\'' +
+                '}';
+    }
 }

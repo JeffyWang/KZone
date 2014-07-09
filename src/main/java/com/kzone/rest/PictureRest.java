@@ -77,14 +77,15 @@ public class PictureRest {
             String tmpPicturePath = fileService.addFile(input, pictureName, CommonConstants.CONTENT_TYPE);
             log.debug("tmp picture path : " + tmpPicturePath);
 
-            String picturenUrl = picBucketService.addSmallPicture(tmpPicturePath, uploadPicPath);
+            String pictureUrl = picBucketService.addSmallPicture(tmpPicturePath, uploadPicPath);
+            log.debug("The KTV picture URL is {" + pictureUrl + "}");
             picBucketService.addMiddlePicture(tmpPicturePath, uploadPicPath);
             picBucketService.addBigPicture(tmpPicturePath, uploadPicPath);
 
             if(ktv.getPictures() != null) {
-                picture = ktv.getPictures() + "," + picturenUrl;
+                picture = ktv.getPictures() + "," + pictureUrl;
             } else {
-                picture = picturenUrl;
+                picture = pictureUrl;
             }
 
             ktv.setPictures(picture);
@@ -121,10 +122,11 @@ public class PictureRest {
             String tmpPicturePath = fileService.addFile(input, pictureName, CommonConstants.CONTENT_TYPE);
             log.debug("tmp picture path : " + tmpPicturePath);
 
-            String picturenUrl = picBucketService.addSmallPicture(tmpPicturePath, uploadPicPath);
+            String pictureUrl = picBucketService.addSmallPicture(tmpPicturePath, uploadPicPath);
+            log.debug("The information picture URL is {" + pictureUrl + "}");
             picBucketService.addMiddlePicture(tmpPicturePath, uploadPicPath);
             picBucketService.addBigPicture(tmpPicturePath, uploadPicPath);
-            pictureResult.put(CommonConstants.PICTURE_URL, picturenUrl);
+            pictureResult.put(CommonConstants.PICTURE_URL, pictureUrl);
             input.close();
         } catch (Exception e) {
             e.printStackTrace();
@@ -155,10 +157,11 @@ public class PictureRest {
             String tmpPicturePath = fileService.addFile(input, pictureName, CommonConstants.CONTENT_TYPE);
             log.debug("tmp picture path : " + tmpPicturePath);
 
-            String picturenUrl = picBucketService.addSmallPicture(tmpPicturePath, uploadPicPath);
+            String pictureUrl = picBucketService.addSmallPicture(tmpPicturePath, uploadPicPath);
+            log.debug("The game picture URL is {" + pictureUrl + "}");
             picBucketService.addMiddlePicture(tmpPicturePath, uploadPicPath);
             picBucketService.addBigPicture(tmpPicturePath, uploadPicPath);
-            pictureResult.put(CommonConstants.PICTURE_URL, picturenUrl);
+            pictureResult.put(CommonConstants.PICTURE_URL, pictureUrl);
             input.close();
         } catch (Exception e) {
             e.printStackTrace();
@@ -176,14 +179,14 @@ public class PictureRest {
     public Response deletePictures(@PathParam(ParamsConstants.PARAM_TYPE) String type, @PathParam(ParamsConstants.PARAM_ID) int id) {
         try {
             String dirPath = HTTPConstants.HTTP_PATH_SEPARATOR + type + HTTPConstants.HTTP_PATH_SEPARATOR + id;
+            log.debug("Delete a " + type + " dir that the path is {" + dirPath + "}");
             List<String> fileNameList = fileBucketService.readDir(dirPath);
-            log.debug("delete dir :" + dirPath);
             if(fileNameList.size() == 0) {
                 fileBucketService.deleteDir(dirPath);
             } else {
                 for(String fileName : fileNameList) {
                     String filePath = dirPath + HTTPConstants.HTTP_PATH_SEPARATOR + fileName;
-                    log.debug("delete file : " + filePath);
+                    log.debug("Delete a " + type + " file that the path is {" + filePath + "}");
                     fileBucketService.deleteFile(filePath);
                 }
                 fileBucketService.deleteDir(dirPath);
@@ -203,13 +206,13 @@ public class PictureRest {
         try {
             String dirPath = HTTPConstants.HTTP_PATH_SEPARATOR + CommonConstants.PICTURE_TYPE_KTV + HTTPConstants.HTTP_PATH_SEPARATOR + areaId + HTTPConstants.HTTP_PATH_SEPARATOR + id;
             List<String> fileNameList = fileBucketService.readDir(dirPath);
-            log.debug("delete dir :" + dirPath);
+            log.debug("Delete a ktv dir that the path is {" + dirPath + "}");
             if(fileNameList.size() == 0) {
                 fileBucketService.deleteDir(dirPath);
             } else {
                 for(String fileName : fileNameList) {
                     String filePath = dirPath + HTTPConstants.HTTP_PATH_SEPARATOR + fileName;
-                    log.debug("delete file : " + filePath);
+                    log.debug("Delete a ktv file that the path is {" + filePath + "}");
                     fileBucketService.deleteFile(filePath);
                 }
                 fileBucketService.deleteDir(dirPath);

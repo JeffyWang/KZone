@@ -55,6 +55,7 @@ public class InformationRest {
             return Response.ok(new ErrorMessage(ErrorCode.GET_INFORMATION_ERR_CODE, ErrorCode.GET_INFORMATION_ERR_MSG),MediaType.APPLICATION_JSON).status(500).build();
         }
 
+        log.debug("Get a " + information.toString());
         return Response.ok(information, MediaType.APPLICATION_JSON).build();
     }
 
@@ -80,6 +81,7 @@ public class InformationRest {
             return Response.ok(new ErrorMessage(ErrorCode.GET_INFORMATION_LIST_ERR_CODE, ErrorCode.GET_INFORMATION_LIST_ERR_MSG),MediaType.APPLICATION_JSON).status(500).build();
         }
 
+        log.debug("Get information pages success.");
         return Response.ok(informationsPageList, MediaType.APPLICATION_JSON).build();
     }
 
@@ -101,6 +103,7 @@ public class InformationRest {
             return Response.ok(new ErrorMessage(ErrorCode.ADD_INFORMATION_ERR_CODE, ErrorCode.ADD_INFORMATION_ERR_MSG),MediaType.APPLICATION_JSON).status(500).build();
         }
 
+        log.debug("Update a " + information.toString());
         return Response.ok(information, MediaType.APPLICATION_JSON).build();
     }
 
@@ -117,21 +120,8 @@ public class InformationRest {
             return Response.ok(new ErrorMessage(ErrorCode.ADD_INFORMATION_ERR_CODE, ErrorCode.ADD_INFORMATION_ERR_MSG),MediaType.APPLICATION_JSON).status(500).build();
         }
 
+        log.debug("Add a " + information.toString());
         return Response.ok(information, MediaType.APPLICATION_JSON).build();
-    }
-
-    @GET
-    @Path("/info/article/{id}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response addArticle(@PathParam(ParamsConstants.PARAM_ID) int id) {
-        Article article = null;
-        try {
-            article = informationService.getArticle(id);
-        } catch (Exception e) {
-            log.warn(e);
-            return Response.ok(new ErrorMessage(ErrorCode.GET_INFORMATION_ERR_CODE, ErrorCode.GET_INFORMATION_ERR_MSG),MediaType.APPLICATION_JSON).status(500).build();
-        }
-        return Response.ok(article, MediaType.APPLICATION_JSON).build();
     }
 
     @DELETE
@@ -148,6 +138,7 @@ public class InformationRest {
             return Response.ok(new ErrorMessage(ErrorCode.DELETE_INFORMATION_ERR_CODE, ErrorCode.DELETE_INFORMATION_ERR_MSG),MediaType.APPLICATION_JSON).status(500).build();
         }
 
+        log.debug("Delete a " + information.toString());
         return Response.ok(information, MediaType.APPLICATION_JSON).build();
     }
 
@@ -174,6 +165,7 @@ public class InformationRest {
         }
 
         countMap.put(ParamsConstants.PAGE_DATA_COUNT, informationCount);
+        log.debug("Get information's count is {" + informationCount + "}");
         return Response.ok(countMap, MediaType.APPLICATION_JSON).build();
     }
 }
