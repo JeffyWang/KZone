@@ -161,7 +161,7 @@ public class RestClientUtils {
 		HttpEntity<?> requestEntity = new HttpEntity<Object>(request,requestHeaders);
 		return template.exchange(url, HttpMethod.PUT, requestEntity, responseType, urlVariables).getBody();
 	}
-	
+
 	/**
 	 * 
 	 * @param request
@@ -172,12 +172,12 @@ public class RestClientUtils {
 	/*public static <T> T postFile(MultipartPostMethod request, Class<T> responseType, Object... urlVariables) {
 		try{
 				HttpClient client = new HttpClient();
-			    client.setConnectionTimeout(100000);		       
+			    client.setConnectionTimeout(100000);
 			    client.executeMethod(request);
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		return null;
 	}*/
 }

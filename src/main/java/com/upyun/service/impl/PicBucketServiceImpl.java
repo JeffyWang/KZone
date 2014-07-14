@@ -108,4 +108,26 @@ public class PicBucketServiceImpl implements PicBucketService {
 
         return URL + uploadPath;
     }
+
+    public String addSamplePicture(String picturePath, String uploadPath) throws IOException {
+        // 本地待上传的图片文件
+        File file = new File(picturePath);
+
+        // 设置待上传文件的 Content-MD5 值
+        // 如果又拍云服务端收到的文件MD5值与用户设置的不一致，将回报 406 NotAcceptable 错误
+        upyun.setContentMD5(UpYun.md5(file));
+
+        // 设置待上传文件的"访问密钥"
+        // 注意：
+        // 仅支持图片空！，设置密钥后，无法根据原文件URL直接访问，需带URL后面加上（缩略图间隔标志符+密钥）进行访问
+        // 举例：
+        // 如果缩略图间隔标志符为"!"，密钥为"bac"，上传文件路径为"/folder/test.jpg"，
+        // 那么该图片的对外访问地址为：http://空间域名 /folder/test.jpg!bac
+        upyun.setFileSecret("kzonepic");
+
+        // 上传文件，并自动创建父级目录（最多10级）
+        boolean result = upyun.writeFile(uploadPath, file, true);
+
+        return URL + uploadPath + "_b";
+    }
 }

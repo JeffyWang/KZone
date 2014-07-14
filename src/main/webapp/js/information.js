@@ -134,10 +134,11 @@ var submit = function() {
     var title = $("#title").val();
     var introduction = $("#info").contents().find("#editor").text().replace(/(\n)+|(\r\n)+/g, "");
     var article = encodeURIComponent($("#info").contents().find("#editor").html());
-    var picture = $("#info").contents().find("#pic" + id).attr("src");
+    var picture = $("#info").contents().find("#pic0").attr("src");
     var data = '{"id":' + id + ',"title":"' + title + '", "introduction":"' + introduction + '", "article":"' + article + '","picture":"'+ picture + '"}';
     console.log(introduction)
     console.log(data)
+
     $.ajax({
         url: _localhostPath + '/rest/information/info',
         type: 'PUT',

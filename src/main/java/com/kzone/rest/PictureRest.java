@@ -3,15 +3,13 @@ package com.kzone.rest;
 import com.kzone.bean.Game;
 import com.kzone.bean.Information;
 import com.kzone.bean.KTV;
+import com.kzone.bean.User;
 import com.kzone.bo.ErrorMessage;
 import com.kzone.constants.CommonConstants;
 import com.kzone.constants.ErrorCode;
 import com.kzone.constants.HTTPConstants;
 import com.kzone.constants.ParamsConstants;
-import com.kzone.service.FileService;
-import com.kzone.service.GameService;
-import com.kzone.service.InformationService;
-import com.kzone.service.KTVService;
+import com.kzone.service.*;
 import com.kzone.util.Pinyin4jUtil;
 import com.upyun.service.FileBucketService;
 import com.upyun.service.PicBucketService;
@@ -55,6 +53,8 @@ public class PictureRest {
     private PicBucketService picBucketService;
     @Autowired
     private FileBucketService fileBucketService;
+    @Autowired
+    private UserService userService;
 
     @POST
     @Path("/ktv/{areaId}/{ktvId}")
@@ -63,7 +63,7 @@ public class PictureRest {
     public Response addKTVPicture(@Context HttpServletRequest request,@PathParam(ParamsConstants.DISTRICT_AREA_ID) int areaId, @PathParam(ParamsConstants.PARAM_KTV_ID) int ktvId) {
         String picture = "";
         KTV ktv = null;
-        String pictureName = "";
+        String pictureName = String.valueOf(System.currentTimeMillis());
         String uploadPicPath = HTTPConstants.HTTP_PATH_SEPARATOR + CommonConstants.PICTURE_TYPE_KTV + HTTPConstants.HTTP_PATH_SEPARATOR + areaId + HTTPConstants.HTTP_PATH_SEPARATOR + ktvId + HTTPConstants.HTTP_PATH_SEPARATOR + System.currentTimeMillis();
         System.out.println(uploadPicPath);
         MultipartResolver resolver = new CommonsMultipartResolver(request.getSession().getServletContext());
@@ -77,10 +77,10 @@ public class PictureRest {
             String tmpPicturePath = fileService.addFile(input, pictureName, CommonConstants.CONTENT_TYPE);
             log.debug("tmp picture path : " + tmpPicturePath);
 
-            String pictureUrl = picBucketService.addSmallPicture(tmpPicturePath, uploadPicPath);
+            String pictureUrl = picBucketService.addBigPicture(tmpPicturePath, uploadPicPath);
             log.debug("The KTV picture URL is {" + pictureUrl + "}");
-            picBucketService.addMiddlePicture(tmpPicturePath, uploadPicPath);
-            picBucketService.addBigPicture(tmpPicturePath, uploadPicPath);
+//            picBucketService.addMiddlePicture(tmpPicturePath, uploadPicPath);
+//            picBucketService.addBigPicture(tmpPicturePath, uploadPicPath);
 
             if(ktv.getPictures() != null) {
                 picture = ktv.getPictures() + "," + pictureUrl;
@@ -109,7 +109,7 @@ public class PictureRest {
     public Response addInformationPicture(@Context HttpServletRequest request, @PathParam(ParamsConstants.PARAM_INFORMATION_ID) int informationId) {
         String picture = "";
         Information information = null;
-        String pictureName = "";
+        String pictureName =  String.valueOf(System.currentTimeMillis());
         String uploadPicPath = HTTPConstants.HTTP_PATH_SEPARATOR + CommonConstants.PICTURE_TYPE_INFORMATION + HTTPConstants.HTTP_PATH_SEPARATOR + informationId + HTTPConstants.HTTP_PATH_SEPARATOR + System.currentTimeMillis();
         Map<String, String> pictureResult = new HashMap<String, String>();
 
@@ -124,10 +124,10 @@ public class PictureRest {
             String tmpPicturePath = fileService.addFile(input, pictureName, CommonConstants.CONTENT_TYPE);
             log.debug("tmp picture path : " + tmpPicturePath);
 
-            String pictureUrl = picBucketService.addSmallPicture(tmpPicturePath, uploadPicPath);
+            String pictureUrl = picBucketService.addBigPicture(tmpPicturePath, uploadPicPath);
             log.debug("The information picture URL is {" + pictureUrl + "}");
-            picBucketService.addMiddlePicture(tmpPicturePath, uploadPicPath);
-            picBucketService.addBigPicture(tmpPicturePath, uploadPicPath);
+//            picBucketService.addMiddlePicture(tmpPicturePath, uploadPicPath);
+//            picBucketService.addBigPicture(tmpPicturePath, uploadPicPath);
             pictureResult.put(CommonConstants.PICTURE_URL, pictureUrl);
 
             picture = pictureUrl;
@@ -152,7 +152,7 @@ public class PictureRest {
     public Response addGamePicture(@Context HttpServletRequest request, @PathParam(ParamsConstants.PARAM_GAME_ID) int gameId) {
         String picture = "";
         Game game = null;
-        String pictureName = "";
+        String pictureName =  String.valueOf(System.currentTimeMillis());
         String uploadPicPath = HTTPConstants.HTTP_PATH_SEPARATOR + CommonConstants.PICTURE_TYPE_GAME + HTTPConstants.HTTP_PATH_SEPARATOR + gameId + HTTPConstants.HTTP_PATH_SEPARATOR + System.currentTimeMillis();
         Map<String, String> pictureResult = new HashMap<String, String>();
 
@@ -166,15 +166,57 @@ public class PictureRest {
             String tmpPicturePath = fileService.addFile(input, pictureName, CommonConstants.CONTENT_TYPE);
             log.debug("tmp picture path : " + tmpPicturePath);
 
-            String pictureUrl = picBucketService.addSmallPicture(tmpPicturePath, uploadPicPath);
+            String pictureUrl = picBucketService.addBigPicture(tmpPicturePath, uploadPicPath);
+//            String pictureUrl = picBucketService.addSamplePicture(tmpPicturePath, uploadPicPath);
             log.debug("The game picture URL is {" + pictureUrl + "}");
-            picBucketService.addMiddlePicture(tmpPicturePath, uploadPicPath);
-            picBucketService.addBigPicture(tmpPicturePath, uploadPicPath);
+//            picBucketService.addMiddlePicture(tmpPicturePath, uploadPicPath);
+//            picBucketService.addBigPicture(tmpPicturePath, uploadPicPath);
             pictureResult.put(CommonConstants.PICTURE_URL, pictureUrl);
 
+            System.out.println(pictureUrl);
             picture = pictureUrl;
             game.setPicture(picture);
             gameService.update(game);
+
+            input.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.ok(new ErrorMessage(ErrorCode.ADD_PICTURE_ERR_CODE, ErrorCode.ADD_PICTURE_ERR_MSG), MediaType.APPLICATION_JSON).build();
+        } finally {
+            fileService.deleteFile(pictureName, CommonConstants.CONTENT_TYPE);
+        }
+
+        return Response.ok(pictureResult, MediaType.APPLICATION_JSON).build();
+    }
+
+    @POST
+    @Path("/user/{userId}")
+    @Consumes({ MediaType.MULTIPART_FORM_DATA, MediaType.APPLICATION_JSON })
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response addUserPicture(@Context HttpServletRequest request, @PathParam(ParamsConstants.PARAM_USER_ID) int userId) {
+        String picture = "";
+        User user = null;
+        String pictureName =  String.valueOf(System.currentTimeMillis());
+        String uploadPicPath = HTTPConstants.HTTP_PATH_SEPARATOR + CommonConstants.PICTURE_TYPE_GAME + HTTPConstants.HTTP_PATH_SEPARATOR + userId + HTTPConstants.HTTP_PATH_SEPARATOR + System.currentTimeMillis();
+        Map<String, String> pictureResult = new HashMap<String, String>();
+
+        MultipartResolver resolver = new CommonsMultipartResolver(request.getSession().getServletContext());
+        MultipartHttpServletRequest multipartRequest = resolver.resolveMultipart(request);
+        MultipartFile file = multipartRequest.getFile("Filedata");
+
+        try {
+            user = userService.get(userId);
+            InputStream input = file.getInputStream();
+            String tmpPicturePath = fileService.addFile(input, pictureName, CommonConstants.CONTENT_TYPE);
+            log.debug("tmp picture path : " + tmpPicturePath);
+
+            String pictureUrl = picBucketService.addMiddlePicture(tmpPicturePath, uploadPicPath);
+            log.debug("The game picture URL is {" + pictureUrl + "}");
+            pictureResult.put(CommonConstants.PICTURE_URL, pictureUrl);
+
+            picture = pictureUrl;
+            user.setPicture(picture);
+            userService.update(user);
 
             input.close();
         } catch (Exception e) {

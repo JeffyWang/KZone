@@ -23,6 +23,8 @@ public class User implements Serializable {
     private String password;
     @Column(name = "favorite", nullable = true, columnDefinition = "varchar(128) default ''")
     private String favorite;
+    @Column(name = "picture", nullable = true, columnDefinition = "varchar(256) default ''")
+    private String picture;
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "create_time")
     private Date createTime;
@@ -99,6 +101,14 @@ public class User implements Serializable {
         this.updateTime = updateTime;
     }
 
+    public String getPicture() {
+        return picture;
+    }
+
+    public void setPicture(String picture) {
+        this.picture = picture;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -107,6 +117,7 @@ public class User implements Serializable {
                 ", userName='" + userName + '\'' +
                 ", password='" + password + '\'' +
                 ", favorite='" + favorite + '\'' +
+                ", picture='" + picture + '\'' +
                 ", createTime=" + createTime +
                 ", updateTime=" + updateTime +
                 '}';

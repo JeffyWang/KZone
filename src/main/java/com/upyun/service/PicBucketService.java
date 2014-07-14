@@ -11,4 +11,6 @@ public interface PicBucketService {
     public String addMiddlePicture(String picturePath, String uploadPath) throws IOException;
 
     public String addBigPicture(String picturePath, String uploadPath) throws IOException;
+
+    public String addSamplePicture(String picturePath, String uploadPath) throws IOException;
 }

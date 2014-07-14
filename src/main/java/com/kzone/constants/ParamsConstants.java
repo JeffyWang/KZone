@@ -23,6 +23,7 @@ public interface ParamsConstants {
     final static String PARAM_PICTURE = "picture";
 
     final static String PARAM_USER_NAME = "name";
+    final static String PARAM_USER_ID = "userId";
     final static String PARAM_USER_USERNAME = "userName";
     final static String PARAM_USER_PASSWORD = "password";
 

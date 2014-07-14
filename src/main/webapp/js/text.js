@@ -39,11 +39,11 @@ $(".pictureBtn").on("click", function() {
     console.log(article);
 })
 
+var tmpId = 0;
 var uploadImg = function() {
     var id = $("#Filedata").attr("rel");
-    console.log(_pictureType)
-    console.log("before")
-    var img = '<img id="pic' + id + '" class="img pic" src="../img/load.gif">'
+
+    var img = '<img id="pic' + tmpId + '" class="img pic" src="../img/load.gif">'
     $('#editor').append(img);
 
     $.ajaxFileUpload(
@@ -54,7 +54,8 @@ var uploadImg = function() {
             success: function(data) {
                 data = jQuery.parseJSON(jQuery(data).text());
                 var pictureUrl = data.picture_url;
-                $('#pic' + id).attr("src", pictureUrl);
+                $('#pic' + tmpId).attr("src", pictureUrl);
+                tmpId += 1;
             },
             error: function(data, status, e) {
                 data = jQuery.parseJSON(jQuery(data).text());

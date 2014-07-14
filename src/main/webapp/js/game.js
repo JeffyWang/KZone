@@ -134,7 +134,8 @@ var submit = function() {
     var name = $("#name").val();
     var introduction = $("#game").contents().find("#editor").text().replace(/(\n)+|(\r\n)+/g, "");
     var game = encodeURIComponent($("#game").contents().find("#editor").html());
-    var picture = $("#info").contents().find("#pic" + id).attr("src");
+    var picture = $("#game").contents().find("#pic0").attr("src");
+
     var data = '{"id":' + id + ',"name":"' + name + '", "introduction":"' + introduction + '", "game":"' + game + '","picture":"'+ picture + '"}';
 
     $.ajax({
