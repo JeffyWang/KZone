@@ -161,7 +161,6 @@ var submit = function() {
 }
 
 var deleteGame = function(id) {
-    console.log("delete" + id)
     $.ajax({
         url: _localhostPath + '/rest/game/info/' + id,
         type: 'DELETE',

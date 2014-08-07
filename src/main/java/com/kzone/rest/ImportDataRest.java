@@ -105,6 +105,7 @@ public class ImportDataRest {
         result.put("errorCount", String.valueOf(errorDataIdList.size()));
         Date endDate = new Date();
         log.debug(endDate);
+        log.debug("import data end");
         result.put("startDate",startDate.toString());
         result.put("endDate", endDate.toString());
         result.put("costTime", String.valueOf(endDate.getTime() - startDate.getTime()));

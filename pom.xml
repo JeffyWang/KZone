@@ -6,6 +6,7 @@
     <version>1.0</version>
     <packaging>war</packaging>
     <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spring.version>4.0.2.RELEASE</spring.version>
         <hibernate.version>3.6.9.Final</hibernate.version>
         <cxf.version>2.7.3</cxf.version>
@@ -212,19 +213,19 @@
             <scope>compile</scope>
         </dependency>
     </dependencies>
-    <!-- <repositories>
-        <repository>
-            <id>ibiblio</id>
-            <name>ibiblio</name>
-            <url>http://mirrors.ibiblio.org/maven2/</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-    </repositories> -->
+     <repositories>
+    <repository>
+        <id>ibiblio</id>
+        <name>ibiblio</name>
+        <url>http://mirrors.ibiblio.org/maven2/</url>
+        <releases>
+            <enabled>true</enabled>
+        </releases>
+        <snapshots>
+            <enabled>false</enabled>
+        </snapshots>
+    </repository>
+</repositories>
     <build>
         <finalName>kzone</finalName>
         <plugins>
