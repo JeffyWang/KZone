@@ -9,6 +9,10 @@ import com.kzone.constants.ParamsConstants;
 import com.kzone.service.GameService;
 import com.kzone.util.EncodingUtil;
 import com.kzone.util.StringUtil;
+import com.wordnik.swagger.annotations.Api;
+import com.wordnik.swagger.annotations.ApiOperation;
+import com.wordnik.swagger.annotations.ApiResponse;
+import com.wordnik.swagger.annotations.ApiResponses;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -26,6 +30,7 @@ import java.util.Map;
  */
 @Component
 @Path("/game")
+@Api(value = "/game", description = "Operations about pets")
 public class GameRest {
     Logger log = Logger.getLogger(InformationRest.class);
     @Autowired
@@ -33,6 +38,11 @@ public class GameRest {
 
     @GET
     @Path("/info/{id}")
+    @ApiOperation(value = "Find game by ID", notes = "More notes about this method", response = Game.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 400, message = "Invalid ID supplied"),
+            @ApiResponse(code = 404, message = "Pet not found")
+    })
     @Produces(MediaType.APPLICATION_JSON)
     public Response getGame(@PathParam(ParamsConstants.PARAM_ID) int id) {
         Game game = null;

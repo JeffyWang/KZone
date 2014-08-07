@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:jaxrs="http://cxf.apache.org/jaxrs"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:util="http://www.springframework.org/schema/util"
        xmlns:context="http://www.springframework.org/schema/context"
@@ -8,39 +7,71 @@
     http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
     http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
     http://www.springframework.org/schema/util
-    http://www.springframework.org/schema/util/spring-util-3.0.xsd
-    http://cxf.apache.org/jaxrs
-    http://cxf.apache.org/schemas/jaxrs.xsd">
+    http://www.springframework.org/schema/util/spring-util-3.0.xsd">
     <import resource="spring-mysql-dao.xml"/>
     <import resource="classpath*:META-INF/cxf/cxf.xml" />
-    <import resource="classpath*:META-INF/cxf/cxf-servlet.xml" />
-    <import resource="classpath:META-INF/cxf/cxf-extension-jaxrs-binding.xml"/>
+
     <context:property-placeholder />
     <context:annotation-config />
 
     <!-- 注解读取配置文件 -->
     <util:properties id="kzoneConfig" location="classpath:kzone-config.properties" />
 
-    <context:component-scan base-package="com" />
+    <context:component-scan base-package="com.kzone" />
+    <context:component-scan base-package="com.upyun" />
 
-    <jaxrs:server id="services" address="/">
-        <jaxrs:serviceBeans>
-            <bean class="com.kzone.rest.AccountRest" />
-            <bean class="com.kzone.rest.ClientRest" />
-            <bean class="com.kzone.rest.UserRest" />
-            <bean class="com.kzone.rest.CommentRest" />
-            <bean class="com.kzone.rest.DistrictRest" />
-            <bean class="com.kzone.rest.InformationRest" />
-            <bean class="com.kzone.rest.KTVRest" />
-            <bean class="com.kzone.rest.StatisticsRest" />
-            <bean class="com.kzone.rest.PictureRest" />
-            <bean class="com.kzone.rest.ImportDataRest" />
-            <bean class="com.kzone.rest.GameRest" />
-            <bean class="com.kzone.rest.InitializeRest" />
-            <bean class="com.kzone.rest.HttpSendRest" />
-        </jaxrs:serviceBeans>
-        <jaxrs:providers>
-            <bean class="com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider"/>
-        </jaxrs:providers>
-    </jaxrs:server>
+    <!-- Swagger writers -->
+    <bean id="resourceWriter" class="com.wordnik.swagger.jaxrs.listing.ResourceListingProvider" />
+    <bean id="apiWriter" class="com.wordnik.swagger.jaxrs.listing.ApiDeclarationProvider" />
+
+    <!-- JSON mapper -->
+    <bean id="jsonProvider" class="com.wordnik.swagger.jaxrs.json.JacksonJsonProvider" />
+
+    <!-- Swagger API listing resource -->
+    <bean id="swaggerResourceJSON" class="com.wordnik.swagger.jaxrs.listing.ApiListingResourceJSON" />
+
+    <!-- this scans the classes for resources -->
+    <bean id="swaggerConfig" class="com.wordnik.swagger.jaxrs.config.BeanConfig">
+        <property name="resourcePackage" value="com.kzone.rest"/>
+        <property name="version" value="1.0.0"/>
+        <property name="basePath" value="http://localhost:8080/rest"/>
+        <property name="title" value="K-Zone app"/>
+        <property name="description" value="This is K-Zone app."/>
+        <property name="contact" value="jeffy@keecent.com"/>
+        <!--<property name="license" value="Apache 2.0 License"/>-->
+        <!--<property name="licenseUrl" value="http://www.apache.org/licenses/LICENSE-2.0.html"/>-->
+        <property name="filterClass" value="com.kzone.filter.ApiAuthorizationFilterImpl"/>
+        <property name="scan" value="true"/>
+    </bean>
+
+    <bean class="org.apache.cxf.jaxrs.JAXRSServerFactoryBean" init-method="create">
+        <property name="address" value="/" />
+        <property name="serviceBeans">
+            <list>
+                <bean class="com.kzone.rest.AccountRest" />
+                <bean class="com.kzone.rest.ClientRest" />
+                <bean class="com.kzone.rest.UserRest" />
+                <bean class="com.kzone.rest.CommentRest" />
+                <bean class="com.kzone.rest.DistrictRest" />
+                <bean class="com.kzone.rest.InformationRest" />
+                <bean class="com.kzone.rest.KTVRest" />
+                <bean class="com.kzone.rest.StatisticsRest" />
+                <bean class="com.kzone.rest.PictureRest" />
+                <bean class="com.kzone.rest.ImportDataRest" />
+                <bean class="com.kzone.rest.GameRest" />
+                <bean class="com.kzone.rest.InitializeRest" />
+
+                <ref bean="swaggerResourceJSON" />
+            </list>
+        </property>
+        <property name="providers">
+            <list>
+                <ref bean="jsonProvider" />
+                <!-- required for writing swagger classes -->
+                <ref bean="resourceWriter" />
+                <ref bean="apiWriter" />
+            </list>
+        </property>
+    </bean>
+
 </beans>
