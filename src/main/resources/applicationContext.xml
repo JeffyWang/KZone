@@ -36,7 +36,7 @@
         <property name="version" value="1.0.0"/>
         <property name="basePath" value="http://localhost:8080/rest"/>
         <property name="title" value="K-Zone app"/>
-        <property name="description" value="This is K-Zone app."/>
+        <property name="description" value="K-Zone接口列表"/>
         <property name="contact" value="jeffy@keecent.com"/>
         <!--<property name="license" value="Apache 2.0 License"/>-->
         <!--<property name="licenseUrl" value="http://www.apache.org/licenses/LICENSE-2.0.html"/>-->

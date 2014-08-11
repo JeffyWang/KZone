@@ -12,7 +12,6 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "k_game")
-@ApiModel(value = "A game")
 public class Game implements Serializable {
     private static final long serialVersionUID = -5971553095083591260L;
 
@@ -20,10 +19,8 @@ public class Game implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @Column(name = "name", nullable = true, columnDefinition = "varchar(128) default ''")
-    @ApiModelProperty(value = "Game's name", required=true, allowableValues = "placed,approved,delivered")
     private String name;
     @Column(name = "game", nullable = true, length = 16777216)
-    @ApiModelProperty(value = "Order Status", required=true, allowableValues = "placed,approved,delivered")
     private String game;
     @Column(name = "introduction", nullable = true, columnDefinition = "text")
     private String introduction;

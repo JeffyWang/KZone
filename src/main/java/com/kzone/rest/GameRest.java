@@ -5,14 +5,12 @@ import com.kzone.bean.Information;
 import com.kzone.bo.ErrorMessage;
 import com.kzone.constants.CommonConstants;
 import com.kzone.constants.ErrorCode;
+import com.kzone.constants.HTTPConstants;
 import com.kzone.constants.ParamsConstants;
 import com.kzone.service.GameService;
 import com.kzone.util.EncodingUtil;
 import com.kzone.util.StringUtil;
-import com.wordnik.swagger.annotations.Api;
-import com.wordnik.swagger.annotations.ApiOperation;
-import com.wordnik.swagger.annotations.ApiResponse;
-import com.wordnik.swagger.annotations.ApiResponses;
+import com.wordnik.swagger.annotations.*;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -30,7 +28,7 @@ import java.util.Map;
  */
 @Component
 @Path("/game")
-@Api(value = "/game", description = "Operations about pets")
+@Api(value = "/game", description = "游戏相关接口")
 public class GameRest {
     Logger log = Logger.getLogger(InformationRest.class);
     @Autowired
@@ -38,13 +36,16 @@ public class GameRest {
 
     @GET
     @Path("/info/{id}")
-    @ApiOperation(value = "Find game by ID", notes = "More notes about this method", response = Game.class)
+    @ApiOperation(value = "通过游戏id查询游戏详细信息", notes = "传入一个游戏id，返回游戏的详细信息")
     @ApiResponses(value = {
-            @ApiResponse(code = 400, message = "Invalid ID supplied"),
-            @ApiResponse(code = 404, message = "Pet not found")
+            @ApiResponse(code = HTTPConstants.HTTP_CODE_SYS_ERR, message = HTTPConstants.HTTP_CODE_MSG_SYS_ERR),
+            @ApiResponse(code = HTTPConstants.HTTP_CODE_NOT_FOUND, message = HTTPConstants.HTTP_CODE_MSG_NOT_FOUND),
+            @ApiResponse(code = HTTPConstants.HTTP_CODE_SUCCESS, message = HTTPConstants.HTTP_CODE_MSG_SUCCESS)
     })
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getGame(@PathParam(ParamsConstants.PARAM_ID) int id) {
+    public Response getGame(
+            @ApiParam(value = "游戏id", required = true)
+            @PathParam(ParamsConstants.PARAM_ID) int id) {
         Game game = null;
 
         try {
@@ -60,9 +61,22 @@ public class GameRest {
 
     @GET
     @Path("/info")
+    @ApiOperation(value = "查询游戏信息列表", notes = "传入参数，返回游戏信息列表")
+    @ApiResponses(value = {
+            @ApiResponse(code = HTTPConstants.HTTP_CODE_SYS_ERR, message = HTTPConstants.HTTP_CODE_MSG_SYS_ERR),
+            @ApiResponse(code = HTTPConstants.HTTP_CODE_NOT_FOUND, message = HTTPConstants.HTTP_CODE_MSG_NOT_FOUND),
+            @ApiResponse(code = HTTPConstants.HTTP_CODE_SUCCESS, message = HTTPConstants.HTTP_CODE_MSG_SUCCESS)
+    })
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getGamesPage(@QueryParam(ParamsConstants.PAGE_PARAMS_OFFSET) int offset, @QueryParam(ParamsConstants.PAGE_PARAMS_LENGTH) int length,
-                                        @QueryParam(ParamsConstants.PAGE_PARAMS_ORDER_DESC) String orderDesc,@QueryParam(ParamsConstants.PARAM_GAME_NAME) String name) {
+    public Response getGamesPage(
+            @ApiParam(value = ParamsConstants.PAGE_PARAMS_OFFSET_MSG, required = true)
+            @QueryParam(ParamsConstants.PAGE_PARAMS_OFFSET) int offset,
+            @ApiParam(value = ParamsConstants.PAGE_PARAMS_LENGTH_MSG, required = true)
+            @QueryParam(ParamsConstants.PAGE_PARAMS_LENGTH) int length,
+            @ApiParam(value = ParamsConstants.PAGE_PARAMS_ORDER_DESC_MSG, required = true)
+            @QueryParam(ParamsConstants.PAGE_PARAMS_ORDER_DESC) String orderDesc,
+            @ApiParam(value = ParamsConstants.PARAM_GAME_NAME_MSG, required = true)
+            @QueryParam(ParamsConstants.PARAM_GAME_NAME) String name) {
         List<Game> gamePageList = null;
 
         Map<String, String> likeCondition = new HashMap<String, String>();
@@ -82,6 +96,20 @@ public class GameRest {
 
         log.debug("Get games pages success.");
         return Response.ok(gamePageList, MediaType.APPLICATION_JSON).build();
+    }
+
+    @GET
+    @Path("/info")
+    @ApiOperation(value = "查询游戏信息列表", notes = "传入参数，返回游戏信息列表")
+    @ApiResponses(value = {
+            @ApiResponse(code = HTTPConstants.HTTP_CODE_SYS_ERR, message = HTTPConstants.HTTP_CODE_MSG_SYS_ERR),
+            @ApiResponse(code = HTTPConstants.HTTP_CODE_NOT_FOUND, message = HTTPConstants.HTTP_CODE_MSG_NOT_FOUND),
+            @ApiResponse(code = HTTPConstants.HTTP_CODE_SUCCESS, message = HTTPConstants.HTTP_CODE_MSG_SUCCESS)
+    })
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getGamesPage() {
+
+        return Response.ok().build();
     }
 
     @PUT
@@ -143,8 +171,16 @@ public class GameRest {
 
     @GET
     @Path("/count")
+    @ApiOperation(value = "查询游戏总数", notes = "查询游戏总数")
+    @ApiResponses(value = {
+            @ApiResponse(code = HTTPConstants.HTTP_CODE_SYS_ERR, message = HTTPConstants.HTTP_CODE_MSG_SYS_ERR),
+            @ApiResponse(code = HTTPConstants.HTTP_CODE_NOT_FOUND, message = HTTPConstants.HTTP_CODE_MSG_NOT_FOUND),
+            @ApiResponse(code = HTTPConstants.HTTP_CODE_SUCCESS, message = HTTPConstants.HTTP_CODE_MSG_SUCCESS)
+    })
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getGameCount( @QueryParam(ParamsConstants.PARAM_GAME_NAME) String name) {
+    public Response getGameCount(
+            @ApiParam(value = ParamsConstants.PARAM_GAME_NAME_MSG, required = true)
+            @QueryParam(ParamsConstants.PARAM_GAME_NAME) String name) {
         Map<String, Integer> countMap = new HashMap<String, Integer>();
         int gameCount = 0;
 

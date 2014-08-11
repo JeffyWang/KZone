@@ -5,11 +5,17 @@ package com.kzone.constants;
  */
 public interface ParamsConstants {
     final static String PAGE_PARAMS_OFFSET = "offset";
+    final static String PAGE_PARAMS_OFFSET_MSG = "数据起始位置";
     final static String PAGE_PARAMS_LENGTH = "length";
+    final static String PAGE_PARAMS_LENGTH_MSG = "取数据个数";
     final static String PAGE_PARAMS_ORDER_DESC = "orderDesc";
+    final static String PAGE_PARAMS_ORDER_DESC_MSG = "排序参数";
     final static String PAGE_PARAMS_EQUALPARAMS = "equalParams";
+    final static String PAGE_PARAMS_EQUALPARAMS_MSG = "完全匹配查询参数";
     final static String PAGE_PARAMS_LIKEPARAMS = "likePrams";
+    final static String PAGE_PARAMS_LIKEPARAMS_MSG = "模糊匹配查询参数";
     final static String PAGE_DATA_COUNT = "dataCount";
+    final static String PAGE_DATA_COUNT_MSG = "数据数目";
 
     final static String PARAM_NAME = "name";
     final static String PARAM_TYPE = "type";
@@ -40,6 +46,7 @@ public interface ParamsConstants {
     final static String PARAM_COMMENT_KTV_ID = "KTVId";
 
     final static String PARAM_GAME_NAME = "name";
+    final static String PARAM_GAME_NAME_MSG = "游戏名称";
     final static String PARAM_GAME_ID = "gameId";
 
     final static String PARAM_SMALL_PICTURES = "bigPictures";

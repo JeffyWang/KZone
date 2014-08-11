@@ -32,4 +32,11 @@ public interface HTTPConstants {
 	String ACCESS_SYSTEM_NAME = "Access-System-Name";
 	String RULE_HEADERS = "rule_headers";
 	String HEADER_HOST = "Host";
+
+    int HTTP_CODE_SYS_ERR = 500;
+    String HTTP_CODE_MSG_SYS_ERR = "系统错误";
+    int HTTP_CODE_NOT_FOUND = 404;
+    String HTTP_CODE_MSG_NOT_FOUND = "信息不存在";
+    int HTTP_CODE_SUCCESS = 200;
+    String HTTP_CODE_MSG_SUCCESS = "请求成功";
 }
