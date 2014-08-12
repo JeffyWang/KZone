@@ -34,7 +34,7 @@
     <bean id="swaggerConfig" class="com.wordnik.swagger.jaxrs.config.BeanConfig">
         <property name="resourcePackage" value="com.kzone.rest"/>
         <property name="version" value="1.0.0"/>
-        <property name="basePath" value="http://localhost:8080/rest"/>
+        <property name="basePath" value="http://localhost:8899/rest"/>
         <property name="title" value="K-Zone app"/>
         <property name="description" value="K-Zone接口列表"/>
         <property name="contact" value="jeffy@keecent.com"/>

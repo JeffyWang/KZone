@@ -1,7 +1,6 @@
 package com.kzone.rest;
 
 import com.kzone.bean.Game;
-import com.kzone.bean.Information;
 import com.kzone.bo.ErrorMessage;
 import com.kzone.constants.CommonConstants;
 import com.kzone.constants.ErrorCode;
@@ -73,9 +72,9 @@ public class GameRest {
             @QueryParam(ParamsConstants.PAGE_PARAMS_OFFSET) int offset,
             @ApiParam(value = ParamsConstants.PAGE_PARAMS_LENGTH_MSG, required = true)
             @QueryParam(ParamsConstants.PAGE_PARAMS_LENGTH) int length,
-            @ApiParam(value = ParamsConstants.PAGE_PARAMS_ORDER_DESC_MSG, required = true)
+            @ApiParam(value = ParamsConstants.PAGE_PARAMS_ORDER_DESC_MSG, required = false)
             @QueryParam(ParamsConstants.PAGE_PARAMS_ORDER_DESC) String orderDesc,
-            @ApiParam(value = ParamsConstants.PARAM_GAME_NAME_MSG, required = true)
+            @ApiParam(value = ParamsConstants.PARAM_GAME_NAME_MSG, required = false)
             @QueryParam(ParamsConstants.PARAM_GAME_NAME) String name) {
         List<Game> gamePageList = null;
 
@@ -99,7 +98,7 @@ public class GameRest {
     }
 
     @GET
-    @Path("/info")
+    @Path("/info/page")
     @ApiOperation(value = "查询游戏信息列表", notes = "传入参数，返回游戏信息列表")
     @ApiResponses(value = {
             @ApiResponse(code = HTTPConstants.HTTP_CODE_SYS_ERR, message = HTTPConstants.HTTP_CODE_MSG_SYS_ERR),
@@ -107,9 +106,46 @@ public class GameRest {
             @ApiResponse(code = HTTPConstants.HTTP_CODE_SUCCESS, message = HTTPConstants.HTTP_CODE_MSG_SUCCESS)
     })
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getGamesPage() {
+    public Response getGamesPages (
+            @ApiParam(value = ParamsConstants.PAGE_PARAMS_PAGE_NUM_MSG, required = true)
+            @QueryParam(ParamsConstants.PAGE_PARAMS_PAGE_NUM) int pageNum,
+            @ApiParam(value = ParamsConstants.PAGE_PARAMS_PAGE_DATA_COUNT_MSG, required = true)
+            @QueryParam(ParamsConstants.PAGE_PARAMS_PAGE_DATA_COUNT) int pageDataCount,
+            @ApiParam(value = ParamsConstants.PAGE_PARAMS_ORDER_DESC_MSG, required = false)
+            @QueryParam(ParamsConstants.PAGE_PARAMS_ORDER_DESC) String orderDesc,
+            @ApiParam(value = ParamsConstants.PARAM_GAME_NAME_MSG, required = false)
+            @QueryParam(ParamsConstants.PARAM_GAME_NAME) String name) {
 
-        return Response.ok().build();
+        List<Game> gamePageList = null;
+
+        Map<String, String> likeCondition = new HashMap<String, String>();
+        Map<String, String> equalCondition = new HashMap<String, String>();
+
+        if (name != null
+                && !CommonConstants.NULL_STRING.equals(name)
+                && !CommonConstants.NULL.equals(name))
+            likeCondition.put(ParamsConstants.PARAM_GAME_NAME, name);
+
+        try {
+            long dataCount = gameService.getListCount(equalCondition, likeCondition);
+            int pageCount = 0;
+
+            if(dataCount % pageDataCount == 0)
+                pageCount = (int) (dataCount / pageDataCount);
+            else
+                pageCount = (int) (dataCount / pageDataCount) + 1;
+
+            int offset = pageNum * pageDataCount;
+            int length = pageDataCount;
+
+            gamePageList = gameService.getListForPage(Game.class, offset, length,orderDesc, equalCondition, likeCondition);
+        } catch (Exception e) {
+            log.warn(e);
+            return Response.ok(new ErrorMessage(ErrorCode.GET_GAME_LIST_ERR_CODE, ErrorCode.GET_GAME_LIST_ERR_MSG),MediaType.APPLICATION_JSON).status(500).build();
+        }
+
+        log.debug("Get games pages success.");
+        return Response.ok(gamePageList, MediaType.APPLICATION_JSON).build();
     }
 
     @PUT
@@ -179,7 +215,7 @@ public class GameRest {
     })
     @Produces(MediaType.APPLICATION_JSON)
     public Response getGameCount(
-            @ApiParam(value = ParamsConstants.PARAM_GAME_NAME_MSG, required = true)
+            @ApiParam(value = ParamsConstants.PARAM_GAME_NAME_MSG, required = false)
             @QueryParam(ParamsConstants.PARAM_GAME_NAME) String name) {
         Map<String, Integer> countMap = new HashMap<String, Integer>();
         int gameCount = 0;

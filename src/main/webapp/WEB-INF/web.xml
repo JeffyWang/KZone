@@ -61,7 +61,7 @@
         <!-- set the base path for the swagger application -->
         <init-param>
             <param-name>swagger.api.basepath</param-name>
-            <param-value>http://localhost:8080/rest</param-value>
+            <param-value>http://localhost:8899/rest</param-value>
         </init-param>
 
         <!-- configure a security filter -->

@@ -16,6 +16,10 @@ public interface ParamsConstants {
     final static String PAGE_PARAMS_LIKEPARAMS_MSG = "模糊匹配查询参数";
     final static String PAGE_DATA_COUNT = "dataCount";
     final static String PAGE_DATA_COUNT_MSG = "数据数目";
+    final static String PAGE_PARAMS_PAGE_NUM = "pageNum";
+    final static String PAGE_PARAMS_PAGE_NUM_MSG = "当前页数";
+    final static String PAGE_PARAMS_PAGE_DATA_COUNT = "pageDataCount";
+    final static String PAGE_PARAMS_PAGE_DATA_COUNT_MSG = "每页数据数";
 
     final static String PARAM_NAME = "name";
     final static String PARAM_TYPE = "type";
@@ -39,6 +43,7 @@ public interface ParamsConstants {
     final static String PARAM_KTV_DISTRICT_ID = "districtId";
 
     final static String PARAM_INFORMATION_TITLE = "title";
+    final static String PARAM_INFORMATION_TITLE_MSG = "资讯标题";
     final static String PARAM_INFORMATION_ID = "informationId";
 
     final static String PARAM_COMMENT_COMMENT = "comment";
