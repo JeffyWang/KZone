@@ -38,17 +38,23 @@ public interface ParamsConstants {
     final static String PARAM_USER_PASSWORD = "password";
 
     final static String PARAM_KTV_NAME = "name";
+    final static String PARAM_KTV_NAME_MSG = "KTV名称";
     final static String PARAM_KTV_ADDRESS = "address";
+    final static String PARAM_KTV_ADDRESS_MSG = "KTV地址";
     final static String PARAM_KTV_ID = "ktvId";
     final static String PARAM_KTV_DISTRICT_ID = "districtId";
+    final static String PARAM_KTV_DISTRICT_ID_MSG = "KTV区域id";
 
     final static String PARAM_INFORMATION_TITLE = "title";
     final static String PARAM_INFORMATION_TITLE_MSG = "资讯标题";
     final static String PARAM_INFORMATION_ID = "informationId";
 
     final static String PARAM_COMMENT_COMMENT = "comment";
+    final static String PARAM_COMMENT_COMMENT_MSG = "评论内容";
     final static String PARAM_COMMENT_SCORE = "score";
+    final static String PARAM_COMMENT_SCORE_MSG = "评分";
     final static String PARAM_COMMENT_KTV_ID = "KTVId";
+    final static String PARAM_COMMENT_KTV_ID_MSG = "KTV id";
 
     final static String PARAM_GAME_NAME = "name";
     final static String PARAM_GAME_NAME_MSG = "游戏名称";

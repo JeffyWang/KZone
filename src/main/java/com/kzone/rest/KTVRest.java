@@ -4,10 +4,12 @@ import com.kzone.bean.KTV;
 import com.kzone.bo.ErrorMessage;
 import com.kzone.constants.CommonConstants;
 import com.kzone.constants.ErrorCode;
+import com.kzone.constants.HTTPConstants;
 import com.kzone.constants.ParamsConstants;
 import com.kzone.service.KTVService;
 import com.kzone.util.EncodingUtil;
 import com.kzone.util.StringUtil;
+import com.wordnik.swagger.annotations.*;
 import net.sf.json.JSONObject;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +30,7 @@ import java.util.Map;
  */
 @Component
 @Path("/ktv")
+@Api(value = "/ktv", description = "KTV相关接口")
 public class KTVRest {
     Logger log = Logger.getLogger(KTVRest.class);
     @Autowired
@@ -35,8 +38,16 @@ public class KTVRest {
 
     @GET
     @Path("/info/{id}")
+    @ApiOperation(value = "通过KTV id查询KTV详细信息", notes = "传入一个KTV id，返回KTV的详细信息")
+    @ApiResponses(value = {
+            @ApiResponse(code = HTTPConstants.HTTP_CODE_SYS_ERR, message = HTTPConstants.HTTP_CODE_MSG_SYS_ERR),
+            @ApiResponse(code = HTTPConstants.HTTP_CODE_NOT_FOUND, message = HTTPConstants.HTTP_CODE_MSG_NOT_FOUND),
+            @ApiResponse(code = HTTPConstants.HTTP_CODE_SUCCESS, message = HTTPConstants.HTTP_CODE_MSG_SUCCESS)
+    })
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getKTV(@PathParam(ParamsConstants.PARAM_ID) int id) {
+    public Response getKTV(
+            @ApiParam(value = "KTV id", required = true)
+            @PathParam(ParamsConstants.PARAM_ID) int id) {
         KTV ktv = null;
 
         try {
@@ -52,10 +63,26 @@ public class KTVRest {
 
     @GET
     @Path("/info")
+    @ApiOperation(value = "查询KTV信息列表", notes = "传入参数，返回KTV信息列表")
+    @ApiResponses(value = {
+            @ApiResponse(code = HTTPConstants.HTTP_CODE_SYS_ERR, message = HTTPConstants.HTTP_CODE_MSG_SYS_ERR),
+            @ApiResponse(code = HTTPConstants.HTTP_CODE_NOT_FOUND, message = HTTPConstants.HTTP_CODE_MSG_NOT_FOUND),
+            @ApiResponse(code = HTTPConstants.HTTP_CODE_SUCCESS, message = HTTPConstants.HTTP_CODE_MSG_SUCCESS)
+    })
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getKTVsPage(@QueryParam(ParamsConstants.PAGE_PARAMS_OFFSET) int offset, @QueryParam(ParamsConstants.PAGE_PARAMS_LENGTH) int length,
-                                @QueryParam(ParamsConstants.PAGE_PARAMS_ORDER_DESC) String orderDesc, @QueryParam(ParamsConstants.PARAM_KTV_NAME) String name,
-                                @QueryParam(ParamsConstants.PARAM_KTV_ADDRESS) String address, @QueryParam(ParamsConstants.PARAM_KTV_DISTRICT_ID) String districtId) {
+    public Response getKTVsPage(
+            @ApiParam(value = ParamsConstants.PAGE_PARAMS_OFFSET_MSG, required = true)
+            @QueryParam(ParamsConstants.PAGE_PARAMS_OFFSET) int offset,
+            @ApiParam(value = ParamsConstants.PAGE_PARAMS_LENGTH_MSG, required = true)
+            @QueryParam(ParamsConstants.PAGE_PARAMS_LENGTH) int length,
+            @ApiParam(value = ParamsConstants.PAGE_PARAMS_ORDER_DESC_MSG, required = false)
+            @QueryParam(ParamsConstants.PAGE_PARAMS_ORDER_DESC) String orderDesc,
+            @ApiParam(value = ParamsConstants.PARAM_KTV_NAME_MSG, required = false)
+            @QueryParam(ParamsConstants.PARAM_KTV_NAME) String name,
+            @ApiParam(value = ParamsConstants.PARAM_KTV_ADDRESS_MSG, required = false)
+            @QueryParam(ParamsConstants.PARAM_KTV_ADDRESS) String address,
+            @ApiParam(value = ParamsConstants.PARAM_KTV_DISTRICT_ID_MSG, required = false)
+            @QueryParam(ParamsConstants.PARAM_KTV_DISTRICT_ID) String districtId) {
         List<KTV> ktvPageList = null;
 
         Map<String, String> likeCondition = new HashMap<String, String>();
@@ -86,10 +113,74 @@ public class KTVRest {
         return Response.ok(ktvPageList, MediaType.APPLICATION_JSON).build();
     }
 
+    @GET
+    @Path("/info/page")
+    @ApiOperation(value = "通过KTV id查询KTV详细信息", notes = "传入一个KTV id，返回KTV的详细信息")
+    @ApiResponses(value = {
+            @ApiResponse(code = HTTPConstants.HTTP_CODE_SYS_ERR, message = HTTPConstants.HTTP_CODE_MSG_SYS_ERR),
+            @ApiResponse(code = HTTPConstants.HTTP_CODE_NOT_FOUND, message = HTTPConstants.HTTP_CODE_MSG_NOT_FOUND),
+            @ApiResponse(code = HTTPConstants.HTTP_CODE_SUCCESS, message = HTTPConstants.HTTP_CODE_MSG_SUCCESS)
+    })
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getKTVsPages(
+            @ApiParam(value = ParamsConstants.PAGE_PARAMS_PAGE_NUM_MSG, required = true)
+            @QueryParam(ParamsConstants.PAGE_PARAMS_PAGE_NUM) int pageNum,
+            @ApiParam(value = ParamsConstants.PAGE_PARAMS_PAGE_DATA_COUNT_MSG, required = true)
+            @QueryParam(ParamsConstants.PAGE_PARAMS_PAGE_DATA_COUNT) int pageDataCount,
+            @ApiParam(value = ParamsConstants.PAGE_PARAMS_ORDER_DESC_MSG, required = false)
+            @QueryParam(ParamsConstants.PAGE_PARAMS_ORDER_DESC) String orderDesc,
+            @ApiParam(value = ParamsConstants.PARAM_KTV_NAME_MSG, required = false)
+            @QueryParam(ParamsConstants.PARAM_KTV_NAME) String name,
+            @ApiParam(value = ParamsConstants.PARAM_KTV_ADDRESS_MSG, required = false)
+            @QueryParam(ParamsConstants.PARAM_KTV_ADDRESS) String address,
+            @ApiParam(value = ParamsConstants.PARAM_KTV_DISTRICT_ID_MSG, required = false)
+            @QueryParam(ParamsConstants.PARAM_KTV_DISTRICT_ID) String districtId) {
+        List<KTV> ktvPageList = null;
+
+        Map<String, String> likeCondition = new HashMap<String, String>();
+        Map<String, String> equalCondition = new HashMap<String, String>();
+
+        if (name != null
+                && !CommonConstants.NULL_STRING.equals(name)
+                && !CommonConstants.NULL.equals(name))
+            likeCondition.put(ParamsConstants.PARAM_KTV_NAME, name);
+        // 模糊查询条件健值对
+        if (address != null
+                && !CommonConstants.NULL_STRING.equals(address)
+                && !CommonConstants.NULL.equals(address))
+            likeCondition.put(ParamsConstants.PARAM_KTV_ADDRESS, address);
+        if (districtId != null
+                && !CommonConstants.NULL_STRING.equals(districtId)
+                && !CommonConstants.NULL.equals(districtId))
+            likeCondition.put(ParamsConstants.PARAM_KTV_DISTRICT_ID, districtId);
+
+        try {
+            long dataCount = ktvService.getListCount(equalCondition, likeCondition);
+            int pageCount = 0;
+
+            if(dataCount % pageDataCount == 0)
+                pageCount = (int) (dataCount / pageDataCount);
+            else
+                pageCount = (int) (dataCount / pageDataCount) + 1;
+
+            int offset = pageNum * pageDataCount;
+            int length = pageDataCount;
+
+            ktvPageList = ktvService.getListForPage(KTV.class, offset, length, orderDesc, equalCondition, likeCondition);
+        } catch (Exception e) {
+            log.warn(e);
+            return Response.ok(new ErrorMessage(ErrorCode.GET_KTV_LIST_ERR_CODE, ErrorCode.GET_KTV_LIST_ERR_MSG),MediaType.APPLICATION_JSON).status(500).build();
+        }
+
+        log.debug("Get KTVs pages success.");
+        return Response.ok(ktvPageList, MediaType.APPLICATION_JSON).build();
+    }
+
     @POST
     @Path("/info")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response addKTV(@RequestBody String body){
+    public Response addKTV(
+            @RequestBody String body){
         KTV ktv = null;
         String encode = EncodingUtil.getEncoding(body);
 
@@ -109,7 +200,8 @@ public class KTVRest {
     @DELETE
     @Path("/info/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response deleteKTV(@PathParam(ParamsConstants.PARAM_ID) int id) {
+    public Response deleteKTV(
+            @PathParam(ParamsConstants.PARAM_ID) int id) {
         KTV ktv = null;
 
         try {
@@ -127,7 +219,8 @@ public class KTVRest {
     @PUT
     @Path("/info/")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateKTV(@RequestBody String body) {
+    public Response updateKTV(
+            @RequestBody String body) {
         KTV ktv = null;
         String encode = EncodingUtil.getEncoding(body);
 
@@ -146,9 +239,20 @@ public class KTVRest {
 
     @GET
     @Path("/count")
+    @ApiOperation(value = "查询KTV总数", notes = "查询KTV总数")
+    @ApiResponses(value = {
+            @ApiResponse(code = HTTPConstants.HTTP_CODE_SYS_ERR, message = HTTPConstants.HTTP_CODE_MSG_SYS_ERR),
+            @ApiResponse(code = HTTPConstants.HTTP_CODE_NOT_FOUND, message = HTTPConstants.HTTP_CODE_MSG_NOT_FOUND),
+            @ApiResponse(code = HTTPConstants.HTTP_CODE_SUCCESS, message = HTTPConstants.HTTP_CODE_MSG_SUCCESS)
+    })
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getKTVCount(@QueryParam(ParamsConstants.PARAM_KTV_NAME) String name, @QueryParam(ParamsConstants.PARAM_KTV_ADDRESS) String address,
-                                    @QueryParam(ParamsConstants.PARAM_KTV_DISTRICT_ID) String districtId) {
+    public Response getKTVCount(
+            @ApiParam(value = ParamsConstants.PARAM_KTV_NAME_MSG, required = false)
+            @QueryParam(ParamsConstants.PARAM_KTV_NAME) String name,
+            @ApiParam(value = ParamsConstants.PARAM_KTV_ADDRESS_MSG, required = false)
+            @QueryParam(ParamsConstants.PARAM_KTV_ADDRESS) String address,
+            @ApiParam(value = ParamsConstants.PARAM_KTV_DISTRICT_ID_MSG, required = false)
+            @QueryParam(ParamsConstants.PARAM_KTV_DISTRICT_ID) String districtId) {
         Map<String, Integer> countMap = new HashMap<String, Integer>();
         int ktvCount = 0;
 
@@ -184,7 +288,8 @@ public class KTVRest {
     @DELETE
     @Path("/picture/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response deleteKTVPictures(@PathParam(ParamsConstants.PARAM_ID) int id) {
+    public Response deleteKTVPictures(
+            @PathParam(ParamsConstants.PARAM_ID) int id) {
         KTV ktv = null;
 
         try {

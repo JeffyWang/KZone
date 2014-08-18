@@ -5,10 +5,12 @@ import com.kzone.bean.KTV;
 import com.kzone.bo.ErrorMessage;
 import com.kzone.constants.CommonConstants;
 import com.kzone.constants.ErrorCode;
+import com.kzone.constants.HTTPConstants;
 import com.kzone.constants.ParamsConstants;
 import com.kzone.service.CommentService;
 import com.kzone.service.KTVService;
 import com.kzone.util.StringUtil;
+import com.wordnik.swagger.annotations.*;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -26,6 +28,7 @@ import java.util.Map;
  */
 @Component
 @Path("/comment")
+@Api(value = "/comment", description = "评论相关接口")
 public class CommentRest {
     Logger log = Logger.getLogger(CommentRest.class);
     @Autowired
@@ -35,8 +38,16 @@ public class CommentRest {
 
     @GET
     @Path("/info/{id}")
+    @ApiOperation(value = "通过评论id查询评论详细信息", notes = "传入一个评论id，返回评论的详细信息")
+    @ApiResponses(value = {
+            @ApiResponse(code = HTTPConstants.HTTP_CODE_SYS_ERR, message = HTTPConstants.HTTP_CODE_MSG_SYS_ERR),
+            @ApiResponse(code = HTTPConstants.HTTP_CODE_NOT_FOUND, message = HTTPConstants.HTTP_CODE_MSG_NOT_FOUND),
+            @ApiResponse(code = HTTPConstants.HTTP_CODE_SUCCESS, message = HTTPConstants.HTTP_CODE_MSG_SUCCESS)
+    })
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getComment(@PathParam("id") int id) {
+    public Response getComment(
+            @ApiParam(value = "评论id", required = true)
+            @PathParam("id") int id) {
         Comment comment = null;
 
         try {
@@ -52,20 +63,36 @@ public class CommentRest {
 
     @GET
     @Path("/info")
+    @ApiOperation(value = "查询评论信息列表", notes = "传入参数，返回评论信息列表")
+    @ApiResponses(value = {
+            @ApiResponse(code = HTTPConstants.HTTP_CODE_SYS_ERR, message = HTTPConstants.HTTP_CODE_MSG_SYS_ERR),
+            @ApiResponse(code = HTTPConstants.HTTP_CODE_NOT_FOUND, message = HTTPConstants.HTTP_CODE_MSG_NOT_FOUND),
+            @ApiResponse(code = HTTPConstants.HTTP_CODE_SUCCESS, message = HTTPConstants.HTTP_CODE_MSG_SUCCESS)
+    })
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getCommentsPage(@QueryParam(ParamsConstants.PAGE_PARAMS_OFFSET) int offset, @QueryParam(ParamsConstants.PAGE_PARAMS_LENGTH) int length,
-                                    @QueryParam(ParamsConstants.PAGE_PARAMS_ORDER_DESC) String orderDesc, @QueryParam(ParamsConstants.PARAM_COMMENT_SCORE) String score,
-                                    @QueryParam(ParamsConstants.PARAM_COMMENT_COMMENT) String comment, @QueryParam(ParamsConstants.PARAM_COMMENT_KTV_ID) String ktvId) {
+    public Response getCommentsPage(
+            @ApiParam(value = ParamsConstants.PAGE_PARAMS_OFFSET_MSG, required = true)
+            @QueryParam(ParamsConstants.PAGE_PARAMS_OFFSET) int offset,
+            @ApiParam(value = ParamsConstants.PAGE_PARAMS_LENGTH_MSG, required = true)
+            @QueryParam(ParamsConstants.PAGE_PARAMS_LENGTH) int length,
+            @ApiParam(value = ParamsConstants.PAGE_PARAMS_ORDER_DESC_MSG, required = false)
+            @QueryParam(ParamsConstants.PAGE_PARAMS_ORDER_DESC) String orderDesc,
+//            @ApiParam(value = ParamsConstants.PARAM_COMMENT_SCORE_MSG, required = false)
+//            @QueryParam(ParamsConstants.PARAM_COMMENT_SCORE) String score,
+            @ApiParam(value = ParamsConstants.PARAM_COMMENT_COMMENT_MSG, required = false)
+            @QueryParam(ParamsConstants.PARAM_COMMENT_COMMENT) String comment,
+            @ApiParam(value = ParamsConstants.PARAM_COMMENT_KTV_ID_MSG, required = false)
+            @QueryParam(ParamsConstants.PARAM_COMMENT_KTV_ID) String ktvId) {
         List<Comment> commentList = null;
 
         Map<String, String> likeCondition = new HashMap<String, String>();
         Map<String, String> equalCondition = new HashMap<String, String>();
         Map<String, String> gtCondition = new HashMap<String, String>();
 
-        if (score != null
-                && !CommonConstants.NULL_STRING.equals(score)
-                && !CommonConstants.NULL.equals(score))
-            gtCondition.put(ParamsConstants.PARAM_COMMENT_SCORE,score);
+//        if (score != null
+//                && !CommonConstants.NULL_STRING.equals(score)
+//                && !CommonConstants.NULL.equals(score))
+//            gtCondition.put(ParamsConstants.PARAM_COMMENT_SCORE,score);
         // 模糊查询条件健值对
         if (comment != null
                 && !CommonConstants.NULL_STRING.equals(comment)
@@ -87,10 +114,81 @@ public class CommentRest {
         return Response.ok(commentList, MediaType.APPLICATION_JSON).build();
     }
 
+    @GET
+    @Path("/info/page")
+    @ApiOperation(value = "查询评论信息列表", notes = "传入参数，返回评论信息列表")
+    @ApiResponses(value = {
+            @ApiResponse(code = HTTPConstants.HTTP_CODE_SYS_ERR, message = HTTPConstants.HTTP_CODE_MSG_SYS_ERR),
+            @ApiResponse(code = HTTPConstants.HTTP_CODE_NOT_FOUND, message = HTTPConstants.HTTP_CODE_MSG_NOT_FOUND),
+            @ApiResponse(code = HTTPConstants.HTTP_CODE_SUCCESS, message = HTTPConstants.HTTP_CODE_MSG_SUCCESS)
+    })
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getCommentsPages(
+            @ApiParam(value = ParamsConstants.PAGE_PARAMS_PAGE_NUM_MSG, required = true)
+            @QueryParam(ParamsConstants.PAGE_PARAMS_PAGE_NUM) int pageNum,
+            @ApiParam(value = ParamsConstants.PAGE_PARAMS_PAGE_DATA_COUNT_MSG, required = true)
+            @QueryParam(ParamsConstants.PAGE_PARAMS_PAGE_DATA_COUNT) int pageDataCount,
+            @ApiParam(value = ParamsConstants.PAGE_PARAMS_ORDER_DESC_MSG, required = false)
+            @QueryParam(ParamsConstants.PAGE_PARAMS_ORDER_DESC) String orderDesc,
+//            @ApiParam(value = ParamsConstants.PARAM_COMMENT_SCORE_MSG, required = false)
+//            @QueryParam(ParamsConstants.PARAM_COMMENT_SCORE) String score,
+            @ApiParam(value = ParamsConstants.PARAM_COMMENT_COMMENT_MSG, required = false)
+            @QueryParam(ParamsConstants.PARAM_COMMENT_COMMENT) String comment,
+            @ApiParam(value = ParamsConstants.PARAM_COMMENT_KTV_ID_MSG, required = false)
+            @QueryParam(ParamsConstants.PARAM_COMMENT_KTV_ID) String ktvId) {
+        List<Comment> commentList = null;
+
+        Map<String, String> likeCondition = new HashMap<String, String>();
+        Map<String, String> equalCondition = new HashMap<String, String>();
+        Map<String, String> gtCondition = new HashMap<String, String>();
+//
+//        if (score != null
+//                && !CommonConstants.NULL_STRING.equals(score)
+//                && !CommonConstants.NULL.equals(score))
+//            gtCondition.put(ParamsConstants.PARAM_COMMENT_SCORE,score);
+        // 模糊查询条件健值对
+        if (comment != null
+                && !CommonConstants.NULL_STRING.equals(comment)
+                && !CommonConstants.NULL.equals(comment))
+            likeCondition.put(ParamsConstants.PARAM_COMMENT_COMMENT, comment);
+        if (ktvId != null
+                && !CommonConstants.NULL_STRING.equals(ktvId)
+                && !CommonConstants.NULL.equals(ktvId))
+            equalCondition.put(ParamsConstants.PARAM_COMMENT_KTV_ID, ktvId);
+
+        try {
+            long dataCount = commentService.getListCount(equalCondition, likeCondition);
+            int pageCount = 0;
+
+            if(dataCount % pageDataCount == 0)
+                pageCount = (int) (dataCount / pageDataCount);
+            else
+                pageCount = (int) (dataCount / pageDataCount) + 1;
+
+            int offset = pageNum * pageDataCount;
+            int length = pageDataCount;
+
+            commentList = commentService.getListForPage(Comment.class, offset, length, orderDesc, equalCondition, likeCondition, gtCondition);
+        } catch (Exception e) {
+            log.warn(e);
+            return Response.ok(new ErrorMessage(ErrorCode.GET_COMMENT_LIST_ERR_CODE, ErrorCode.GET_COMMENT_LIST_ERR_MSG),MediaType.APPLICATION_JSON).status(500).build();
+        }
+
+        log.debug("Get comments pages success.");
+        return Response.ok(commentList, MediaType.APPLICATION_JSON).build();
+    }
+
     @POST
     @Path("/info")
+    @ApiOperation(value = "发表评论", notes = "发表评论")
+    @ApiResponses(value = {
+            @ApiResponse(code = HTTPConstants.HTTP_CODE_SYS_ERR, message = HTTPConstants.HTTP_CODE_MSG_SYS_ERR),
+            @ApiResponse(code = HTTPConstants.HTTP_CODE_NOT_FOUND, message = HTTPConstants.HTTP_CODE_MSG_NOT_FOUND),
+            @ApiResponse(code = HTTPConstants.HTTP_CODE_SUCCESS, message = HTTPConstants.HTTP_CODE_MSG_SUCCESS)
+    })
     @Produces(MediaType.APPLICATION_JSON)
-    public Response addComment(@RequestBody String body) {
+    public Response addComment(
+            @RequestBody String body) {
         Comment comment = null;
         DecimalFormat decimalFormat = new DecimalFormat(".00");//构造方法的字符格式这里如果小数不足2位,会以0补足.
 
@@ -128,7 +226,8 @@ public class CommentRest {
     @DELETE
     @Path("/info/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response deleteComment(@PathParam("id") int id) {
+    public Response deleteComment(
+            @PathParam("id") int id) {
         Comment comment = null;
 
         try {
@@ -144,13 +243,31 @@ public class CommentRest {
 
     @GET
     @Path("/count")
+    @ApiOperation(value = "查询评论总数", notes = "查询评论总数")
+    @ApiResponses(value = {
+            @ApiResponse(code = HTTPConstants.HTTP_CODE_SYS_ERR, message = HTTPConstants.HTTP_CODE_MSG_SYS_ERR),
+            @ApiResponse(code = HTTPConstants.HTTP_CODE_NOT_FOUND, message = HTTPConstants.HTTP_CODE_MSG_NOT_FOUND),
+            @ApiResponse(code = HTTPConstants.HTTP_CODE_SUCCESS, message = HTTPConstants.HTTP_CODE_MSG_SUCCESS)
+    })
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getCommentCount(@QueryParam(ParamsConstants.PARAM_COMMENT_COMMENT) String comment, @QueryParam(ParamsConstants.PARAM_COMMENT_KTV_ID) String ktvId) {
+    public Response getCommentCount(
+//            @ApiParam(value = ParamsConstants.PARAM_COMMENT_SCORE_MSG, required = false)
+//            @QueryParam(ParamsConstants.PARAM_COMMENT_SCORE) String score,
+            @ApiParam(value = ParamsConstants.PARAM_COMMENT_COMMENT_MSG, required = false)
+            @QueryParam(ParamsConstants.PARAM_COMMENT_COMMENT) String comment,
+            @ApiParam(value = ParamsConstants.PARAM_COMMENT_KTV_ID_MSG, required = false)
+            @QueryParam(ParamsConstants.PARAM_COMMENT_KTV_ID) String ktvId) {
         Map<String, Integer> countMap = new HashMap<String, Integer>();
         int commentCount = 0;
 
         Map<String, String> likeCondition = new HashMap<String, String>();
         Map<String, String> equalCondition = new HashMap<String, String>();
+//        Map<String, String> gtCondition = new HashMap<String, String>();
+//
+//        if (score != null
+//                && !CommonConstants.NULL_STRING.equals(score)
+//                && !CommonConstants.NULL.equals(score))
+//            gtCondition.put(ParamsConstants.PARAM_COMMENT_SCORE,score);
 
         if (comment != null
                 && !CommonConstants.NULL_STRING.equals(comment)

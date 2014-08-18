@@ -30,7 +30,7 @@
       dom_id: "swagger-ui-container",
       supportedSubmitMethods: ['get', 'post', 'put', 'delete'],
       onComplete: function(swaggerApi, swaggerUi){
-        log("Loaded SwaggerUI");
+        console.log("Loaded SwaggerUI");
 
         if(typeof initOAuth == "function") {
           /*
@@ -46,7 +46,7 @@
         });
       },
       onFailure: function(data) {
-        log("Unable to Load SwaggerUI");
+          console.log("Unable to Load SwaggerUI");
       },
       docExpansion: "none",
       sorter : "alpha"
@@ -54,9 +54,9 @@
 
     $('#input_apiKey').change(function() {
       var key = $('#input_apiKey')[0].value;
-      log("key: " + key);
+        console.log("key: " + key);
       if(key && key.trim() != "") {
-        log("added key " + key);
+        console.log("added key " + key);
         window.authorizations.add("key", new ApiKeyAuthorization("api_key", key, "query"));
       }
     })

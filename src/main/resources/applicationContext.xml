@@ -60,6 +60,7 @@
                 <bean class="com.kzone.rest.ImportDataRest" />
                 <bean class="com.kzone.rest.GameRest" />
                 <bean class="com.kzone.rest.InitializeRest" />
+                <bean class="com.kzone.rest.TestRest" />
 
                 <ref bean="swaggerResourceJSON" />
             </list>
