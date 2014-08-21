@@ -1,5 +1,7 @@
 package com.kzone.bean;
 
+import com.wordnik.swagger.annotations.ApiModelProperty;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
@@ -14,6 +16,7 @@ public class Comment implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @ApiModelProperty(hidden = true)
     private int id;
     @Column(name = "ktv_id", nullable = true, columnDefinition = "varchar(16) default ''")
     private String KTVId;
@@ -24,6 +27,7 @@ public class Comment implements Serializable {
     @Column(name = "comment", nullable = true, columnDefinition = "varchar(20480) default ''")
     private String comment;
     @Column(name = "score", nullable = true, columnDefinition = "varchar(32) default 0.0")
+    @ApiModelProperty(hidden = true)
     private String score;
     @Column(name = "service_score", nullable = true, columnDefinition = "varchar(32) default 0.0")
     private String serviceScore;
@@ -33,6 +37,7 @@ public class Comment implements Serializable {
     private String soundEffectsScore;
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "create_time")
+    @ApiModelProperty(hidden = true)
     private Date createTime;
 
     public Comment() {
