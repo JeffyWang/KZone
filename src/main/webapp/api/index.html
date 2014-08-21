@@ -25,6 +25,7 @@
   <script type="text/javascript">
 
     $(function () {
+
       window.swaggerUi = new SwaggerUi({
       url: "http://localhost:8899/rest/api-docs",
       dom_id: "swagger-ui-container",
@@ -51,6 +52,9 @@
       docExpansion: "none",
       sorter : "alpha"
     });
+
+     window.authorizations.add("Accept", new ApiKeyAuthorization("Accept", "application/json", "header"));
+     window.authorizations.add("Content-Type", new ApiKeyAuthorization("Content-Type", "application/json", "header"));
 
     $('#input_apiKey').change(function() {
       var key = $('#input_apiKey')[0].value;

@@ -40,7 +40,7 @@
         <property name="contact" value="jeffy@keecent.com"/>
         <!--<property name="license" value="Apache 2.0 License"/>-->
         <!--<property name="licenseUrl" value="http://www.apache.org/licenses/LICENSE-2.0.html"/>-->
-        <property name="filterClass" value="com.kzone.filter.ApiAuthorizationFilterImpl"/>
+        <!--<property name="filterClass" value="com.kzone.filter.ApiAuthorizationFilterImpl"/>-->
         <property name="scan" value="true"/>
     </bean>
 

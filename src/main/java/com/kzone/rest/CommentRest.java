@@ -188,12 +188,11 @@ public class CommentRest {
     })
     @Produces(MediaType.APPLICATION_JSON)
     public Response addComment(
-            @RequestBody String body) {
-        Comment comment = null;
+            @ApiParam(value = "评论内容json", required = true)
+            Comment comment) {
         DecimalFormat decimalFormat = new DecimalFormat(".00");//构造方法的字符格式这里如果小数不足2位,会以0补足.
 
         try {
-            comment = StringUtil.jsonStringToObject(body, Comment.class);
             float serviceScore = Float.valueOf(comment.getServiceScore());
             float environmentScore = Float.valueOf(comment.getEnvironmentScore());
             float soundEffectsScore = Float.valueOf(comment.getSoundEffectsScore());

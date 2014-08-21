@@ -1,7 +1,11 @@
 package com.kzone.rest;
 
+import com.kzone.bean.Comment;
 import com.kzone.constants.HTTPConstants;
+import com.kzone.constants.ParamsConstants;
 import com.wordnik.swagger.annotations.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -12,7 +16,9 @@ import javax.ws.rs.core.Response;
  */
 @Path("/test")
 @Api(value = "/test", description = "测试接口")
+@Produces({"application/json"})
 public class TestRest {
+
     @GET
     @Path("/info")
     @ApiOperation(value = "测试get", notes = "测试get")
@@ -35,7 +41,8 @@ public class TestRest {
             @ApiResponse(code = HTTPConstants.HTTP_CODE_SUCCESS, message = HTTPConstants.HTTP_CODE_MSG_SUCCESS)
     })
     @Produces(MediaType.APPLICATION_JSON)
-    public Response putTest() {
+    public Response putTest(@ApiParam(value = "put string", required = true) String message) {
+        System.out.println("test put" + "   " + message);
         return Response.ok().build();
     }
 
@@ -48,8 +55,9 @@ public class TestRest {
             @ApiResponse(code = HTTPConstants.HTTP_CODE_SUCCESS, message = HTTPConstants.HTTP_CODE_MSG_SUCCESS)
     })
     @Produces(MediaType.APPLICATION_JSON)
-    public Response postTest() {
-        return Response.ok().build();
+    public Response postTest( @ApiParam(value = "post data json", required = false) Comment comment) {
+        System.out.println("just test post");
+        return Response.ok(comment, MediaType.APPLICATION_JSON).build();
     }
 
     @DELETE
