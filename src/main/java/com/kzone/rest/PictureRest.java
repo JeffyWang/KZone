@@ -215,7 +215,7 @@ public class PictureRest {
             pictureResult.put(CommonConstants.PICTURE_URL, pictureUrl);
 
             picture = pictureUrl;
-            user.setPicture(picture);
+//            user.setPicture(picture);
             userService.update(user);
 
             input.close();

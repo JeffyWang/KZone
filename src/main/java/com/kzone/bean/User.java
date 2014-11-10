@@ -1,5 +1,7 @@
 package com.kzone.bean;
 
+import com.wordnik.swagger.annotations.ApiModelProperty;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
@@ -14,22 +16,28 @@ public class User implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @ApiModelProperty(hidden = true)
     private int id;
     @Column(name = "uuid", nullable = false, columnDefinition = "varchar(100) default ''")
+    @ApiModelProperty(hidden = true)
     private String uuid;
+    @Column(name = "device_id", nullable = true, columnDefinition = "varchar(16) default ''")
+    private String deviceId;
     @Column(name = "user_name", nullable = false, columnDefinition = "varchar(16) default ''", unique = true)
     private String userName;
     @Column(name = "password", nullable = false, columnDefinition = "varchar(32) default ''")
     private String password;
     @Column(name = "favorite", nullable = true, columnDefinition = "varchar(128) default ''")
     private String favorite;
-    @Column(name = "picture", nullable = true, columnDefinition = "varchar(256) default ''")
-    private String picture;
+    @Column(name = "phone_number", nullable = true, columnDefinition = "varchar(256) default ''")
+    private String phoneNumber;
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "create_time")
+    @ApiModelProperty(hidden = true)
     private Date createTime;
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "update_time")
+    @ApiModelProperty(hidden = true)
     private Date updateTime;
 
     public User() {
@@ -101,12 +109,20 @@ public class User implements Serializable {
         this.updateTime = updateTime;
     }
 
-    public String getPicture() {
-        return picture;
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 
-    public void setPicture(String picture) {
-        this.picture = picture;
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getDeviceId() {
+        return deviceId;
+    }
+
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
     }
 
     @Override
@@ -117,7 +133,7 @@ public class User implements Serializable {
                 ", userName='" + userName + '\'' +
                 ", password='" + password + '\'' +
                 ", favorite='" + favorite + '\'' +
-                ", picture='" + picture + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
                 ", createTime=" + createTime +
                 ", updateTime=" + updateTime +
                 '}';
